@@ -11,10 +11,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Supplier ${requestScope.action} Form</title>
-	<link rel="stylesheet" href="/${Constants.URL_PREFIX}style.css" />
-	<script src="/${Constants.URL_PREFIX}scripts.js"></script>
 </head>
 <body>
+	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 	
 	<form action="${requestScope.action}" method="POST" class="rmdT">

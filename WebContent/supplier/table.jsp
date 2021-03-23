@@ -10,15 +10,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Supplier List</title>
-	
-	<link rel="stylesheet" href="/${Constants.URL_PREFIX}style.css" />
-	<script src="/${Constants.URL_PREFIX}scripts.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 	
 	
 </head>
 <body>
+	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 	
 	<h1>Suppliers' List</h1>	
