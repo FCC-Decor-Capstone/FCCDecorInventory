@@ -6,5 +6,5 @@ public class Constants {
 	// URLS will change from 	http://localhost:8080/FccDecor/Supplier/ 
 	// 					to 		http://www.website.com/Supplier/
 	
-	public static String URL_PREFIX = "FccDecor/";
+	public static String URL_PREFIX = "user-management-master/_shared/";
 }
