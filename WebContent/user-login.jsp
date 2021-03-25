@@ -61,5 +61,4 @@
 			© 2021 <a>Internet Explorers </a>
 		</div>
 	</footer>
-	
 </body>

@@ -177,7 +177,7 @@
 	    <ul class="navbar-nav w-100">
 	      <li class="nav-item dropdown ml-auto">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	          Account from logs
+	          Account
 	        </a>
 	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 	          <a class="dropdown-item" href="./">Home</a>
@@ -195,7 +195,7 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-5">
-						<h2>User Management</h2>
+						<h2>Logs</h2>
 					</div>
 					<div class="col-sm-7">
 						<a href="list" class="btn btn-primary"><i class="material-icons">refresh</i> <span>Refresh</span></a>						
@@ -205,7 +205,8 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                    	<th>UserID</th>
+                        <th>LogID</th>
                         <th>Type</th>						
 						<th>Activity</th>
 						<th>Target</th>
@@ -214,13 +215,14 @@
                 <tbody>
                 	<c:forEach var="log" items="${logs}">
 	                    <tr>
+	                    	<td><c:out value="${log.user.id}" /></td>
 	                    	<td><c:out value="${log.logId}" /></td>
 	                        <td><c:out value="${log.type}" /></td>
 	                        <td><c:out value="${log.activity}" /></td>
 	                        <td><c:out value="${log.target}" /></td>
 							<td>
-								<a href="edit?id=<c:out value='${log.logId}' />" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-								<a href="#deleteModal" data-tempid="<c:out value='${log.user.id}' />" class="delete trigger-btn set-userid" title="Delete" data-toggle="modal" ><i class="material-icons">&#xE5C9;</i></a>
+								<!-- <a href="edit?id=<c:out value='${log.logId}' />" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a> -->
+								<!-- <a href="#deleteModal" data-tempid="<c:out value='${log.user.id}' />" class="delete trigger-btn set-userid" title="Delete" data-toggle="modal" ><i class="material-icons">&#xE5C9;</i></a>-->
 							</td>
 	                    </tr>
 					</c:forEach>

@@ -30,7 +30,7 @@ public class Logs implements Serializable {
 	@Column(name = "target")
 	public String target;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="id", nullable = false)
 	public User user;
 	
