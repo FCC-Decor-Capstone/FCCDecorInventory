@@ -13,16 +13,24 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 	
-	
+	<script>
+	function resetForm(e) {
+	  document.getElementById('search').value = ""
+	  document.forms.searchBox.submit();
+	}
+	</script>
 </head>
 <body>
 	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 	
 	<h1>Suppliers' List</h1>	
-		<form action="/${Constants.URL_PREFIX}Supplier/" Method="POST" class="searchBox"> 
+		<form action="" Method="POST" id="searchBox"> 
 				<div class="searchItem">
-					<input type="text" placeholder="Type a keyword" name="search" value="${requestScope.search}"/>
+					<c:if test="${not empty requestScope.search}">
+						<button id="clearButton" onclick="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
+					</c:if>
+					<input type="text" placeholder="Type a keyword" name="search" id="search" value="${requestScope.search}"/>
 					<button type="submit"><i class="fa fa-search"></i></button>
 				</div>
 				

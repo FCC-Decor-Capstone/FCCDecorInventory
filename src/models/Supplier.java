@@ -86,7 +86,10 @@ public class Supplier {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) { 
-				return new Supplier(ID, rs.getString("name"), rs.getString("contact"), rs.getString("telephone"), rs.getString("comments"));
+				return new Supplier(ID, 	rs.getString("name"), 
+											rs.getString("contact"), 
+											rs.getString("telephone"), 
+											rs.getString("comments"));
 			}
 			return null;
 		
@@ -127,7 +130,11 @@ public class Supplier {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new Supplier(rs.getInt("supplierID"), rs.getString("name"), rs.getString("contact"), rs.getString("telephone"), rs.getString("comments")));
+				list.add(new Supplier(	rs.getInt("supplierID"), 
+										rs.getString("name"), 
+										rs.getString("contact"), 
+										rs.getString("telephone"), 
+										rs.getString("comments")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -147,7 +154,11 @@ public class Supplier {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new Supplier(rs.getInt("supplierID"), rs.getString("name"), rs.getString("contact"), rs.getString("telephone"), rs.getString("comments")));
+				list.add(new Supplier(	rs.getInt("supplierID"), 
+										rs.getString("name"), 
+										rs.getString("contact"), 
+										rs.getString("telephone"), 
+										rs.getString("comments")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -237,13 +248,14 @@ public class Supplier {
 	}
 	public String setComments(String comments) {
 		try {
-			if (comments.length() > 45) {
+			if (comments.length() > 2000) {
 				hasError = true;
 				return "Comments Field cannot exceed 255 characters";
 			}
 			this.comments = comments;
 			return "";
 		} catch (NullPointerException npx) {
+				System.err.println(npx.getMessage());
 			hasError = true;
 			return "";
 		}

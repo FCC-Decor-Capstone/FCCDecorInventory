@@ -1,9 +1,13 @@
 package models;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +15,21 @@ import dbHelpers.DB;
 
 public class Event {
 	int id = -1;
-	String name = "", contact = "", telephone = "", comments = "";
+	String name = "", client = "",location = "", telephone = "", comments = "";
+	
+	
+	public Event(int id, String name, String client, String location, String telephone, String comments, Date eventDate) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.client = client;
+		this.location = location;
+		this.telephone = telephone;
+		this.comments = comments;
+		this.eventDate = eventDate;
+		this.hasError = hasError;
+	}
+	Date eventDate = Date.valueOf("2020-01-01");
 	boolean hasError = false;
 	
 	public Event() {
@@ -19,24 +37,20 @@ public class Event {
 	}
 	
 	
-	public Event(int id, String name, String contact, String telephone, String comments) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.contact = contact;
-		this.telephone = telephone;
-		this.comments = comments;
-	}
+
 	
-	public static Event addNew(Event newSupplier) {
-		String insert="INSERT INTO Supplier(name, contact, telephone, comments) VALUES(?,?,?,?);";
+	public static Event addNew(Event newEvent) {
+		String insert="INSERT INTO Event (name, client, location, telephone, comments, eventDate) VALUES(?,?,?,?,?,?)";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1,newSupplier.getName());
-			ps.setString(2,newSupplier.getContact());
-			ps.setString(3,newSupplier.getTelephone());
-			ps.setString(4,newSupplier.getComments());
+			ps.setString(1,newEvent.getName());
+			ps.setString(2,newEvent.getClient());
+			ps.setString(3,newEvent.getLocation());
+			ps.setString(4,newEvent.getTelephone());
+			ps.setString(5,newEvent.getComments());
+			ps.setDate(6,newEvent.getEventDate());
+			
 			int result = ps.executeUpdate();
 			System.out.println("Inserted ID is " + result);
 			ResultSet rs = ps.getGeneratedKeys();
@@ -54,19 +68,21 @@ public class Event {
 	}
 	
 		
-	public static Event editByID(Event newSupplier) {
-		String update="UPDATE Supplier SET name = ?, contact = ?, telephone = ?, comments = ? WHERE supplierID = ?";
+	public static Event editByID(Event newEvent) {
+		String update="UPDATE Event SET name = ?, client = ?, location = ?, telephone = ?, comments = ?, eventDate = ? WHERE eventID = ?";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(update);
-			ps.setString(1,newSupplier.getName());
-			ps.setString(2,newSupplier.getContact());
-			ps.setString(3,newSupplier.getTelephone());
-			ps.setString(4,newSupplier.getComments());
-			ps.setInt(5,newSupplier.getId());
+			ps.setString(1,newEvent.getName());
+			ps.setString(2,newEvent.getClient());
+			ps.setString(3,newEvent.getLocation());
+			ps.setString(4,newEvent.getTelephone());
+			ps.setString(5,newEvent.getComments());
+			ps.setDate(6,newEvent.getEventDate());
+			ps.setInt(7,newEvent.getId());
 			int result = ps.executeUpdate();
 			if (result==1) {
-				return newSupplier;
+				return newEvent;
 			}
 			else 
 				return null;
@@ -78,7 +94,7 @@ public class Event {
 	}
 	
 	public static Event getByID(int ID) {
-		String select="SELECT * FROM Supplier WHERE supplierID = ?;";
+		String select="SELECT * FROM Event WHERE eventID = ?;";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
@@ -86,7 +102,13 @@ public class Event {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) { 
-				return new Event(ID, rs.getString("name"), rs.getString("contact"), rs.getString("telephone"), rs.getString("comments"));
+				return new Event(	ID, 
+									rs.getString("name"), 
+									rs.getString("client"), 
+									rs.getString("location"),
+									rs.getString("telephone"), 
+									rs.getString("comments"),
+									rs.getDate("eventDate"));
 			}
 			return null;
 		
@@ -98,7 +120,7 @@ public class Event {
 	}
 	
 	public static Boolean deleteByID(int ID) {
-		String delete="DELETE FROM Supplier WHERE supplierID = ?;";
+		String delete="DELETE FROM Event WHERE eventID = ?;";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(delete);
@@ -119,7 +141,7 @@ public class Event {
 	}
 	
 	public static List<Event> getAll() {
-		String select="SELECT * FROM Supplier";
+		String select="SELECT * FROM Event";
 		List<Event> list = new ArrayList<Event>(); 
 		PreparedStatement ps;
 		try {
@@ -127,7 +149,13 @@ public class Event {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new Event(rs.getInt("supplierID"), rs.getString("name"), rs.getString("contact"), rs.getString("telephone"), rs.getString("comments")));
+				list.add(new Event(	rs.getInt("eventID"), 
+									rs.getString("name"), 
+									rs.getString("client"), 
+									rs.getString("location"),
+									rs.getString("telephone"), 
+									rs.getString("comments"),
+									rs.getDate("eventDate")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -138,7 +166,7 @@ public class Event {
 	}
 	
 	public static List<Event> search(String word) {
-		String select="SELECT * FROM Supplier WHERE LOWER(CONCAT(name, ' ', contact, ' ', telephone, ' ',comments)) LIKE LOWER(?)";
+		String select="SELECT * FROM Event WHERE LOWER(CONCAT(name, ' ', client, ' ',location, ' ', telephone, ' ',comments,' ',eventDate)) LIKE LOWER(?)";
 		List<Event> list = new ArrayList<Event>(); 
 		PreparedStatement ps;
 		try {
@@ -147,7 +175,13 @@ public class Event {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new Event(rs.getInt("supplierID"), rs.getString("name"), rs.getString("contact"), rs.getString("telephone"), rs.getString("comments")));
+				list.add(new Event(	rs.getInt("eventID"), 
+									rs.getString("name"), 
+									rs.getString("client"), 
+									rs.getString("location"),
+									rs.getString("telephone"), 
+									rs.getString("comments"),
+									rs.getDate("eventDate")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -198,16 +232,16 @@ public class Event {
 			return "Name Field cannot be empty";
 		}
 	}
-	public String getContact() {
-		return contact;
+	public String getClient() {
+		return client;
 	}
-	public String setContact(String contact) {
+	public String setClient(String client) {
 		try {
-			if (contact.length() > 45) {
+			if (client.length() > 45) {
 				hasError = true;
 				return "Contact Field cannot exceed 45 characters";
 			}
-			this.contact = contact;
+			this.client = client;
 			return "";
 		} catch (NullPointerException npx) {
 			hasError = true;
@@ -215,6 +249,25 @@ public class Event {
 		}
 		
 	}
+	public String getLocation() {
+		return location;
+	}
+	public String setLocation(String location) {
+		try {
+			if (location.length() > 255) {
+				hasError = true;
+				return "Contact Field cannot exceed 255 characters";
+			}
+			this.location = client;
+			return "";
+		} catch (NullPointerException npx) {
+			hasError = true;
+			return "";
+		}
+		
+	}
+	
+	
 	public String getTelephone() {
 		return telephone;
 	}
@@ -237,13 +290,27 @@ public class Event {
 	}
 	public String setComments(String comments) {
 		try {
-			if (comments.length() > 45) {
+			if (comments.length() > 2000) {
 				hasError = true;
 				return "Comments Field cannot exceed 255 characters";
 			}
 			this.comments = comments;
 			return "";
 		} catch (NullPointerException npx) {
+			hasError = true;
+			return "";
+		}
+	}
+	
+	public Date getEventDate() {
+		return eventDate;
+	}
+	public String setEventDate(String dateStr) {
+		try {
+			this.eventDate = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(dateStr).getTime());;
+			return "";
+			
+		} catch (NullPointerException | ParseException npx) {
 			hasError = true;
 			return "";
 		}
