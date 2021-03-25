@@ -31,16 +31,18 @@
 				<button type="submit" formaction="./." formmethod="get"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
 	<main class="rmdT">
-			<p>Supplier Name: ${requestScope.model.name}</p>
+		<section class="elements">
+			<p><strong>Supplier Name:</strong> ${requestScope.model.name}</p>
 			<c:if test="${not empty requestScope.model.contact}">
-				<p>Contact Name: ${requestScope.model.contact}</p>
+				<p><strong>Contact Name:</strong> ${requestScope.model.contact}</p>
 			</c:if>
 			<c:if test="${not empty requestScope.model.telephone}">
-				<p>Contact Telephone: ${requestScope.model.telephone}</p>
+				<p><strong>Contact Telephone:</strong> ${requestScope.model.telephone}</p>
 			</c:if>
 			<c:if test="${not empty requestScope.model.comments}">
-				<p>Comments: ${fn:trim(requestScope.model.comments)}</p>
+				<p id="comments"><strong>Comments:</strong> ${fn:trim(requestScope.model.comments)}</p>
 			</c:if>
+		</section>
 		<section class="rmdT">
 
 				<table class="rmdT">				

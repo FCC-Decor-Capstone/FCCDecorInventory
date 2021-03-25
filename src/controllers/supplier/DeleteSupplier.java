@@ -1,4 +1,4 @@
-package controllers;
+package controllers.supplier;
 
 import java.io.IOException;
 
@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import models.Supplier;
 
 /**
- * Servlet implementation class ListSupplier
+ * Servlet implementation class EditSupplier
  */
-@WebServlet(value="/Supplier/")
-public class ListSupplier extends HttpServlet {
+@WebServlet(value="/Supplier/Delete")
+public class DeleteSupplier extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListSupplier() {
+    public DeleteSupplier() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,19 +31,22 @@ public class ListSupplier extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		if (request.getParameter("search") != null) {
-			if (!request.getParameter("search").trim().isEmpty()) {
-				request.setAttribute("search", request.getParameter("search").trim());
-				request.setAttribute("list", Supplier.search(request.getParameter("search")));	
-			} else {
-				request.setAttribute("list", Supplier.getAll());
-			}
-		} else {
-			request.setAttribute("list", Supplier.getAll());
+		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		if (request.getParameter("id") != null) {
+			try {
+				
+				int id = Integer.parseInt(request.getParameter("id"));
+				if (Supplier.deleteByID(id)) {
+					request.setAttribute("SucCtlMsg", "Deleted Supplier Successfully");
+					response.sendRedirect("./.");return;
+				} else {
+					request.setAttribute("ErrCtlMsg", "Error Deleting Supplier");
+				}
+			} catch (NumberFormatException nfe) {
+				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
+			} 
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/table.jsp");
 		dispatcher.forward(request, response);
 	}
 

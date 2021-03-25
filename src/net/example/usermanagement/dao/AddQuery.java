@@ -36,7 +36,7 @@ public class AddQuery {
 //		String url = props.getProperty("server");
 //		String username = props.getProperty("username");
 //		String passwd = props.getProperty("password");
-		String driver ="com.mysql.jdbc.Driver";
+		String driver ="com.mysql.cj.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/demo";
 		String username = "root";
 		String passwd = "Kbinersotod986";

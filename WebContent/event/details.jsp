@@ -4,7 +4,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <%@ page isELIgnored="false" %>
-<%@ page import="models.Supplier,helpers.Constants" %>
+<%@ page import="models.Event,helpers.Constants" %>
 
 <!DOCTYPE html>
 <html>
@@ -31,37 +31,62 @@
 				<button type="submit" formaction="./." formmethod="get"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
 	<main class="rmdT">
-			<p>Supplier Name: ${requestScope.model.name}</p>
-			<c:if test="${not empty requestScope.model.contact}">
-				<p>Contact Name: ${requestScope.model.contact}</p>
+		<section class="elements">
+			<p><strong>Event Name:</strong> ${requestScope.model.name}</p>
+
+			<c:if test="${not empty requestScope.model.eventDate}">
+				<p><strong>Event Date:</strong> ${requestScope.model.eventDate}</p>
+			</c:if>
+			<c:if test="${not empty requestScope.model.location}">
+				<p><strong>Event Location:</strong> ${requestScope.model.location}</p>
+			</c:if>
+			<c:if test="${not empty requestScope.model.client}">
+				<p><strong>Client Name:</strong> ${requestScope.model.client}</p>
 			</c:if>
 			<c:if test="${not empty requestScope.model.telephone}">
-				<p>Contact Telephone: ${requestScope.model.telephone}</p>
+				<p><strong>Contact Telephone:</strong> ${requestScope.model.telephone}</p>
 			</c:if>
 			<c:if test="${not empty requestScope.model.comments}">
-				<p>Comments: ${fn:trim(requestScope.model.comments)}</p>
+				<p id="comments"><strong>Comments:</strong> ${fn:trim(requestScope.model.comments)}</p>
 			</c:if>
+		</section>
 		<section class="rmdT">
-
+			
+			<script>
+				console.log(${requestScope.listLinkedItems})
+				console.log(${requestScope.listAllItems})
+				console.log(${userID})
+				console.log("${requestScope.listhmUsers[userID]}")
+			</script>
 				<table class="rmdT">				
 						<tr>
 							<th><span>Item</span></th>
-							<th><span>Category</span></th>
-							<th><span>Description</span></th>
+							<th><span>Quantity</span></th>
+							<th><span>Date Taken</span></th>
+							<th><span>User Taken</span></th>
+							<th><span>Date Returned</span></th>
+							<th><span>User Returned</span></th>
 						</tr>
+
 			<c:choose>
-			<c:when test="${not empty requestScope.list}">
-						<c:forEach var="item" items="${requestScope.list}">		
+			<c:when test="${not empty requestScope.listLinkedItems}">
+			not empty
+						<c:forEach var="item" items="${requestScope.listLinkedItems}">
+						<c:set var="userTaken">${item.userTaken}</c:set>
+						<c:set var="userBack">${item.userBack}</c:set>	
 						<tr>											
-							<td><a href="./Details?id=${item.name}"><span>${item.name}</span></a></td>
-							<td><a href="./Details?id=${item.category}"><span>${item.category}</span></a></td>
-							<td><a href="./Details?id=${item.description}"><span>${item.description}</span></a></td>
+							<td><a href="./Details?id=${item.itemID}"><span>${item.name}</span></a></td>
+							<td><a href="./Details?id=${item.itemID}"><span>${item.quantity}</span></a></td>
+							<td><a href="./Details?id=${item.itemID}"><span>${item.dateTaken}</span></a></td>
+							<td><a href="./Details?id=${item.itemID}"><span>${requestScope.listhmUsers[userTaken]}</span></a></td>
+							<td><a href="./Details?id=${item.itemID}"><span>${item.dateBack}</span></a></td>
+							<td><a href="./Details?id=${item.itemID}"><span>${requestScope.listhmUsers[userBack]}</span></a></td>
 						</tr>
 					</c:forEach>
 				
 			</c:when>
 			<c:otherwise>
-				<tr><td colspan="3"><div>No Items Linked.</div></td></tr>
+				<tr><td colspan="6"><div>No Items Linked.</div></td></tr>
 			</c:otherwise>
 		</c:choose>
 			</table>

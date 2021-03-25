@@ -4,34 +4,48 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <%@ page isELIgnored="false" %>
-<%@ page import="models.Supplier,helpers.Constants" %>
+<%@ page import="models.Event,helpers.Constants" %>
 
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Supplier ${requestScope.action} Form</title>
+	<title>Event ${requestScope.action} Form</title>
 </head>
 <body>
 	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 	
 	<form action="${requestScope.action}" method="POST" class="rmdT">
-		<h2>${requestScope.action} Supplier</h2>
+		<h2>${requestScope.action} Event</h2>
 	
 		<input type="hidden" name="id" value="${requestScope.model.id}" />
 		<div class="formElement">
-			<label for="name">Supplier Name:</label>
-			<input type="text" id="name" name="name" placeholder="Supplier Name" value="${requestScope.model.name}"/>
+			<label for="name">Event Name:</label>
+			<input type="text" id="name" name="name" placeholder="Event Name" value="${requestScope.model.name}"/>
 			<c:if test="${not empty requestScope.errName}">
 				<br/><span class="err rmdT">${requestScope.errName}</span>
 			</c:if>
 		</div>
 		<div class="formElement">
-			<label for="contact">Contact Name:</label>
-			<input type="text" id="contact" name="contact" placeholder="Contact" value="${requestScope.model.contact}"/>
-			<c:if test="${not empty requestScope.errContact}">
-				<br/><span class="err">${requestScope.errContact}</span>
+			<label for="eventDate">Event Date:</label>
+			<input type="date" id="eventDate" name="eventDate" placeholder="Event Date" value="${requestScope.model.eventDate}"/>
+			<c:if test="${not empty requestScope.errEventDate}">
+				<br/><span class="err">${requestScope.errEventDate}</span>
+			</c:if>
+		</div>
+		<div class="formElement">
+			<label for="location">Event Location:</label>
+			<input type="text" id="location" name="location" placeholder="Location" value="${requestScope.model.location}"/>
+			<c:if test="${not empty requestScope.errLocation}">
+				<br/><span class="err">${requestScope.errLocation}</span>
+			</c:if>
+		</div>
+		<div class="formElement">
+			<label for="client">Client:</label>
+			<input type="text" id="client" name="client" placeholder="Client" value="${requestScope.model.client}"/>
+			<c:if test="${not empty requestScope.errClient}">
+				<br/><span class="err">${requestScope.errClient}</span>
 			</c:if>
 		</div>
 		<div class="formElement">

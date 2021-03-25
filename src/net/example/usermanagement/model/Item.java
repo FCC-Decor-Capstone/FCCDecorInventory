@@ -1,4 +1,4 @@
-package net.example.usermanagement.model;
+ package net.example.usermanagement.model;
 
 public class Item {
     private int itemGroupId;
