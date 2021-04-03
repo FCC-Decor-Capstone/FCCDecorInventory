@@ -99,6 +99,7 @@
 	        </a>
 	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 	          <a class="dropdown-item" href="./">Home</a>
+	          <a class="dropdown-item" href="changePass">Change Password</a>
 	          <a class="dropdown-item" href="logout">Logout</a>
 	        </div>
 	      </li>
@@ -109,89 +110,32 @@
 
 	<!-- MAIN BODY -->
 	<div class="layout-form">
-	    <c:if test="${user != null}">
-		  <form action="updateSettings" method="post">
-			<h2>Update User</h2>
-			<p>Change your data to update the user.</p>
+	    <c:if test="${pass != null}">
+		  <form action="update" method="post">
+			<h2>Update Password</h2>
+			<p>Update your Password</p>
 	    </c:if>
-	    
-	    <c:if test="${user == null}">
-		  <form action="insert" method="post">
-			<h2>Insert User</h2>
-			<p>Fill all data and submit to create new user.</p>
+	    <c:if test="${pass == null}">
+		  <form action="changePassword" method="post">
+			<h2>Update Password</h2>
+			<p>Fill all data and Update Password</p>
 	    </c:if>
-		   <c:if test="${user != null}">
-	        	<input type="hidden" name="id" value="<c:out value='${user.id}' />" />
-	        </c:if> 
+	        	<input type="hidden" name="id" value="<c:out value="${param.id}" />" />
 			<hr>
-	        <div class="form-group">
-				<label>Username</label>
-	        	<input type="text" class="form-control" name="name" required="required" value="<c:out value='${user.name}' />">
-	        </div>
-	        <div class="form-group">
-				<label>Email Address</label>
-	        	<input type="email" class="form-control" name="email" required="required" value="<c:out value='${user.email}' />">
-	        </div>
-	        <c:if test="${user == null}">
+			
 			 <div class="form-group">
+				<label>Current Password</label>
+	            <input type="password" class="form-control" name="currentPassword" required="required" value="<c:out value='${pass.password}' />">
+	        </div>
+	      
+		    <div class="form-group">
 				<label>Password</label>
-	            <input type="password" class="form-control" name="password" required="required" value="<c:out value='${user.password}' />">
+	            <input type="password" class="form-control" name="password" required="required" value="<c:out value='${pass.newPassword}' />">
 	        </div>
-	         </c:if> 
-	        
-			<div class="form-group">
-				<label>Role</label>
-	        	<select class="browser-default custom-select" name="role" required="required">
-					<c:if test="${user == null}">
-						<option value="Administrator">Administrator</option>
-						<option value="Manager">Manager</option>
-						<option value="General User">General User</option>
-					</c:if>
-					<c:if test="${user != null}">
-						<option value="Administrator">Administrator</option>
-						<option value="Manager">Manager</option>
-						<option value="General User">General User</option>
-						
-						<c:if test="${user.role == 'Administrator'}">
-							<option value="Administrator" selected hidden>Administrator</option>
-						</c:if>
-						<c:if test="${user.role == 'Manager'}">
-							<option value="Manager" selected hidden>Manager</option>
-						</c:if>
-						<c:if test="${user.role == 'General User'}">
-							<option value="General User" selected hidden>General User</option>
-						</c:if>
-					</c:if>
-				</select>
-	        </div>
-	        <div class="form-group">
-				<label>Status</label>
-	            <select class="browser-default custom-select" name="status" required="required">
-					<c:if test="${user == null}">
-						<option value="Inactive">Inactive</option>
-						<option value="Active">Active</option>
-					</c:if>
-					<c:if test="${user != null}">
-						<option value="Inactive">Inactive</option>
-						<option value="Active">Active</option>
-						
-						<c:if test="${user.status == 'Inactive'}">
-							<option value="Inactive" selected hidden>Inactive</option>
-						</c:if>
-						<c:if test="${user.status == 'Active'}">
-							<option value="Active" selected hidden>Active</option>
-						</c:if>
-					</c:if>
-				</select>
-	        </div>
+	       
 	        <br/>
 			<div class="form-group">
-				<c:if test="${user == null}">
-	            	<button type="submit" class="btn btn-primary btn-block btn-lg">Create new user</button>
-	            </c:if>  
-	            <c:if test="${user != null}">
-	            	<button type="submit" class="btn btn-primary btn-block btn-lg">Update user</button>
-	            </c:if>
+	            <button type="submit" class="btn btn-primary btn-block btn-lg">Update Password</button>
 	        </div>
 	    </form>
 		<div class="text-center">See your user list <a href="list">here</a></div>

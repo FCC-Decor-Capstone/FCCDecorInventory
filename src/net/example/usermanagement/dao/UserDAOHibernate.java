@@ -1,6 +1,10 @@
 package net.example.usermanagement.dao;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +19,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
+
+import com.sun.corba.se.spi.orbutil.fsm.State;
 
 import net.example.usermanagement.model.Logs;
 import net.example.usermanagement.model.User;
@@ -42,15 +48,25 @@ public class UserDAOHibernate {
     public void insertUser(User user) {
 		// try-with-resource statement will auto close the connection.
 		try {
-			// Getting Session Object From SessionFactory
-			sessionObj = buildSessionFactory().openSession();
-			// Getting Transaction Object From Session Object
-			sessionObj.beginTransaction();
-			// save 'user' object to session as a transaction
-			sessionObj.save(user);
-			// Committing The Transactions To The Database
-            sessionObj.getTransaction().commit();
-            System.out.println("\nSuccessfully Created Record(s) In The Database!\n");
+			
+			if(MD5(user.getPassword()).equals("")) {
+				System.out.print("Cannot be encrypted");
+				return;
+			}else {
+				String hash = MD5(user.getPassword());
+				
+				user.setPassword(hash);
+				// Getting Session Object From SessionFactory
+				sessionObj = buildSessionFactory().openSession();
+				// Getting Transaction Object From Session Object
+				sessionObj.beginTransaction();
+				// save 'user' object to session as a transaction
+				sessionObj.save(user);
+				// Committing The Transactions To The Database
+	            sessionObj.getTransaction().commit();
+	            System.out.println("\nSuccessfully Created Record(s) In The Database!\n");
+			}
+			
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -63,6 +79,24 @@ public class UserDAOHibernate {
 	        }
 	    }
 	}
+    
+    private String MD5(String c) throws UnsupportedEncodingException {
+		
+    	try {
+			MessageDigest digs = MessageDigest.getInstance("MD5");
+			byte[] messageDigest = digs.digest(c.getBytes());
+			BigInteger number = new BigInteger(1, messageDigest );
+			String hashtext = number.toString(16);
+			while(hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+						
+			return hashtext;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			return "";
+		}
+    }
     
     public List<User> selectAllUsers() {
 		List<User> users = new ArrayList<>();
@@ -114,22 +148,30 @@ public class UserDAOHibernate {
 		return logs;
 	}
     
-    
     public boolean updateUser(User user) {
-		boolean rowUpdated;
+		boolean rowUpdated = true;
+
 		try {
-			// Getting Session Object From SessionFactory
-            sessionObj = buildSessionFactory().openSession();
+//			if(MD5(user.getPassword()).equals("")) {
+//				System.out.print("Cannot be encrypted");
+//				return false;
+//			}else {
+				//System.out.println("Hashing password: " + user.getPassword());
+				//String hash = MD5(user.getPassword());
+				
+				//user.setPassword(hash);
+			sessionObj = buildSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
- 
+            
             // Creating Transaction Entity
             sessionObj.update(user);
  
             // Committing The Transactions To The Database
             sessionObj.getTransaction().commit();
-            rowUpdated = true;
+            //rowUpdated = true;
             System.out.println("\nSuccessfully Updated Record In The Database!\n");
+			//}
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -145,6 +187,40 @@ public class UserDAOHibernate {
 		return rowUpdated;
 	}
     
+    public boolean updateUserSettings(User user) {
+		boolean rowUpdated = true;
+		try {
+		System.out.print(user.getPassword());
+			//if(user.getPassword() == null) {
+			// user.getPassword();
+			// Getting Session Object From SessionFactory
+            sessionObj = buildSessionFactory().openSession();
+            // Getting Transaction Object From Session Object
+            sessionObj.beginTransaction();
+            
+            // Creating Transaction Entity
+            sessionObj.update(user);
+ 
+            // Committing The Transactions To The Database
+            sessionObj.getTransaction().commit();
+            //rowUpdated = true;
+            System.out.println("\nSuccessfully Updated Record In The Database!\n");
+			//}
+			
+		} catch (Exception e) {
+			if(null != sessionObj.getTransaction()) {
+				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
+                sessionObj.getTransaction().rollback();
+            }
+			rowUpdated = false;
+            e.printStackTrace();
+		} finally {
+	        if(sessionObj != null) {
+	            sessionObj.close();
+	        }
+	    }
+		return rowUpdated;
+	}
     
     public boolean deleteUser(int id) {
 		boolean rowDeleted;
@@ -185,8 +261,9 @@ public class UserDAOHibernate {
             sessionObj = buildSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
-
+            login_password = MD5(login_password);
             // FROM User, the User is Object / Class and so the param belong to Object / Class, not the table name!
+            System.out.println(login_password);
             Query hql_query = sessionObj.createQuery("FROM User u WHERE u.email = :email AND u.password = :password AND u.status = :status");
             hql_query.setParameter("email",login_email);
             hql_query.setParameter("password",login_password);

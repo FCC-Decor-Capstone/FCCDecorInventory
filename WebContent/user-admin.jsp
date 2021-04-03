@@ -35,7 +35,7 @@ body {
 
 .table-title {
 	padding-bottom: 15px;
-	background: #299be4;
+	background: black;
 	color: #fff;
 	padding: 16px 30px;
 	margin: -20px -25px 10px;
@@ -213,8 +213,9 @@ table.table .avatar {
 					aria-haspopup="true" aria-expanded="false"> Account </a>
 					<div class="dropdown-menu dropdown-menu-right"
 						aria-labelledby="navbarDropdownMenuLink">
-						<a class="dropdown-item" href="./">Home</a> <a
-							class="dropdown-item" href="logout">Logout</a>
+						<a class="dropdown-item" href="./">Home</a> 
+						<!--<a class="dropdown-item" href="changePass">Change Password</a>-->
+						<a class="dropdown-item" href="logout">Logout</a>
 					</div></li>
 			</ul>
 		</div>
@@ -247,6 +248,8 @@ table.table .avatar {
 						<th>Email</th>
 						<th>Role</th>
 						<th>Status</th>
+						<th>Joining Date</th>
+						<th>Leaving Date</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -258,13 +261,24 @@ table.table .avatar {
 							<td><c:out value="${user.email}" /></td>
 							<td><c:out value="${user.role}" /></td>
 							<td><c:out value="${user.status}" /></td>
+							<td><c:out value="${user.joiningDateTime}" /></td>
+							<td><c:out value="${user.leavingDateTime}" /></td>
 							<td><a href="edit?id=<c:out value='${user.id}' />"
 								class="settings" title="Settings" data-toggle="tooltip"><i
-									class="material-icons">&#xE8B8;</i></a> <a href="#deleteModal"
+									class="material-icons">&#xE8B8;</i></a> 
+								
+								<!-- <a href="#deleteModal"
+								
 								data-tempid="<c:out value='${user.id}' />"
+								
 								class="delete trigger-btn set-userid" title="Delete"
-								data-toggle="modal"><i class="material-icons">&#xE5C9;</i></a></td>
-						</tr>
+								
+								data-toggle="modal"><i class="material-icons">&#xE5C9;</i></a></td> -->
+								
+								<a href="changePass?id=<c:out value='${user.id}' />"
+								class="delete trigger-btn set-userid" title="Change Password" data-toggle="tooltip"><i
+									class="material-icons lock">&#xe897;</i></a> </td>
+							</tr>
 					</c:forEach>
 				</tbody>
 			</table>

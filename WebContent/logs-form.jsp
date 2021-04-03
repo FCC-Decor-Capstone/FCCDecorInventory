@@ -31,7 +31,7 @@
     }
 	.table-title {
 		padding-bottom: 15px;
-		background: #299be4;
+		background: black;
 		color: #fff;
 		padding: 16px 30px;
 		margin: -20px -25px 10px;

@@ -71,7 +71,7 @@
 	    <ul class="navbar-nav w-100">
 	    <li class="nav-item dropdown"><a class="nav-link "
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						<c:out value="Hello ${user.name}"/><span class="blinker"> .</span></a></li>
+						<c:out value="Hello ${user.name}" /><span class="blinker"> .</span> </a></li>
 	      <li class="nav-item dropdown ml-auto">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          Account
@@ -88,7 +88,7 @@
 	  </div>
 	</nav>
 	
-	<!-- Edit Modal HTML -->
+		<!-- Edit Modal HTML -->
 	<div id="editModalName" class="modal fade">
 		<div class="modal-dialog modal-confirm">
 			<div class="modal-content">
@@ -98,6 +98,7 @@
 				</div>
 				<div class="modal-body">
 					<form action="changePassGenUsersName" class="form-horizontal" role="form" method="post">
+	                  
 	                  <div class="form-group">
 	                  
 	                     <label  class="col-sm-2 control-label">Name</label>
@@ -107,7 +108,6 @@
 	                    	</div>
 	                  </div>
  
- 					
 	                  <input type="hidden" name="id" value="${user.id}"/>
 	                  <input type="hidden" name="email" value="${user.email}"/>
 	                  <input type="hidden" name="password" value="${pass.password}"/>
@@ -125,7 +125,7 @@
 		</div>
 	</div>
 
-	<!-- Edit Modal HTML -->
+		<!-- Edit Modal HTML -->
 	<div id="editModal" class="modal fade">
 		<div class="modal-dialog modal-confirm">
 			<div class="modal-content">
@@ -134,16 +134,9 @@
 	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
-					<form action="changePassGenUsers" class="form-horizontal" role="form" method="post">
+					<form action="changeManagersPass" class="form-horizontal" role="form" method="post">
 	                  <div class="form-group">
-	                  
-	                     <!--  <label  class="col-sm-2 control-label">Name</label>
-	               
-	                      	<div class="col-sm-12">
-	                        	<input type="text" class="form-control" name="name" value="${user.name}" />
-	                    	</div>-->
-	                   
-	                    
+	                                       
 	                   <label  class="col-sm-12 control-label">Current Password</label>
 	                      <div class="col-sm-12">
 	                        <input type="password" class="form-control" name="currentPassword" required="required"  />
@@ -155,8 +148,7 @@
 	                        <input type="password" class="form-control" name="password" required="required"  />
 	                    </div>
 	                  </div>
-	                  
-	                  
+
 	                  <input type="hidden" name="id" value="${user.id}"/>
 	                  <input type="hidden" name="name" value="${user.name}"/>
 	                  <input type="hidden" name="email" value="${user.email}"/>
@@ -184,11 +176,11 @@
 	<div class="container-fluid home-content1">
 		<div class="row">
 			<div class="col-md-6 content1-left">
-				<h3>Extra credit task 1 <span class="blinker">?</span></h3>
+				<!-- <h3>Extra credit task 1 <span class="blinker">?</span></h3>
 				<p>A user can have many roles (e.g. Administrator, Sales, Marketing)
 					Administrators can do anything
 					Non administrators can only view, the only thing a non Administrator can edit/write is their own name and password.</p>
-				<!-- <div class="content1-left"></div> -->
+				<div class="content1-left"></div> -->
 			</div>
 			<div class="col-md-6 content1-right">
 				<p>If we want this web application to be Highly Available, what would you do? Separate the core functions and try to run independently in each machine.</p>

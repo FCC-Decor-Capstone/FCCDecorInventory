@@ -1,7 +1,12 @@
 package net.example.usermanagement.web;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +29,7 @@ public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDAOHibernate userDAO;
 	private AddQuery query;
-	
+
 	public void init() {
 		userDAO = new UserDAOHibernate();
 		query = new AddQuery();
@@ -62,6 +67,9 @@ public class UserServlet extends HttpServlet {
 			case "/update":
 				updateUser(request, response);
 				break;
+			case "/updateSettings":
+				updateSettings(request, response);
+				break;
 			case "/logout":
 				logoutUser(request, response);
 				break;
@@ -74,6 +82,22 @@ public class UserServlet extends HttpServlet {
 			case "/viewLogs":
 				viewLogs(request, response);
 				break;
+			case "/changePass":
+				changePass(request, response);
+				break;	
+			case "/changePassword":
+				changePassword(request, response);
+				break;
+			case "/changePassGenUsers":
+				changePassGenUsers(request, response);
+				break;
+			case "/changePassGenUsersName":
+				changePassGenUsersName(request, response);
+				break;
+			case "/changeManagersPass":
+				changeManagersPass(request, response);
+				break;	
+			
 			default:
 				showLoginForm(request, response);
 				break;
@@ -83,87 +107,197 @@ public class UserServlet extends HttpServlet {
 		}
 	}
 	
-	private void viewLogs(HttpServletRequest request, HttpServletResponse response) 
+	private void changeManagersPass(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+		
+		//int id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		String currentPassword = request.getParameter("currentPassword");
+		String password = request.getParameter("password");
+	
+		System.out.print("new pass"+password);
+		
+		System.out.print("Old Pass"+currentPassword);
+		
+		String hash = MD5(currentPassword);
+		HttpSession session = request.getSession();
+		User currentUser = userDAO.selectUser((String) session.getAttribute("uemail"),
+				(String) session.getAttribute("urole"));
+		
+		if(hash != null && currentPassword.length()>0 && hash.equals(currentUser.getPassword())) {
+			String newHash = MD5(password);
+			System.out.println("MD5(password)" + newHash);
+			currentUser.setName(name);
+			currentUser.setPassword(newHash);
+			userDAO.updateUser(currentUser);	
+		}
+		response.sendRedirect("logout");
+	}
+	
+private void changePassGenUsersName(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+		
+		//int id = Integer.parseInt(request.getParameter("id"));
+		String currentName = request.getParameter("name");
+		String name = request.getParameter("name");
+		
+		HttpSession session = request.getSession();
+		User currentUser = userDAO.selectUser((String) session.getAttribute("uemail"),
+				(String) session.getAttribute("urole"));
+		
+		
+		if (currentName.length()>0 && !name.equals(currentUser.getName())) {
+
+			currentUser.setName(name);
+			
+			userDAO.updateUser(currentUser);	
+		}
+		response.sendRedirect("logout");
+	}
+
+	
+	private void changePassGenUsers(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+		
+		//int id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		String currentPassword = request.getParameter("currentPassword");
+		String password = request.getParameter("password");
+		
+		//User users  = new User(id, currentPassword, password);
+		System.out.print("new pass"+password);
+		
+		System.out.print("Old Pass"+currentPassword);
+		
+		String hash = MD5(currentPassword);
+		HttpSession session = request.getSession();
+		User currentUser = userDAO.selectUser((String) session.getAttribute("uemail"),
+				(String) session.getAttribute("urole"));
+		//User newUser = userDAO.selectUser(id);
+		//currentUser.setPassword(password);
+		
+		if(hash != null && currentPassword.length()>0 && hash.equals(currentUser.getPassword())) {
+			String newHash = MD5(password);
+			System.out.println("MD5(password)" + newHash);
+			currentUser.setName(name);
+			currentUser.setPassword(newHash);
+			userDAO.updateUser(currentUser);	
+		}
+		response.sendRedirect("logout");
+	}
+
+	private void changePassword(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+	
+		int id = Integer.parseInt(request.getParameter("id"));
+		String currentPassword = request.getParameter("currentPassword");
+		String password = request.getParameter("password");
+		System.out.print("new pass"+password);
+		
+		System.out.print("Old Pass"+currentPassword);
+
+		String hash = MD5(currentPassword);
+
+		HttpSession session = request.getSession();
+		User currentUser = userDAO.selectUser((String) session.getAttribute("uemail"),
+				(String) session.getAttribute("urole"));
+		User newUser = userDAO.selectUser(id);
+		//newUser.setPassword(password);
+		if(hash != null && currentPassword.length()>0 && hash.equals(currentUser.getPassword()) && currentUser.getRole().equals("Administrator")) {
+			String newHash = MD5(password);
+			System.out.println("MD5(password)" + newHash);
+			newUser.setPassword(newHash);
+			userDAO.updateUser(newUser);	
+		}
+		response.sendRedirect("list");
+	}
+	
+	private void changePass(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		
+		RequestDispatcher dispatcher = null;
+		dispatcher = request.getRequestDispatcher("changePassword.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	private void viewLogs(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		RequestDispatcher dispatcher = null;
 		List<Logs> myLogs = userDAO.selectAllLogs();
-		request.setAttribute("logs", myLogs); 
+		request.setAttribute("logs", myLogs);
 		dispatcher = request.getRequestDispatcher("logs-form.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	private void showLoginForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if(sessionUser(request)) {
+		if (sessionUser(request)) {
 			response.sendRedirect("list");
-		}
-		else {
+		} else {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("user-login.jsp");
 			dispatcher.forward(request, response);
 		}
 	}
 
-	private void loginUser(HttpServletRequest request, HttpServletResponse response) 
+	private void loginUser(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		User user = userDAO.loginUser(email, password);
-		
-		if(sessionUser(request)) {
+
+		if (sessionUser(request)) {
 			response.sendRedirect("list");
-		}
-		else if (user != null) {
-			HttpSession session=request.getSession();
-		    session.setAttribute("uemail",user.getEmail());
-		    session.setAttribute("urole",user.getRole());
+		} else if (user != null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("uemail", user.getEmail());
+			session.setAttribute("urole", user.getRole());
 			response.sendRedirect("list");
-		}
-		else {
+		} else {
 			request.setAttribute("isLoginFailed", true);
 			request.getRequestDispatcher("user-login.jsp").forward(request, response);
-			//response.sendRedirect("login");
+			// response.sendRedirect("login");
 		}
 	}
-	
+
 	private boolean sessionUser(HttpServletRequest request) {
-		HttpSession session=request.getSession();
-		String uemail=(String)session.getAttribute("uemail");
-		String urole=(String)session.getAttribute("urole");
-	    if(uemail == null || urole==null)
-	    	return false;
-	    return true; 
+		HttpSession session = request.getSession();
+		String uemail = (String) session.getAttribute("uemail");
+		String urole = (String) session.getAttribute("urole");
+		if (uemail == null || urole == null)
+			return false;
+		return true;
 	}
-	
+
 	private void listUser(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
-		if(sessionUser(request)) {			
+
+		if (sessionUser(request)) {
 			RequestDispatcher dispatcher = null;
-			HttpSession session=request.getSession();
-			if(session.getAttribute("urole").equals("Administrator")) {
+			HttpSession session = request.getSession();
+			if (session.getAttribute("urole").equals("Administrator")) {
 				List<User> listUser = userDAO.selectAllUsers();
 				request.setAttribute("listUser", listUser);
-				
+
 				dispatcher = request.getRequestDispatcher("user-admin.jsp");
-			}
-			else {
-				User user = userDAO.selectUser((String)session.getAttribute("uemail"), (String)session.getAttribute("urole"));
+			} else if(session.getAttribute("urole").equals("General User")){
+				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
+						(String) session.getAttribute("urole"));
 				request.setAttribute("user", user);
 				dispatcher = request.getRequestDispatcher("user-nonadmin.jsp");
-			}
+			} else if(session.getAttribute("urole").equals("Manager")){
+				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
+						(String) session.getAttribute("urole"));
+				request.setAttribute("user", user);
+				dispatcher = request.getRequestDispatcher("managers.jsp");
+			} 
 			dispatcher.forward(request, response);
-		}
-		else
+		} else
 			response.sendRedirect("login");
 	}
-	
+
 	private void logoutUser(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session=request.getSession();
-	    session.setAttribute("uemail",null);
-	    session.setAttribute("urole",null);
-	    request.setAttribute("isLogoutSuccess", true);
+		HttpSession session = request.getSession();
+		session.setAttribute("uemail", null);
+		session.setAttribute("urole", null);
+		request.setAttribute("isLogoutSuccess", true);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("user-login.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -181,35 +315,33 @@ public class UserServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp");
 		request.setAttribute("user", existingUser);
 		dispatcher.forward(request, response);
-	}	
-	
-	private void showItem(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+	private void showItem(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("ItemForm.jsp");
 		dispatcher.forward(request, response);
 	}
-	
-	private void insertItem(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
+
+	private void insertItem(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		Item item = new Item();
 		query.doAdd(item);
 		response.sendRedirect("item");
 	}
 
-	private void insertUser(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
+	private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String role = request.getParameter("role");
 		String status = request.getParameter("status");
 		String logs = request.getParameter("logs");
-		User newUser = new User(name, email, password, role, status);
+		User newUser = new User(name, email, password, role, status, LocalDateTime.now());
 		userDAO.insertUser(newUser);
 		response.sendRedirect("list");
 	}
-
-	private void updateUser(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
+	
+	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
@@ -218,12 +350,69 @@ public class UserServlet extends HttpServlet {
 		String status = request.getParameter("status");
 
 		User user = new User(id, name, email, password, role, status);
+
+		User currentUser = userDAO.selectUser(id);
+		if (status.equals(currentUser.getStatus())) {
+			user.setJoiningDateTime(currentUser.getJoiningDateTime());
+			user.setLeavingDateTime(currentUser.getLeavingDateTime());
+		} else if (status.equalsIgnoreCase("inactive")) {
+			user.setLeavingDateTime(LocalDateTime.now());
+			user.setJoiningDateTime(currentUser.getJoiningDateTime());
+		} else {
+			user.setLeavingDateTime(null);
+			user.setJoiningDateTime(LocalDateTime.now());
+			user.setPassword(currentUser.getPassword());
+		}
 		userDAO.updateUser(user);
 		response.sendRedirect("list");
 	}
 
-	private void deleteUser(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
+	private void updateSettings(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		//String password = request.getParameter("password");
+		String role = request.getParameter("role");
+		String status = request.getParameter("status");
+
+		User user = new User(id, name, email, role, status);
+
+		User currentUser = userDAO.selectUser(id);
+		user.setPassword(currentUser.getPassword());
+		if (status.equals(currentUser.getStatus())) {
+			user.setJoiningDateTime(currentUser.getJoiningDateTime());
+			user.setLeavingDateTime(currentUser.getLeavingDateTime());
+		} else if (status.equalsIgnoreCase("inactive")) {
+			user.setLeavingDateTime(LocalDateTime.now());
+			user.setJoiningDateTime(currentUser.getJoiningDateTime());
+		} else {
+			user.setLeavingDateTime(null);
+			user.setJoiningDateTime(LocalDateTime.now());
+			user.setPassword(currentUser.getPassword());
+		}
+		userDAO.updateUser(user);
+		response.sendRedirect("list");
+	}
+	
+    private String MD5(String c) throws UnsupportedEncodingException {
+		
+    	try {
+			MessageDigest digs = MessageDigest.getInstance("MD5");
+			byte[] messageDigest = digs.digest(c.getBytes());
+			BigInteger number = new BigInteger(1, messageDigest );
+			String hashtext = number.toString(16);
+			while(hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+						
+			return hashtext;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			return "";
+		}
+    }
+
+	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter("userId"));
 		userDAO.deleteUser(id);
 		response.sendRedirect("list");
