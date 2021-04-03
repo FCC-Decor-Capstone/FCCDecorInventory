@@ -22,12 +22,12 @@ public class EventItem {
 	
 	
 	
-	public EventItem(int itemID, String name, int groupQuantity, boolean multibarcode) {
+	public EventItem(int itemID, String name, int quantity, boolean multibarcode) {
 		super();
-		this.groupQuantity = groupQuantity;
-		this.multibarcode = multibarcode;
-		this.name = name;
-		this.itemID = itemID;
+		setQuantity(quantity);;
+		setMultibarcode(multibarcode);
+		setName(name);
+		setItemID(itemID);
 	}
 
 	public EventItem(	int eventID,
@@ -42,16 +42,16 @@ public class EventItem {
 						String dateBack 
 						) {
 		super();
-		this.groupQuantity = groupQuantity;
-		this.multibarcode = multibarcode;
-		this.name = name;
-		this.itemID = itemID;
-		this.eventID = eventID;
-		this.userTaken = userTaken;
-		this.userBack = userBack;
-		this.quantity = quantity;
-		this.dateTaken = dateTaken;
-		this.dateBack = dateBack;
+		setGroupQuantity(groupQuantity);
+		setMultibarcode(multibarcode);
+		setName(name);
+		setItemID(itemID);
+		setEventID(eventID);
+		setUserTaken(userTaken);
+		setUserBack(userBack);
+		setQuantity(quantity);;
+		setDateTaken(dateTaken);
+		setDateBack(dateBack);
 	}
 	
 	public static HashMap<String,String> getUsers() {
@@ -76,7 +76,8 @@ public class EventItem {
 	
 	public static List<EventItem> getLinkedItems(int ID) {
 		List<EventItem> list = new ArrayList<EventItem>();
-		String select="Select * from Item join ItemGroup using(itemGroupID) join ItemEvent using(itemID) WHERE eventID = ?;";
+//		String select="Select * from ItemGroup join Item using(itemGroupID) join ItemEvent ie using(itemID) WHERE eventID = ?;";
+		String select="Select itemID, itemName, quantityIE, multibarcode from ItemGroup join Item using(itemGroupID) join ItemEvent ie using(itemID) WHERE eventID = ?;";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
@@ -84,18 +85,22 @@ public class EventItem {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) { 
-				EventItem item = new EventItem(	ID,
-												rs.getInt("itemID"),
-												rs.getString("itemName"), 
-												isMulti(rs.getString("multibarcode")),
-												rs.getInt("ItemGroup.quantity"),
-												rs.getInt("Item.quantity"),
-												rs.getInt("userTaken"), 
-												rs.getInt("userBack"),
-												dateOF(rs.getDate("dateTaken")), 
-												dateOF(rs.getDate("dateBack"))						
-												) ;
-				
+//				EventItem item = new EventItem(	ID,
+//												rs.getInt("itemID"),
+//												rs.getString("itemName"), 
+//												isMulti(rs.getString("multibarcode")),
+//												rs.getInt("quantity"),
+//												rs.getInt("quantityIE"),
+//												rs.getInt("userTaken"), 
+//												rs.getInt("userBack"),
+//												dateOF(rs.getDate("dateTaken")), 
+//												dateOF(rs.getDate("dateBack"))						
+//												) ;
+				EventItem item = new EventItem( 	rs.getInt("itemID"),
+													rs.getString("itemName"), 
+													rs.getInt("quantityIE"), 
+													isMulti(rs.getString("multibarcode"))
+													);
 				item.setEventID(ID);
 				list.add(item);
 			}
@@ -125,7 +130,7 @@ public class EventItem {
 	
 	public static List<EventItem> getAllItems() {
 		List<EventItem> list = new ArrayList<EventItem>();
-		String select="Select * from Item join ItemGroup using(itemGroupID) join ItemEvent using(eventID) WHERE eventID = ?;";
+		String select="Select * from Item join ItemGroup using(itemGroupID) join ItemEvent using(itemID) WHERE eventID = ?;";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
@@ -134,7 +139,7 @@ public class EventItem {
 			while(rs.next()) { 
 				list.add(new EventItem( 	rs.getInt("itemID"),
 											rs.getString("itemName"), 
-											rs.getInt("Item.quantity"), 
+											rs.getInt("quantityIE"), 
 											isMulti(rs.getString("multibarcode"))
 											));
 			}
