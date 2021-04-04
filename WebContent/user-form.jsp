@@ -110,18 +110,19 @@
 	<!-- MAIN BODY -->
 	<div class="layout-form">
 	    <c:if test="${user != null}">
-		  <form action="update" method="post">
+		  <form action="updateSettings" method="post">
 			<h2>Update User</h2>
 			<p>Change your data to update the user.</p>
 	    </c:if>
+	    
 	    <c:if test="${user == null}">
 		  <form action="insert" method="post">
 			<h2>Insert User</h2>
 			<p>Fill all data and submit to create new user.</p>
 	    </c:if>
-		    <c:if test="${user != null}">
+		   <c:if test="${user != null}">
 	        	<input type="hidden" name="id" value="<c:out value='${user.id}' />" />
-	        </c:if>  
+	        </c:if> 
 			<hr>
 	        <div class="form-group">
 				<label>Username</label>
@@ -131,33 +132,31 @@
 				<label>Email Address</label>
 	        	<input type="email" class="form-control" name="email" required="required" value="<c:out value='${user.email}' />">
 	        </div>
-			<div class="form-group">
+	        <c:if test="${user == null}">
+			 <div class="form-group">
 				<label>Password</label>
 	            <input type="password" class="form-control" name="password" required="required" value="<c:out value='${user.password}' />">
 	        </div>
+	         </c:if> 
+	        
 			<div class="form-group">
 				<label>Role</label>
 	        	<select class="browser-default custom-select" name="role" required="required">
 					<c:if test="${user == null}">
 						<option value="Administrator">Administrator</option>
-						<option value="Sales">Sales</option>
-						<option value="Marketing">Marketing</option>
+						<option value="Manager">Manager</option>
 						<option value="General User">General User</option>
 					</c:if>
 					<c:if test="${user != null}">
 						<option value="Administrator">Administrator</option>
-						<option value="Sales">Sales</option>
-						<option value="Marketing">Marketing</option>
+						<option value="Manager">Manager</option>
 						<option value="General User">General User</option>
 						
 						<c:if test="${user.role == 'Administrator'}">
 							<option value="Administrator" selected hidden>Administrator</option>
 						</c:if>
-						<c:if test="${user.role == 'Sales'}">
-							<option value="Sales" selected hidden>Sales</option>
-						</c:if>
-						<c:if test="${user.role == 'Marketing'}">
-							<option value="Marketing" selected hidden>Marketing</option>
+						<c:if test="${user.role == 'Manager'}">
+							<option value="Manager" selected hidden>Manager</option>
 						</c:if>
 						<c:if test="${user.role == 'General User'}">
 							<option value="General User" selected hidden>General User</option>
