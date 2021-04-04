@@ -54,7 +54,7 @@ div.fail {
 
 
 
-form.searchBox, form.toolBox {
+form#searchBox, form.toolBox {
 	display:flex;
 	justify-content: space-between;
 	background-color: var(--dark-color);
@@ -68,6 +68,8 @@ form.searchBox, form.toolBox {
 main.rmdT {
 	margin-left:2em;	
 }
+
+
 
 
 table.rmdT  {
@@ -92,20 +94,30 @@ table.rmdT  {
 
 .rmdT td>*, .rmdT th * {
 	padding: 1em;
-	width:80%; 
 }
 
 .rmdT td.actionCell div{
-	width:100%;
 	display:flex;
 	justify-content: space-evenly;
 }
 
-.rmdT .tablebtn {
+form#searchBox input {
+	padding: 0.5em;
+}
+
+.rmdT .tablebtn, form#searchBox button {
 	background-color: var(--light-color);
 	border: 1px solid var(--dark-color);
 	padding: 0.5em;
 	overflow: hidden;
+	cursor: pointer;
+}
+
+form#searchBox button#clearButton {
+	background-color:  var(--warning-font);
+	color: var(--white);
+	border-radius: 2em;
+	min-width: 2.5em;
 }
 
 .rmdT .tablebtn:hover {
@@ -125,6 +137,26 @@ table.rmdT  {
     background-color: var(--dark-color);
     color: var(--white);
 }
+
+
+main section.elements {
+	display: flex;
+	flex-wrap: wrap;
+}
+main section.elements p {
+	padding: 0 5em;
+	display:block;
+	align-items: flex-start;
+	
+}
+
+
+main section.elements p.comments {
+	
+	align-self: flex-end;
+	
+}
+
 
 *\Navdeep*/
 .navNavBar{
