@@ -7,8 +7,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style><%@include file="/resources/css/style.css"%></style>
 <script><%@include file="/resources/js/scripts.js" %></script>
+<%@ page import="helpers.Constants" %>
 </head>
 <body>
+<div class = "navtotal">
+<div class = "navHeader">
+<a href="#default" class="logo"><img src="logo.png" alt="logo"></a>
+
+  <div class="header-right">
+    <a class="active" href="#home">Home</a>
+    <a href="#contact">Profile</a>
+    <a href="#about">Logout</a>
+  </div>
+</div>
 <div class= "navNavBar">
 	<input type="checkbox" id="check">
 	<label for="check"> <i class="fas fa-bars" id="btn"></i> 
@@ -116,6 +127,7 @@
 		<a href="../supplier/Test.jsp"> <i class="far fa-question-circle"></i> 
 			<span>About</span>
 		</a>
+	</div>
 	</div>
 	</div>
 </body>
