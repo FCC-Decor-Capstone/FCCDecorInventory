@@ -1,8 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-
 <%@ page isELIgnored="false" %>
 <%@ page import="models.Supplier,helpers.Constants" %>
 
@@ -11,10 +9,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Supplier ${requestScope.action} Details</title>
-	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-	
 	
 </head>
 <body>
@@ -59,8 +55,7 @@
 							<td><a href="./Details?id=${item.category}"><span>${item.category}</span></a></td>
 							<td><a href="./Details?id=${item.description}"><span>${item.description}</span></a></td>
 						</tr>
-					</c:forEach>
-				
+					</c:forEach>	
 			</c:when>
 			<c:otherwise>
 				<tr><td colspan="3"><div>No Items Linked.</div></td></tr>
