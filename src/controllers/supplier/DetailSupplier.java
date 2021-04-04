@@ -1,4 +1,4 @@
-package controllers;
+package controllers.supplier;
 
 import java.io.IOException;
 
@@ -10,18 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Supplier;
+import models.SupplierItem;
 
 /**
- * Servlet implementation class ListSupplier
+ * Servlet implementation class DetailSupplier
  */
-@WebServlet(value="/Supplier/")
-public class ListSupplier extends HttpServlet {
+@WebServlet(value="/Supplier/Details")
+public class DetailSupplier extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListSupplier() {
+    public DetailSupplier() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,23 +32,26 @@ public class ListSupplier extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		if (request.getParameter("search") != null) {
-			if (!request.getParameter("search").trim().isEmpty()) {
-				request.setAttribute("search", request.getParameter("search").trim());
-				request.setAttribute("list", Supplier.search(request.getParameter("search")));	
-			} else {
-				request.setAttribute("list", Supplier.getAll());
-			}
-		} else {
-			request.setAttribute("list", Supplier.getAll());
+		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		if (request.getParameter("id") != null) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				Supplier model = Supplier.getByID(id);
+				if (model != null) {
+					request.setAttribute("model", model);
+					request.setAttribute("list", SupplierItem.getItems(id));
+					dispatcher = request.getRequestDispatcher("/supplier/details.jsp");
+				} else {
+					request.setAttribute("ErrCtlMsg", "Supplier Not Found");
+				}
+			} catch (NumberFormatException nfe) {
+				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
+			} 
 		}
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/table.jsp");
 		dispatcher.forward(request, response);
 	}
 
-	/**
+	/**s
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

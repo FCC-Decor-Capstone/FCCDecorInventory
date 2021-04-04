@@ -1,4 +1,4 @@
-package controllers;
+package controllers.supplier;
 
 import java.io.IOException;
 
@@ -10,19 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Supplier;
-import models.SupplierItem;
 
 /**
- * Servlet implementation class DetailSupplier
+ * Servlet implementation class EditSupplier
  */
-@WebServlet(value="/Supplier/Details")
-public class DetailSupplier extends HttpServlet {
+@WebServlet(value="/Supplier/Delete")
+public class DeleteSupplier extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DetailSupplier() {
+    public DeleteSupplier() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,23 +34,23 @@ public class DetailSupplier extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		if (request.getParameter("id") != null) {
 			try {
+				
 				int id = Integer.parseInt(request.getParameter("id"));
-				Supplier model = Supplier.getByID(id);
-				if (model != null) {
-					request.setAttribute("model", model);
-					request.setAttribute("list", SupplierItem.getItems(id));
-					dispatcher = request.getRequestDispatcher("/supplier/details.jsp");
+				if (Supplier.deleteByID(id)) {
+					request.setAttribute("SucCtlMsg", "Deleted Supplier Successfully");
+					response.sendRedirect("./.");return;
 				} else {
-					request.setAttribute("ErrCtlMsg", "Supplier Not Found");
+					request.setAttribute("ErrCtlMsg", "Error Deleting Supplier");
 				}
 			} catch (NumberFormatException nfe) {
 				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
 			} 
 		}
+		
 		dispatcher.forward(request, response);
 	}
 
-	/**s
+	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
