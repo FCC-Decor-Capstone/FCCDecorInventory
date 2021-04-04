@@ -2,6 +2,7 @@ package net.example.usermanagement.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,9 +21,6 @@ public class Logs implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer logId;
 	
-//	@Column(name = "id")
-//	protected int id;
-	
 	@Column(name = "type")
 	public String type;
 	
@@ -40,6 +38,7 @@ public class Logs implements Serializable {
 	public Logs() {
 		
 	}
+	
 	public Logs(String type, String activity, String target, User user) {
 		super();
 		this.type = type;
@@ -57,18 +56,14 @@ public class Logs implements Serializable {
 		this.user = user;
 	}
 	
-//	@ManyToOne
-//	@JoinColumn(name="id")
 	public User getUser() {
 		return user;
 	}
+	
 	public void setUser(User user) {
 		this.user = user;
 	}
 	
-//	@Id
-//	@Column(name="id")
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getLogId() {
 		return logId;
 	}
@@ -76,24 +71,27 @@ public class Logs implements Serializable {
 	public String getType() {
 		return type;
 	}
+	
 	public String getActivity() {
 		return activity;
 	}
+	
 	public String getTarget() {
 		return target;
 	}
+	
 	public void setLogId(int logId) {
 		this.logId = logId;
 	}
-//	public void setId(int id) {
-//		this.id = id;
-//	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+	
 	public void setActivity(String activity) {
 		this.activity = activity;
 	}
+	
 	public void setTarget(String target) {
 		this.target = target;
 	}
@@ -103,6 +101,4 @@ public class Logs implements Serializable {
 		return "Logs [logId=" + logId + ", type=" + type + ", activity=" + activity + ", target=" + target + ", user="
 				+ user + "]";
 	}
-	
-	
 }

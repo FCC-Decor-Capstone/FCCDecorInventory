@@ -69,19 +69,61 @@
 	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 	    <ul class="navbar-nav w-100">
+	    <li class="nav-item dropdown"><a class="nav-link "
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						<c:out value="Hello ${user.name}"/><span class="blinker"> .</span></a></li>
 	      <li class="nav-item dropdown ml-auto">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          Account
 	        </a>
 	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 	          <a class="dropdown-item" href="./">Home</a>
-	          <a class="dropdown-item" href="#editModal" data-toggle="modal">Edit User</a>
+	          <!-- <a class="dropdown-item" href="#editModal" data-toggle="modal">Edit User</a>-->
+	          <a class="dropdown-item" href="#editModalName" data-toggle="modal">Change Name</a>
+	          <a class="dropdown-item" href="#editModal" data-toggle="modal">Change Password</a>
 	          <a class="dropdown-item" href="logout">Logout</a>
 	        </div>
 	      </li>
 	    </ul>  
 	  </div>
 	</nav>
+	
+	<!-- Edit Modal HTML -->
+	<div id="editModalName" class="modal fade">
+		<div class="modal-dialog modal-confirm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Edit User</h4>	
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form action="changePassGenUsersName" class="form-horizontal" role="form" method="post">
+	                  <div class="form-group">
+	                  
+	                     <label  class="col-sm-2 control-label">Name</label>
+	               
+	                      	<div class="col-sm-12">
+	                        	<input type="text" class="form-control" name="name" value="${user.name}"/>
+	                    	</div>
+	                  </div>
+ 
+ 					
+	                  <input type="hidden" name="id" value="${user.id}"/>
+	                  <input type="hidden" name="email" value="${user.email}"/>
+	                  <input type="hidden" name="password" value="${pass.password}"/>
+	                  <input type="hidden" name="role" value="${user.role}"/>
+	                  <input type="hidden" name="status" value="${user.status}"/>
+	                  
+	                  <div class="form-group">
+	                    <div class="col-sm-12">
+	                      <input type="submit" class="btn btn-success" value="Update" />
+	                    </div> 
+	                  </div>
+	                </form>
+           	 	</div>
+           	 </div>
+		</div>
+	</div>
 
 	<!-- Edit Modal HTML -->
 	<div id="editModal" class="modal fade">
@@ -92,21 +134,31 @@
 	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
-					<form action="update" class="form-horizontal" role="form" method="post">
+					<form action="changePassGenUsers" class="form-horizontal" role="form" method="post">
 	                  <div class="form-group">
-	                    <label  class="col-sm-2 control-label">Name</label>
-	                    <div class="col-sm-12">
-	                        <input type="text" class="form-control" name="name" value="${user.name}" />
-	                    </div>
+	                  
+	                     <!--  <label  class="col-sm-2 control-label">Name</label>
+	               
+	                      	<div class="col-sm-12">
+	                        	<input type="text" class="form-control" name="name" value="${user.name}" />
+	                    	</div>-->
+	                   
+	                    
+	                   <label  class="col-sm-12 control-label">Current Password</label>
+	                      <div class="col-sm-12">
+	                        <input type="password" class="form-control" name="currentPassword" required="required"  />
+	                    </div>  
 	                  </div>
-	                  <div class="form-group">
+	                   <div class="form-group">
 	                    <label class="col-sm-2 control-label">Password</label>
 	                    <div class="col-sm-12">
-	                        <input type="password" class="form-control" name="password" value="${user.password}" />
+	                        <input type="password" class="form-control" name="password" required="required"  />
 	                    </div>
 	                  </div>
 	                  
+	                  
 	                  <input type="hidden" name="id" value="${user.id}"/>
+	                  <input type="hidden" name="name" value="${user.name}"/>
 	                  <input type="hidden" name="email" value="${user.email}"/>
 	                  <input type="hidden" name="role" value="${user.role}"/>
 	                  <input type="hidden" name="status" value="${user.status}"/>
@@ -114,7 +166,7 @@
 	                  <div class="form-group">
 	                    <div class="col-sm-12">
 	                      <input type="submit" class="btn btn-success" value="Update" />
-	                    </div>
+	                    </div> 
 	                  </div>
 	                </form>
            	 	</div>
@@ -123,11 +175,11 @@
 	</div>
 	
   	<div class="container-fluid home-main">
-		<h2><c:out value="${user.name}" /> <span class="blinker">.</span></h2>
+		<!-- <h2><c:out value="${user.name}" /> <span class="blinker">.</span></h2>
 		<form action="edit">
 			<input type="hidden" name="id" value="${user.id}"/>
 			<a href="#editModal" class="btn btn-primary trigger-btn" title="Edit" data-toggle="modal"><i class="material-icons">settings</i>Edit User</a>
-		</form>
+		</form> -->
 	</div>
 	<div class="container-fluid home-content1">
 		<div class="row">

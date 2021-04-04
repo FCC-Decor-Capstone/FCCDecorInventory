@@ -1,6 +1,7 @@
 package net.example.usermanagement.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -39,18 +40,25 @@ public class User implements Serializable {
 	@Column(name = "status")
 	protected String status;
 	
+	@Column(name = "JoiningDate")
+	protected LocalDateTime joiningDateTime;
+
+	@Column(name = "LeavingDate")
+	protected LocalDateTime leavingDateTime;
+	
 	//protected List<Logs> logs;
 
 	public User() {
 	}
 	
-	public User(String name, String email, String password, String role, String status) {
+	public User(String name, String email, String password, String role, String status, LocalDateTime joiningDateTime) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.status = status;
+		this.joiningDateTime = joiningDateTime;
 	}
 
 	public User(int id, String name, String email, String password, String role, String status) {
@@ -62,6 +70,23 @@ public class User implements Serializable {
 		this.role = role;
 		this.status = status;
 	}
+	
+	public User(int id, String name, String email, String role, String status) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.role = role;
+		this.status = status;
+	}
+	
+	public User(int id, String password, String newPassword) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.password = newPassword;
+	}
+	
 	
 	public int getId() {
 		return id;
@@ -109,5 +134,21 @@ public class User implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public LocalDateTime getJoiningDateTime() {
+		return joiningDateTime;
+	}
+
+	public LocalDateTime getLeavingDateTime() {
+		return leavingDateTime;
+	}
+
+	public void setJoiningDateTime(LocalDateTime joiningDateTime) {
+		this.joiningDateTime = joiningDateTime;
+	}
+
+	public void setLeavingDateTime(LocalDateTime leavingDateTime) {
+		this.leavingDateTime = leavingDateTime;
 	}
 }
