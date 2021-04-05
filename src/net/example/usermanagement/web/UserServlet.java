@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Supplier;
 import net.example.usermanagement.dao.AddQuery;
 import net.example.usermanagement.dao.UserDAOHibernate;
 import net.example.usermanagement.model.Item;
@@ -29,6 +30,7 @@ public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDAOHibernate userDAO;
 	private AddQuery query;
+	private Supplier sup;
 
 	public void init() {
 		userDAO = new UserDAOHibernate();
@@ -97,7 +99,6 @@ public class UserServlet extends HttpServlet {
 			case "/changeManagersPass":
 				changeManagersPass(request, response);
 				break;	
-			
 			default:
 				showLoginForm(request, response);
 				break;
@@ -248,6 +249,7 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 			HttpSession session = request.getSession();
 			session.setAttribute("uemail", user.getEmail());
 			session.setAttribute("urole", user.getRole());
+			
 			response.sendRedirect("list");
 		} else {
 			request.setAttribute("isLoginFailed", true);

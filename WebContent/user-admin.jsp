@@ -207,6 +207,9 @@ table.table .avatar {
 				<li class="nav-item dropdown"><a class="nav-link " href="viewLogs"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						View Logs </a></li>
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Supplier </a></li>		
 				<li class="nav-item dropdown ml-auto"><a
 					class="nav-link dropdown-toggle" href="#"
 					id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -220,7 +223,6 @@ table.table .avatar {
 			</ul>
 		</div>
 	</nav>
-	<br />
 	<br />
 	<br />
 

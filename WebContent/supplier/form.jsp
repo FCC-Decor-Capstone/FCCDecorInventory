@@ -50,8 +50,5 @@
 		</div>
 		<input type="submit" value="${requestScope.action}"/>
 	</form>
-
-
-
 </body>
 </html>
