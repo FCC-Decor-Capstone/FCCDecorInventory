@@ -13,7 +13,6 @@ public class SupplierItem {
 	private int id = 0;
 	private String name = "", category = "", description = "";
 	
-	
 	public SupplierItem(int id, String name, String category, String description) {
 		super();
 		this.id = id;
@@ -22,46 +21,37 @@ public class SupplierItem {
 		this.description = description;
 	}
 
-
 	public int getId() {
 		return id;
 	}
-
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	public String getCategory() {
 		return category;
 	}
-
 
 	public void setCategory(String category) {
 		this.category = category;
 	}
 
-
 	public String getDescription() {
 		return description;
 	}
 
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 
 	public static List<SupplierItem> getItems(int id) {
 		String select="SELECT * FROM ItemGroup WHERE supplierID = ?";

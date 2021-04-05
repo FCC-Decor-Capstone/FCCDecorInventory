@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import models.Supplier;
 
@@ -32,6 +33,8 @@ public class ListSupplier extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		if (request.getParameter("search") != null) {
 			if (!request.getParameter("search").trim().isEmpty()) {
 				request.setAttribute("search", request.getParameter("search").trim());
@@ -45,6 +48,10 @@ public class ListSupplier extends HttpServlet {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/table.jsp");
 		dispatcher.forward(request, response);
+		}else
+		{
+			throw new RuntimeException("Invalid access");
+		}
 	}
 
 	/**

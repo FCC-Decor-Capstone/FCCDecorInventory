@@ -72,6 +72,9 @@
 	    <li class="nav-item dropdown"><a class="nav-link "
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						<c:out value="Hello ${user.name}" /><span class="blinker"> .</span> </a></li>
+		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Supplier </a></li>	
 	      <li class="nav-item dropdown ml-auto">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          Account
@@ -167,6 +170,9 @@
 	</div>
 	
   	<div class="container-fluid home-main">
+  	
+  	<!-- <%@include file="/Supplier" %>-->
+  	
 		<!-- <h2><c:out value="${user.name}" /> <span class="blinker">.</span></h2>
 		<form action="edit">
 			<input type="hidden" name="id" value="${user.id}"/>

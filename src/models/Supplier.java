@@ -18,7 +18,6 @@ public class Supplier {
 		
 	}
 	
-	
 	public Supplier(int id, String name, String contact, String telephone, String comments) {
 		super();
 		this.id = id;
@@ -53,7 +52,6 @@ public class Supplier {
 		return null;
 	}
 	
-		
 	public static Supplier editByID(Supplier newSupplier) {
 		String update="UPDATE Supplier SET name = ?, contact = ?, telephone = ?, comments = ? WHERE supplierID = ?";
 		PreparedStatement ps;
@@ -121,7 +119,7 @@ public class Supplier {
 		return false;
 	}
 	
-	public static List<Supplier> getAll() {
+	public static List<Supplier> getAll( ) {
 		String select="SELECT * FROM Supplier";
 		List<Supplier> list = new ArrayList<Supplier>(); 
 		PreparedStatement ps;
@@ -175,11 +173,9 @@ public class Supplier {
 		return hasError;
 	}
 
-
 	public void setHasError(boolean hasError) {
 		this.hasError = hasError;
 	}
-
 
 	public int setId(int id) {
 		try {
@@ -190,9 +186,11 @@ public class Supplier {
 			return -1;
 		}
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public String setName(String name) {
 		try {
 			if (name.trim().isEmpty()) {
@@ -209,9 +207,11 @@ public class Supplier {
 			return "Name Field cannot be empty";
 		}
 	}
+	
 	public String getContact() {
 		return contact;
 	}
+	
 	public String setContact(String contact) {
 		try {
 			if (contact.length() > 45) {
@@ -224,11 +224,12 @@ public class Supplier {
 			hasError = true;
 			return "";
 		}
-		
 	}
+	
 	public String getTelephone() {
 		return telephone;
 	}
+	
 	public String setTelephone(String telephone) {
 		try {
 			if (telephone.length() > 45) {
@@ -243,9 +244,11 @@ public class Supplier {
 		}
 		
 	}
+	
 	public String getComments() {
 		return comments;
 	}
+	
 	public String setComments(String comments) {
 		try {
 			if (comments.length() > 2000) {
@@ -258,10 +261,6 @@ public class Supplier {
 				System.err.println(npx.getMessage());
 			hasError = true;
 			return "";
-		}
-		
-	}
-	
-	
-	
+		}		
+	}	
 }

@@ -17,7 +17,7 @@
 	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 	<h1>${requestScope.model.name} Supplier Details</h1>
-	<form class="toolBox"> 			
+	<form class="toolBox" action="details"> 			
 		<input type="hidden" name="id" value="${requestScope.model.id}" />
 				<div>
 					<button type="submit" formaction="Edit" formmethod="get"><i class="fas fa-pen tablebtn" style="color:green;"> Edit</i></button>

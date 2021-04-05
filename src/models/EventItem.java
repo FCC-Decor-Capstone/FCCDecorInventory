@@ -215,7 +215,4 @@ public class EventItem {
 	public void setDateBack(String dateBack) {
 		if(dateBack != null)  this.dateBack = dateBack;
 	}
-	
 }
-
-
