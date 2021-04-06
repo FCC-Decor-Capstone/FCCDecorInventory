@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import models.Supplier;
 
@@ -31,9 +32,15 @@ public class AddSupplier extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		request.setAttribute("action", "Add");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/form.jsp");
 		dispatcher.forward(request, response);
+	} else
+		{
+			throw new RuntimeException("Invalid access");
+		}
 	}
 
 	/**
