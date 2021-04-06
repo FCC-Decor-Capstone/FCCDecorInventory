@@ -15,8 +15,8 @@
 	
 	<style type="text/css">
 		.home-main{
-			background: #5812c5;
-			color:#fff;
+			background: rgb(2,0,36);
+			background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(6,43,55,1) 0%, rgba(35,116,170,0.975249474789916) 60%);
 			padding: 13%;
 			text-align: center;
 		}
