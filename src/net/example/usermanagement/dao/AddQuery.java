@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.omg.CORBA.portable.InputStream;
-
 import net.example.usermanagement.model.Item;
 
 public class AddQuery {
