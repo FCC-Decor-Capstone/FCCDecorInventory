@@ -209,7 +209,10 @@ table.table .avatar {
 						View Logs </a></li>
 				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						Supplier </a></li>		
+						Supplier </a></li>
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Event/"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Events </a></li>		
 				<li class="nav-item dropdown ml-auto"><a
 					class="nav-link dropdown-toggle" href="#"
 					id="navbarDropdownMenuLink" data-toggle="dropdown"

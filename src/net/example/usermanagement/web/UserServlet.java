@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Event;
 import models.Supplier;
 import net.example.usermanagement.dao.AddQuery;
 import net.example.usermanagement.dao.UserDAOHibernate;
@@ -287,8 +288,11 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
 						(String) session.getAttribute("urole"));
 				request.setAttribute("user", user);
+				List<Event> events = Event.getAll();
+				request.setAttribute("list", events);
 				dispatcher = request.getRequestDispatcher("managers.jsp");
 			} 
+			
 			dispatcher.forward(request, response);
 		} else
 			response.sendRedirect("login");

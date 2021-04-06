@@ -171,6 +171,7 @@
 	<!--controllers.supplier-->
 	<form action="supplier">
   	<div class="container-fluid home-main">
+  	<%@include file="event/table.jsp" %>
 		<!-- <h2><c:out value="${user.name}" /> <span class="blinker">.</span></h2>
 		<form action="edit">
 			<input type="hidden" name="id" value="${user.id}"/>
