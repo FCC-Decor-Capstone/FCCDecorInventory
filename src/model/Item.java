@@ -20,6 +20,7 @@ import dbHelpers.DB;
 
 public class Item {
     private int itemGroupId;
+    private int supplierID;
 	private String itemName;
 	private String description;
 	private double size;
@@ -29,10 +30,12 @@ public class Item {
 	private String multiBarcode;
 	private int quantity;
 	private String category;
+	private String supplierName;
 	boolean hasError = false;
 	
 	public Item() {
 		this.itemGroupId = 0;
+		this.supplierID = 0;
 		this.itemName = "";
 		this.description = ""; 
 		this.size = 0.0;
@@ -42,10 +45,11 @@ public class Item {
 		this.multiBarcode = "";
 		this.quantity = 0;
 		this.category = "";
+		this.supplierName="";
 	}
  
 	public Item(int itemGroupId, String itemName, String description,double size,String colour,double initialCost,String location,
-			String multiBarcode,int quantity,String category){
+			String multiBarcode,int quantity,String category,String supplierName){
 		this.itemGroupId =itemGroupId;
 		this.itemName = itemName;
 		this.description = description;
@@ -56,6 +60,8 @@ public class Item {
 		this.multiBarcode = multiBarcode;
 		this.quantity = quantity;
 		this.category = category;
+	
+		this.supplierName = supplierName;
 		this.itemGroupId = itemGroupId;
 	}
  
@@ -84,6 +90,27 @@ public class Item {
 				return "Name Field cannot exceed 45 characters";
 			}
 			this.itemName = itemName;
+			return "";
+		} catch (NullPointerException npx) {
+			return "Name Field cannot be empty";
+		}
+	}
+	public String getsupplierName() {
+		// TODO Auto-generated method stub
+		return supplierName;
+	}
+	public String setsupplierName(String supplierName) {
+		// TODO Auto-generated method stub
+		try {
+			if (supplierName.trim().isEmpty()) {
+				hasError = true;
+				return "Name Field cannot be empty";
+			}
+			if (supplierName.length() > 45) {
+				hasError = true;
+				return "Name Field cannot exceed 45 characters";
+			}
+			this.supplierName = supplierName;
 			return "";
 		} catch (NullPointerException npx) {
 			return "Name Field cannot be empty";
@@ -295,7 +322,7 @@ public class Item {
 	
 	
 	public static Item addNew(Item item) {
-		String insert="insert into ItemGroup (itemName,category,description,size,colour,initialCost,location,multiBarcode,quantity) values(?,?,?,?,?,?,?,?,?)";
+		String insert="insert into ItemGroup (itemName,category,description,size,colour,initialCost,location,multiBarcode,quantity,supplierName) values(?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
@@ -308,6 +335,8 @@ public class Item {
 			ps.setString(7, item.getLocation());
 			ps.setString(8, item.getmultiBarcode());
 			ps.setInt(9, item.getQuantity());
+			
+			ps.setString(10, item.getsupplierName());
 			int result = ps.executeUpdate();
 			System.out.println("Inserted ID is " + result);
 			ResultSet rs = ps.getGeneratedKeys();
@@ -323,6 +352,21 @@ public class Item {
 		}
 		return null;
 	}
+	public int getSupplierID() {
+		return supplierID;
+	}
+
+	public int setSupplierID(int supplierID) {
+		// TODO Auto-generated method stub
+		try {
+			this.supplierID = supplierID;
+			return supplierID;
+		} catch (NullPointerException npx) {
+			hasError = true;
+			return -1;
+		}
+		
+	}
 	public static List<Item> getAll() {
 		String select="SELECT * FROM ItemGroup";
 		List<Item> list = new ArrayList<Item>(); 
@@ -333,7 +377,7 @@ public class Item {
 			
 			while(rs.next()) {
 				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getDouble("size"),
-						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category")));
+						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -352,7 +396,7 @@ public class Item {
 			
 			while(rs.next()) { 
 				return new Item(ID, rs.getString("itemName"),  rs.getString("description"), rs.getDouble("size"),
-						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"));
+						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName"));
 			}
 			return null;
 		
@@ -363,7 +407,7 @@ public class Item {
 		return null;
 	}
 	public static List<Item> getItems(int id) {
-		String select="SELECT * FROM ItemGroup where itemID=?";
+		String select="SELECT * CASE WHEN multiBarcode=yes THEN 'This can have one barcode for one box' ELSE 'not multibarcode group' FROM ItemGroup where itemGroupID=?";
 		List<Item> list = new ArrayList<Item>(); 
 		PreparedStatement ps;
 		try {
@@ -372,7 +416,7 @@ public class Item {
 			
 			while(rs.next()) {
 				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getDouble("size"),
-						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category")));
+						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -382,7 +426,8 @@ public class Item {
 		return null;
 	}
 	public static List<Item> search(String word) {
-		String select="SELECT * FROM ItemGroup WHERE LOWER(CONCAT(itemName, ' ', category, ' ', description, ' ',size,'',colour,' ', initialCost,' ' , location,' ' multiBarcode, ' ', quantity)) LIKE LOWER(?)";
+		String select=	"select * from ItemGroup where UPPER(itemName) LIKE ? ORDER BY itemGroupID ASC";
+//		String select="SELECT * FROM ItemGroup WHERE LOWER(CONCAT(itemName, ' ', category, ' ', description, ' ',size,' ',colour,' ', initialCost,' ' , location,' ' multiBarcode, ' ', quantity,' ', supplierName)) LIKE LOWER(?)";
 		List<Item> list = new ArrayList<Item>(); 
 		PreparedStatement ps;
 		try {
@@ -392,7 +437,7 @@ public class Item {
 			
 			while(rs.next()) {
 				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getDouble("size"),
-						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category")));
+						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dbHelpers.AddQuery;
 import model.Item;
+import model.ItemsBarcode;
 import model.Supplier;
 
 /**
@@ -34,6 +35,7 @@ public class addItem extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setAttribute("action", "addItem");
+        request.setAttribute("list",Supplier.getAll());
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
 		dispatcher.forward(request, response);
 		doPost(request,response);
@@ -45,8 +47,13 @@ public class addItem extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setAttribute("action", "addItem");
+		
+		request.setAttribute("list",Supplier.getAll());
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
+
 		Item item = new Item();
+		Supplier supplier = new Supplier();
 		
 		
 		//Request Verification 
@@ -59,16 +66,19 @@ public class addItem extends HttpServlet {
 			request.setAttribute("errLocation", item.setLocation(request.getParameter("Location")));
 			request.setAttribute("errMultibarCode", item.setmultiBarcode(request.getParameter("multiBarcode")));
 			request.setAttribute("errQuantity", item.setQuantity(Integer.parseInt(request.getParameter("quantity"))));
-			
-		request.setAttribute("model",item);
+			request.setAttribute("errSupplier", item.setsupplierName(request.getParameter("supplierList")));
+		    request.setAttribute("model",item);
+		    request.setAttribute("model",supplier);
 			
 		if (item.hasError()) {
 			request.setAttribute("ErrCtlMsg", "Item Adding Error");
 		} else {
 			Item.addNew(item);
+//			Supplier.addNew(supplier);
 			request.setAttribute("SucCtlMsg", "Item Added Successfully");
 			request.setAttribute("ItemList", Item.getAll());
-			request.setAttribute("list",Supplier.getAll());
+//			request.setAttribute("list",Supplier.getAll());
+//		    dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
 			dispatcher = request.getRequestDispatcher("/read.jsp");
 			// TODO redirect to Details
 			//

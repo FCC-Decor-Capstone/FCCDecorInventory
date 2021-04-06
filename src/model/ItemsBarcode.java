@@ -13,10 +13,10 @@ import java.util.List;
 import dbHelpers.DB;
 
 public class ItemsBarcode {
-	 String itemGroupId;
+	 int itemGroupId;
 	 String itemName;
      String description;
-	String itemId = "";
+     String condtion;
 	 int quantity;
 	String condition="";
 	String purchaseDate ;
@@ -24,38 +24,76 @@ public class ItemsBarcode {
 	int id=0;
   
 
-	
+
 	public ItemsBarcode() {
 		this.quantity = 0;
-		this.itemGroupId = "";
+		this.itemGroupId = 0;
 		this.itemName = "";
 		this.description = ""; 
-		this.itemId = "";
+		this.condition="";
+		this.id=0;
 		
+	}
+	public int getId() {
+		return id;
+	}
+	public int setId(int id) {
+		try {
+			this.id = id;
+			return id;
+		} catch (NullPointerException npx) {
+			hasError = true;
+			return -1;
+		}
 	}
 	public ItemsBarcode(int itemId) {
 		super();
 	}
 	
-	public ItemsBarcode(String iD,String itemName, String description,int quantity) {
-		super();
-		this.itemId= iD;
-	
-	}
-	public ItemsBarcode(int iD,String itemName, String description,int quantity) {
+//	public ItemsBarcode(String iD,String itemName, String description,int quantity) {
+//		super();
+//		this.itemId= iD;
+//	
+//	}
+	public ItemsBarcode(int iD,String itemName, String description,String condition, int itemGroupId) {
 		super();
 		this.id= iD;
+		this.itemGroupId = itemGroupId;
+		this.itemName = itemName;
+		this.description = description; 
+		this.condition= condition;
+		
 	
 	}
-	public static ItemsBarcode addNew(String itemId) {
-		String insert="insert into Item (barcode,quantity,comments,itemGroupID)  Select itemName ,quantity, description,itemGroupID from ItemGroup where itemGroupID=?";
+	
+	public String getCondition() {
+		return condtion;
+	}
+	public String setCondition(String condition) {
+		// TODO Auto-generated method stub
+		
+		try {
+			if (condition.length() > 45) {
+				hasError = true;
+				return "Comments Field cannot exceed 255 characters";
+			}
+			this.condition = condition;
+			return "";
+		} catch (NullPointerException npx) {
+			hasError = true;
+			return "";
+		}
+	}
+	//select count(*) from item where groupID = ;
+	public static ItemsBarcode addNew(int itemId) {
+		String insert="insert into Item (itemName,comments,itemGroupID)  Select  itemName, description,itemGroupID from ItemGroup where itemGroupID=?";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
 //			ps.setString(1, barcode.getBarcode());
 //			ps.setInt(2, barcode.getQuantity());
 //			ps.setString(3, barcode.getComments());
-			ps.setString(1, itemId);
+			ps.setInt(1, itemId);
 			
 			int result = ps.executeUpdate();
 			System.out.println("Inserted ID is " + result);
@@ -82,7 +120,7 @@ public class ItemsBarcode {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new ItemsBarcode(rs.getInt("itemID"), rs.getString("barcode"),  rs.getString("comments"),rs.getInt("quantity")));
+				list.add(new ItemsBarcode(rs.getInt("itemID"), rs.getString("barcode"),  rs.getString("comments"), rs.getString("condition"),rs.getInt("itemGroupId")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -91,16 +129,16 @@ public class ItemsBarcode {
 		}
 		return null;
 	}
-	public static ItemsBarcode getByID(String ID) {
-		String select="SELECT * FROM Item WHERE itemGroupID = ?;";
+	public static ItemsBarcode getByID(int ID) {
+		String select="SELECT itemID,barcode,comments,quantity FROM Item WHERE itemGroupID = ?;";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
-			ps.setString(1,ID);
+			ps.setInt(1,ID);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) { 
-				return new ItemsBarcode(ID, rs.getString("barcode"),  rs.getString("comments"),rs.getInt("quantity"));
+				return new ItemsBarcode(rs.getInt("itemID"), rs.getString("itemName"),  rs.getString("comments"), rs.getString("condition"),rs.getInt("itemGroupId"));
 			}
 			return null;
 		
@@ -111,16 +149,22 @@ public class ItemsBarcode {
 		return null;
 	}
 	
-	public static List<ItemsBarcode> getItems(String id) {
-		String select="SELECT * FROM Item where itemGroupID=?";
+	public static List<ItemsBarcode> getItems(int id) {
+		String select="SELECT * FROM FCCDecor.Item where itemGroupID=?";
 		List<ItemsBarcode> list = new ArrayList<ItemsBarcode>(); 
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new ItemsBarcode(rs.getString("itemID"),  rs.getString("barcode"),  rs.getString("comments"),rs.getInt("quantity")));
+				ItemsBarcode item = new ItemsBarcode(rs.getInt("itemID"),
+													rs.getString("itemName"),
+													rs.getString("comments"),
+													rs.getString("condition"),
+													rs.getInt("itemGroupId"));
+				list.add(item);
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -129,14 +173,55 @@ public class ItemsBarcode {
 		}
 		return null;
 	}
+	public static Boolean deleteByID(int ID) {
+		String delete="DELETE FROM Item WHERE itemID = ?;";
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(delete);
+			ps.setInt(1,ID);
+			int result = ps.executeUpdate();
+			
+			if (result==1) {
+				return true;
+			}
+			else 
+				return false;
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public static ItemsBarcode editByID(ItemsBarcode newBarcode) {
+		String update="UPDATE Item SET itemName = ?, comments = ?, condition = ?  WHERE itemID = ?";
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(update);
+			ps.setString(1,newBarcode.getitemName());
+			ps.setString(2,newBarcode.getComments());
+			ps.setString(3,newBarcode.getCondition());
+			
+			int result = ps.executeUpdate();
+			if (result==1) {
+				return newBarcode;
+			}
+			else 
+				return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
-	public String getitemGroupId() {
+	public int getitemGroupId() {
 		return itemGroupId;
 		
 	}
-	public String setitemGroupId(String itemGroupId) {
+	public void setitemGroupId(int itemGroupId) {
 		this.itemGroupId=itemGroupId;
-		return "";
+		
 	}
 	
 	public String getDate() {
@@ -172,11 +257,11 @@ public class ItemsBarcode {
 		}
 	}
 
-	public String getBarcode() {
+	public String getitemName() {
 		// TODO Auto-generated method stub
 		return itemName;
 	}
-	public String getBarcode(String itemName) {
+	public String setitemName(String itemName) {
 		// TODO Auto-generated method stub
 		try {
 			if (itemName.trim().isEmpty()) {
@@ -213,7 +298,7 @@ public class ItemsBarcode {
 		return description;
 	}
 
-	public String getComments(String description) {
+	public String setComments(String description) {
 		// TODO Auto-generated method stub
 		
 		try {

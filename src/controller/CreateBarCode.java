@@ -42,27 +42,19 @@ public class CreateBarCode extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-				
+		RequestDispatcher dispatcher = request.getRequestDispatcher("");	
 		//get items id
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");
-		String value=request.getParameter("ItemGroupID");
-	    ItemsBarcode.addNew(value);
+		
+		String value=request.getParameter("barcodeId");
+	   
+	    
 	    
 	   //get id to generate barcode for items
 	  
 				
-//          ItemsBarcode model = ItemsBarcode.getByID(value);
-		
-	           
-//					request.setAttribute("list", ItemsBarcode.getAll());
-//					dispatcher = request.getRequestDispatcher("/SaveBarcode.jsp");
-//				
-//	            dispatcher.forward(request, response);
-//		dispatcher.forward(request, response);
+ 
 		//create ReadRecord class
 				BarcodeQuery rr = new BarcodeQuery(value);
-				
-				//use read record to get the book data
 				rr.doBarcode();
 				
 				Item item = rr.getItem();
@@ -85,8 +77,8 @@ public class CreateBarCode extends HttpServlet {
 				
 		//pass item and control to updateForm.jsp
 				request.setAttribute("item", item);
-//				request.setAttribute("item", model);
-//				dispatcher.forward(request, response);
+		//		request.setAttribute("item", model);
+	    dispatcher.forward(request, response);
 				
 				
 				

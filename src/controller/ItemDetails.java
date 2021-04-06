@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dbHelpers.DeleteQuery;
 import model.Item;
+import model.ItemsBarcode;
 
 
 
@@ -38,13 +39,16 @@ public class ItemDetails extends HttpServlet {
 		if (request.getParameter("itemGroupId") != null) {
 			try {
 				int id = Integer.parseInt(request.getParameter("itemGroupId"));
+				
 				Item model = Item.getByID(id);
 				if (model != null) {
 					request.setAttribute("model", model);
 					request.setAttribute("list", Item.getItems(id));
+				    request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
+					
 					dispatcher = request.getRequestDispatcher("/BarcodeImage.jsp");
 				} else {
-					request.setAttribute("ErrCtlMsg", "Supplier Not Found");
+					request.setAttribute("ErrCtlMsg", " Not Found");
 				}
 			} catch (NumberFormatException nfe) {
 				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");

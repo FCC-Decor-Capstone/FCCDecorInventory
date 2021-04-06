@@ -6,7 +6,7 @@
 <%@ page isELIgnored="false" %>
       <%@ page import="model.Item" %>
        <%@ page import="model.ItemsBarcode" %>
-        <% ItemsBarcode barcode = (ItemsBarcode) request.getAttribute("barcode"); %>
+        <% ItemsBarcode listBarcode = (ItemsBarcode) request.getAttribute("barcode"); %>
        <% Item item = (Item) request.getAttribute("item"); %>
 <!DOCTYPE html>
 <html>
@@ -34,7 +34,7 @@
 				
 	</form>
 	<form  action="readItem" method="get" >
-	<button type="submit" ><i class="fas fa-arrow-left"> Back to List</i></button>
+	<button type="submit" id="addItem"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
 	<main class="rmdT">
 			<p>Item Name: ${requestScope.model.name}</p>
@@ -48,7 +48,33 @@
 				<p>MultiBarcode: ${requestScope.model.multiBarcode}</p>
 			</c:if>
 		<section class="rmdT">
-<a id="update" href="./CreateBarCode?ItemGroupID=${requestScope.model.itemGroupId}"> Generate Barcode for ${requestScope.model.name} </a>
+		
+		
+		 <c:choose>
+		<c:when test="${not empty requestScope.listBarcode}">
+			<table border=1 id="items">				
+					<tr>
+						<th><span>Barcode Id</span></th>
+						<th><span>Item name</span></th>
+						<th><span>comments</span></th>
+						
+					</tr>
+				 <c:forEach var="barcode" items="${requestScope.listBarcode}">		
+					<tr> 	
+					        <td>${barcode.id}</td>						
+							<td>${barcode.itemName}</td>
+							<td><a href="./CreateBarCode?itemGroupID=${barcode.comments}"><span>${barcode.comments}</span></a></td>
+					 </tr>
+				</c:forEach> 
+			</table>
+		</c:when>
+		<c:otherwise>
+			<p >No Barcode  Found!</p>
+		</c:otherwise> 	
+	 </c:choose> 
+<a id="addItem" href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
+<a id="addItem" href="./ReadBarCode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
+
 <%-- <form  action="CreateBarCode" method="get">
 <input type="date" name="date" value="${requestScope.ItemsBarcode.purchaseDate}" />
 <input type="submit" value="Add ItemsBarcode" id="addItem">

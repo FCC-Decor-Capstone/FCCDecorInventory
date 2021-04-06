@@ -17,7 +17,7 @@
 	
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 	
-            <script type="text/javascript">
+     <script type="text/javascript">
 function toggleSidebar(){
 	document.getElementById("sidebar").classList.toggle('active');
 }
@@ -49,40 +49,22 @@ function toggleSidebar(){
            <form action="addItem" >
                <button  class="w3-btn w3-black" type="submit" value="AddItem">Add New Item</button>
             </form>
-            <form  class="search" action="SearchServlet" method="get" >
+            <form  class="search" action="SearchServlet" method="POST" >
               <div class="w3-show-inline-block">
                 <input type="text" name="searchVal"  placeholder="Search.." value="${requestScope.searchVal}">
                 <button class="w3-btn w3-teal"  type="submit" ><i class="fa fa-search"></i></button>
                </div>
             </form>
-       <c:choose>
-        <c:when test="${not empty requestScope.list }">
-        <table>
-        <tr>
-        <th>Select Supplier</th>
-        </tr><select name="supplierList" >
-        <c:forEach var="supplier" items="${requestScope.list}">
-       	 <option value="${supplier.id}"><c:out value="${supplier.name}" /></option>
-        </c:forEach>
-        </select>
-        </table>
-        </c:when>
-        <c:otherwise>
-        	<p>You dont have any suppliers yet</p>
-        	<a href="/Supplier/Add">Add new Supplier</a>
-        	<!-- <button type="button">Add new Supplier</button> -->
-        </c:otherwise>
-        </c:choose> 
+  
          </div>  
         
 <div id="itemList">
   
 	 <c:choose>
-		<c:when test="${not empty requestScope.list}">
+		<c:when test="${not empty requestScope.ItemList}">
 			<table border=1 id="items">				
 					<tr>
 						<th><span>Item Name</span></th>
-						<th><span>Category</span></th>
 						<th><span>Description</span></th>
 						<th><span>Size</span></th>
 						<th><span>Colour</span></th>
@@ -90,6 +72,8 @@ function toggleSidebar(){
 						<th><span>Location</span></th>
 						<th><span>Multibarcode Item</span></th>
 						<th><span>Quantity</span></th>
+						<th><span>Category</span></th>
+						<th><span>Supplier Name</span></th>
 						<th><span>Delete Item</span></th>
 						<th><span>Update Item</span></th>
 						
@@ -106,9 +90,11 @@ function toggleSidebar(){
 						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.multiBarcode}</span></a></td>
 						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.quantity}</span></a></td>
 						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.category}</span></a></td>
+						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.supplierName}</span></a></td>
 						
-						<td><a id="delete"   href="javascript:confirmGo('Are you sure you want to delete?','./deleteServlet?itemGroupId=${item.itemGroupId}">  Delete</a></td>
-						<td><a  id="update" href="./UpdateServlet?itemGroupId=${item.itemGroupId}">  Update</a></td>
+						
+						<td><a id="addItem"   href="./deleteServlet?itemGroupId=${item.itemGroupId}">  Delete</a></td>
+						<td><a  id="addItem" href="./UpdateServlet?itemGroupId=${item.itemGroupId}">  Update</a></td>
 						
 			
 						<%-- <td class="actionCell"><div>
@@ -127,7 +113,7 @@ function toggleSidebar(){
 		
 	</c:choose>
 	
-  
+
        <%--  <h1 id="ListOfItems">List Of Items</h1>
         <div id="searchAdd">
         <form action="ItemForm.jsp" >

@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-	 <%@ page import="model.Supplier" %>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+   <%@ page import="model.Supplier" %>
+   <% Supplier supplier = (Supplier) request.getAttribute("Supplier"); %>
+	
 	 <%@ page isELIgnored="false" %>
 	 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-   <% Supplier supplier = (Supplier) request.getAttribute("Supplier"); %>
+  
    <%@ page import="model.Item,helpers.Constants" %>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -124,7 +127,46 @@ function toggleSidebar(){
 			<div class="col-sm-7">
 			<input type="text" name="quantity" value="${requestScope.model.quantity}"> <BR>
 			</div>
-			</div>	
+			</div>
+			<%-- <c:choose>
+        <c:when test="${not empty requestScope.list }">
+       <div class=" form-group row">
+			<label  class="col-sm-2 col-form-label" >Select Supplier:</label>
+			<div class="col-sm-7">
+        <select name="supplierID" >
+        <c:forEach var="supplier" items="${requestScope.list}">
+       	 <option value="${supplier.id}">${supplier.name}</option>
+      
+        </c:forEach>
+        </select>
+       </div>
+			</div>
+        </c:when>
+        <c:otherwise>
+        	<p>You dont have any suppliers yet</p>
+        	<a href="/Supplier/Add">Add new Supplier</a>
+        	<!-- <button type="button">Add new Supplier</button> -->
+        </c:otherwise>
+        </c:choose>  --%>
+			<c:choose>
+        <c:when test="${not empty requestScope.list }">
+       <div class=" form-group row">
+			<label  class="col-sm-2 col-form-label" >Select Supplier:</label>
+			<div class="col-sm-7">
+        <select name="supplierList" >
+        <c:forEach var="supplier" items="${requestScope.list}">
+       	 <option value="${supplier.name}"value="${supplier.id}">${supplier.name}</option>
+        </c:forEach>
+        </select>
+       </div>
+			</div>
+        </c:when>
+        <c:otherwise>
+        	<p>You dont have any suppliers yet</p>
+        	<a href="/Supplier/Add">Add new Supplier</a>
+        	<!-- <button type="button">Add new Supplier</button> -->
+        </c:otherwise>
+        </c:choose> 
 			
         
 		<td><input type="submit" value="Add Item" id="addItem"></td>
@@ -132,6 +174,8 @@ function toggleSidebar(){
 		
 	</table> 	
 	</form>
+		
+		
 	
 	</div>
 	</div>

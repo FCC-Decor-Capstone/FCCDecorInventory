@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Item;
 import model.ItemsBarcode;
 import model.Supplier;
 
@@ -32,12 +33,22 @@ public class ReadBarcodeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setAttribute("list",ItemsBarcode.getAll());
-		   String url = "/BarcodeImage.jsp";
-		   
-
-		  RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-		  dispatcher.forward(request, response);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		if (request.getParameter("itemGroupID") != null) {
+			try {
+				int id = Integer.parseInt(request.getParameter("itemGroupID"));
+				
+					request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
+					
+					dispatcher = request.getRequestDispatcher("/SaveBarcode.jsp");
+				
+				
+			} catch (NumberFormatException nfe) {
+				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
+			} 
+		}
+		dispatcher.forward(request, response);
 	}
 
 	/**

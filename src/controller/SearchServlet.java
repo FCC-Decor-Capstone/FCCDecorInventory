@@ -37,7 +37,7 @@ public class SearchServlet extends HttpServlet {
 		
 		if (request.getParameter("searchVal") != null) {
 			if (!request.getParameter("searchVal").trim().isEmpty()) {
-				request.setAttribute("search", request.getParameter("searchVal").trim());
+				request.setAttribute("searchVal", request.getParameter("searchVal").trim());
 				request.setAttribute("ItemList", Item.search(request.getParameter("searchVal")));	
 			} else {
 				request.setAttribute("ItemList", Item.getAll());

@@ -13,6 +13,7 @@ import dbHelpers.DeleteQuery;
 import dbHelpers.ReadRecord;
 import dbHelpers.UpdateQuery;
 import model.Item;
+import model.Supplier;
 
 /**
  * Servlet implementation class UpdateServlet
@@ -48,6 +49,7 @@ public class UpdateServlet extends HttpServlet {
 				
 				//pass item and control to updateForm.jsp
 				request.setAttribute("item", item);
+				 request.setAttribute("list",Supplier.getAll());
 				String url="/updateItem.jsp";
 				RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 				dispatcher.forward(request, response); 
@@ -71,6 +73,7 @@ public class UpdateServlet extends HttpServlet {
 		
 		//pass item and control to updateForm.jsp
 		request.setAttribute("item", item);
+		 request.setAttribute("list",Supplier.getAll());
 		String url="/updateItem.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response); 
