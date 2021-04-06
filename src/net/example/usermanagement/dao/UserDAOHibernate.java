@@ -20,8 +20,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
-import com.sun.corba.se.spi.orbutil.fsm.State;
-
 import net.example.usermanagement.model.Logs;
 import net.example.usermanagement.model.User;
 
