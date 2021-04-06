@@ -72,5 +72,4 @@ public class AddSupplier extends HttpServlet {
 		
 		dispatcher.forward(request, response);
 	}
-
 }
