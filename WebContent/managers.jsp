@@ -168,18 +168,17 @@
            	 </div>
 		</div>
 	</div>
-	
+	<!--controllers.supplier-->
+	<form action="supplier">
   	<div class="container-fluid home-main">
-  	
-  	<!-- <%@include file="/Supplier" %>-->
-  	
 		<!-- <h2><c:out value="${user.name}" /> <span class="blinker">.</span></h2>
 		<form action="edit">
 			<input type="hidden" name="id" value="${user.id}"/>
 			<a href="#editModal" class="btn btn-primary trigger-btn" title="Edit" data-toggle="modal"><i class="material-icons">settings</i>Edit User</a>
 		</form> -->
 	</div>
-	<div class="container-fluid home-content1">
+	</form>
+	<!--<div class="container-fluid home-content1">
 		<div class="row">
 			<div class="col-md-6 content1-left">
 				<!-- <h3>Extra credit task 1 <span class="blinker">?</span></h3>
@@ -187,12 +186,12 @@
 					Administrators can do anything
 					Non administrators can only view, the only thing a non Administrator can edit/write is their own name and password.</p>
 				<div class="content1-left"></div> -->
-			</div>
+			<!--</div>
 			<div class="col-md-6 content1-right">
-				<p>If we want this web application to be Highly Available, what would you do? Separate the core functions and try to run independently in each machine.</p>
+				<p></p>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
 		<div class="footer-copyright text-center py-4" style="align-items: center;">
 			<a> © 2021 Internet Explorers </a>

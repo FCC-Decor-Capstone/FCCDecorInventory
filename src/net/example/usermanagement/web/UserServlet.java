@@ -278,7 +278,7 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 				request.setAttribute("listUser", listUser);
 
 				dispatcher = request.getRequestDispatcher("user-admin.jsp");
-			} else if(session.getAttribute("urole").equals("General User")){
+			} else if(session.getAttribute("urole").equals("General User")){ 
 				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
 						(String) session.getAttribute("urole"));
 				request.setAttribute("user", user);

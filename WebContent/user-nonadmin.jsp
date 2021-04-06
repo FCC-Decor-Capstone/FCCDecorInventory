@@ -184,14 +184,12 @@
 	<div class="container-fluid home-content1">
 		<div class="row">
 			<div class="col-md-6 content1-left">
-				<h3>Extra credit task 1 <span class="blinker">?</span></h3>
-				<p>A user can have many roles (e.g. Administrator, Sales, Marketing)
-					Administrators can do anything
-					Non administrators can only view, the only thing a non Administrator can edit/write is their own name and password.</p>
+				<h3> <span class="blinker">?</span></h3>
+				<p></p>
 				<!-- <div class="content1-left"></div> -->
 			</div>
 			<div class="col-md-6 content1-right">
-				<p>If we want this web application to be Highly Available, what would you do? Separate the core functions and try to run independently in each machine.</p>
+				<p></p>
 			</div>
 		</div>
 	</div>

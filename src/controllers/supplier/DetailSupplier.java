@@ -38,6 +38,8 @@ public class DetailSupplier extends HttpServlet {
 	
 		// TODO Auto-generated method stub
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		if (request.getParameter("id") != null) {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
@@ -54,6 +56,10 @@ public class DetailSupplier extends HttpServlet {
 			} 
 		}
 		dispatcher.forward(request, response);
+		}else
+		{
+			throw new RuntimeException("Invalid access");
+		}
 	}
 
 
