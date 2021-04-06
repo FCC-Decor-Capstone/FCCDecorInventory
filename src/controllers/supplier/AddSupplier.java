@@ -1,4 +1,4 @@
-package controllers.supplier;
+   package controllers.supplier;
 
 import java.io.IOException;
 
@@ -51,13 +51,11 @@ public class AddSupplier extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/form.jsp");
 		Supplier newSupplier = new Supplier();
 		
-		
 		//Request Verification (within Model for clean code)
 			request.setAttribute("errName", newSupplier.setName(request.getParameter("name")));
 			request.setAttribute("errContact", newSupplier.setContact(request.getParameter("contact")));
 			request.setAttribute("errTelephone", newSupplier.setTelephone(request.getParameter("telephone")));
 			request.setAttribute("errComments", newSupplier.setComments(request.getParameter("comments")));
-		
 			
 		request.setAttribute("model",newSupplier);
 			
