@@ -79,11 +79,7 @@ public class CreateBarCode extends HttpServlet {
 				request.setAttribute("item", item);
 		//		request.setAttribute("item", model);
 	    dispatcher.forward(request, response);
-				
-				
-				
-				
-				
+							
 	}
 
 	/**

@@ -201,9 +201,12 @@ table.table .avatar {
 	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 		<div class="collapse navbar-collapse" id="navbarNavDropdown">
 			<ul class="navbar-nav w-100">
-				<li class="nav-item dropdown"><a class="nav-link " href="item"
+				<!-- <li class="nav-item dropdown"><a class="nav-link " href="item"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						Item </a></li>
+						Item </a></li> -->
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/readItem"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Item </a></li>	
 				<li class="nav-item dropdown"><a class="nav-link " href="viewLogs"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						View Logs </a></li>
