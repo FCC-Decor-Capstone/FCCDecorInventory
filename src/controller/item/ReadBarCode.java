@@ -1,4 +1,4 @@
-package controller;
+package controller.item;
 
 import java.io.IOException;
 
@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import models.ItemsBarcode;
 
 /**
- * Servlet implementation class DeleteBarcode
+ * Servlet implementation class ReadBarCode
  */
-@WebServlet("/DeleteBarcode")
-public class DeleteBarcode extends HttpServlet {
+@WebServlet("/ReadBarCode")
+public class ReadBarCode extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteBarcode() {
+    public ReadBarCode() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,25 +31,11 @@ public class DeleteBarcode extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		 int id = Integer.parseInt(request.getParameter("ItemGroupID"));
+		 request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
+	       RequestDispatcher   dispatcher = request.getRequestDispatcher("/barcodeTable.jsp");
 	
-		if (request.getParameter("barcodeId") != null) {
-			try {
-				int id = Integer.parseInt(request.getParameter("barcodeId"));
-				if (ItemsBarcode.deleteByID(id)) {
-					request.setAttribute("SucCtlMsg", "Item barcode deleted successfully");
-					RequestDispatcher dispatcher = request.getRequestDispatcher("/ReadBarCode");
-					dispatcher.forward(request, response);
-					
-//					response.sendRedirect("./.");return;
-				} else {
-					request.setAttribute("ErrCtlMsg", "Error Deleting barcode ");
-				}
-			} catch (NumberFormatException nfe) {
-				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
-			} 
-		}
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/Delete.jsp");
-		dispatcher.forward(request, response);
+	       dispatcher.forward(request, response);
 	}
 
 	/**
