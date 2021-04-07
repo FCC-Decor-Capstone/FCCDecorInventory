@@ -20,11 +20,11 @@ public class Category {
 	public Category() {
 		
 	}
-	public Category(int id, String catType,boolean hasError) {
+	public Category(int id, String catType) {
 		super();
 		this.id = id;
 		this.categoryType = catType;
-		this.hasError = hasError;
+		this.hasError = false;
 	}
 	public int getId() {
 		return id;
@@ -60,7 +60,7 @@ public class Category {
 	
 	public static Category addNew(Category newCategory) {
 		
-		String insert = "insert into Category (category) values(?);";
+		String insert = "insert into Category (category) values(?)";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
@@ -80,4 +80,105 @@ public class Category {
 		}
 		return null;
 	}
+	public static Category editByID(Category newCategory) {
+		String update = "Update Category SET category = ? where categoryID = ?";
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(update);
+			ps.setString(1, newCategory.getCategoryType());
+			ps.setInt(2,newCategory.getId());
+			int result = ps.executeUpdate();
+			if (result==1) {
+				return newCategory;
+			}
+			else 
+				return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static Category getByID(int ID) {
+		String select = "Select * from Category where categoryID=?;";
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(select);
+			ps.setInt(1, ID);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				return new Category(ID,rs.getString("category"));
+			}
+			return null;
+		}
+		catch(SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static Boolean deleteByID(int ID) {
+		String delete = "Delete from Category where categoryID = ?;";
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(delete);
+			ps.setInt(1, ID);
+			int result = ps.executeUpdate();
+			if(result == 1) {
+				return true;
+			}
+			else
+				return false;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public static List<Category> getAll(){
+		String select = "Select * from Category;";
+		List<Category> list= new ArrayList<Category>();
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(select);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				list.add(new Category(rs.getInt("categoryID"),rs.getString("category")));				
+			}
+			if (list.size()>0)
+				return list;
+			else
+				return null;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static List<Category> search(String word) {
+		String select="SELECT * FROM Category WHERE LOWER(category)) LIKE LOWER(?)";
+		List<Category> list = new ArrayList<Category>(); 
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(select);
+			ps.setString(1, "%" + word + "%");
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				list.add(new Category(	rs.getInt("categoryID"), 
+										rs.getString("category")));
+			}
+			if (list.size() > 0) return list; else return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }
