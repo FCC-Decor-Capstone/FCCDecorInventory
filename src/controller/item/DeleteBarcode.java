@@ -1,4 +1,4 @@
-package controller;
+package controller.item;
 
 import java.io.IOException;
 
@@ -9,21 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Item;
 import models.ItemsBarcode;
-import models.ItemSupplier;
 
 /**
- * Servlet implementation class ReadBarcodeServlet
+ * Servlet implementation class DeleteBarcode
  */
-@WebServlet("/ReadBarcodeServlet")
-public class ReadBarcodeServlet extends HttpServlet {
+@WebServlet("/DeleteBarcode")
+public class DeleteBarcode extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReadBarcodeServlet() {
+    public DeleteBarcode() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,21 +31,24 @@ public class ReadBarcodeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");
-		if (request.getParameter("itemGroupID") != null) {
+	
+		if (request.getParameter("barcodeId") != null) {
 			try {
-				int id = Integer.parseInt(request.getParameter("itemGroupID"));
-				
-					request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
+				int id = Integer.parseInt(request.getParameter("barcodeId"));
+				if (ItemsBarcode.deleteByID(id)) {
+					request.setAttribute("SucCtlMsg", "Item barcode deleted successfully");
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/ReadBarCode");
+					dispatcher.forward(request, response);
 					
-					dispatcher = request.getRequestDispatcher("/SaveBarcode.jsp");
-				
-				
+//					response.sendRedirect("./.");return;
+				} else {
+					request.setAttribute("ErrCtlMsg", "Error Deleting barcode ");
+				}
 			} catch (NumberFormatException nfe) {
 				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
 			} 
 		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Delete.jsp");
 		dispatcher.forward(request, response);
 	}
 

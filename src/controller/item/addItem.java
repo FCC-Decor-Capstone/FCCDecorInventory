@@ -1,4 +1,4 @@
-package controller;
+package controller.item;
 
 import java.io.IOException;
 
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import models.Item;
 import models.ItemsBarcode;
 import models.ItemSupplier;
@@ -17,7 +16,7 @@ import models.ItemSupplier;
 /**
  * Servlet implementation class addItem
  */
-@WebServlet("/addItem")
+@WebServlet("/Item")
 public class addItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
