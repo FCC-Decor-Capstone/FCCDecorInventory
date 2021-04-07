@@ -34,7 +34,7 @@ public class ListSupplier extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		HttpSession session = request.getSession();
-		if (session.getAttribute("urole").equals("Administrator")) {
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		if (request.getParameter("search") != null) {
 			if (!request.getParameter("search").trim().isEmpty()) {
 				request.setAttribute("search", request.getParameter("search").trim());

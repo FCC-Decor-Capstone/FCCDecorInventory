@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dbHelpers.ReadQuery;
 import models.Item;
@@ -34,7 +35,8 @@ public class readItem extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		if (request.getParameter("searchVal") != null) {
 			if (!request.getParameter("searchVal").trim().isEmpty()) {
 				request.setAttribute("search", request.getParameter("searchVal").trim());
@@ -49,7 +51,12 @@ public class readItem extends HttpServlet {
 		request.setAttribute("list",ItemSupplier.getAll());
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/read.jsp");
 		dispatcher.forward(request, response);
+	} 
+		else
+	{
+		throw new RuntimeException("Invalid access");
 	}
+}
 
 		   // Create  a ReadQuery helper object
 //		    ReadQuery rq = new ReadQuery();

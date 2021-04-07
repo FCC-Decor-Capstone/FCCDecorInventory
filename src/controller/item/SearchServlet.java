@@ -75,5 +75,4 @@ public class SearchServlet extends HttpServlet {
 //		dispatcher.forward(request, response); 
 		doGet(request, response);
 	}
-
 }

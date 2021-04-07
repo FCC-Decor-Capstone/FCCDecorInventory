@@ -74,7 +74,10 @@
 						<c:out value="Hello ${user.name}" /><span class="blinker"> .</span> </a></li>
 		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						Supplier </a></li>	
+						Supplier </a></li>
+		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/readItem"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Item </a></li>					
 	      <li class="nav-item dropdown ml-auto">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          Account
