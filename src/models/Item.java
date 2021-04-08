@@ -1,7 +1,5 @@
 package models;
 
-
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,11 +10,6 @@ import java.util.List;
 import javax.servlet.annotation.WebServlet;
 
 import dbHelpers.DB;
-
-
-
-
-
 
 public class Item {
     private int itemGroupId;
@@ -117,8 +110,6 @@ public class Item {
 		}
 	}
 
-
-
 	public String getdescription() {
 		// TODO Auto-generated method stub
 		return description;
@@ -140,8 +131,6 @@ public class Item {
 		}
 	}
 
-
-
 	public double getsize() {
 		// TODO Auto-generated method stub
 		return size;
@@ -162,9 +151,6 @@ public class Item {
 		
 		
 	}
-
-
-
 
 	public String getColour() {
 		// TODO Auto-generated method stub
@@ -190,8 +176,6 @@ public class Item {
 		}
 			}
 
-
-
 	public double getinitialCost() {
 		// TODO Auto-generated method stub
 		return initialCost;
@@ -213,8 +197,6 @@ public class Item {
 		}
 		
 	}
-
-
 
 	public String getmultiBarcode() {
 		// TODO Auto-generated method stub
@@ -239,8 +221,6 @@ public class Item {
 		}
 		
 	}
-
-
 
 
 	public int getQuantity() {
@@ -286,9 +266,6 @@ public class Item {
 		}
 	}
 
-
-
-
 	public String getCategory() {
 		// TODO Auto-generated method stub
 		return category;
@@ -306,8 +283,6 @@ public class Item {
 			hasError = true;
 			return "";
 		}
-		
-		
 	}
 
 	public int getitemGroupId() {
@@ -319,7 +294,6 @@ public class Item {
 		// TODO Auto-generated method stub
 		this.itemGroupId = itemGroupId;
 	}
-	
 	
 	public static Item addNew(Item item) {
 		String insert="insert into ItemGroup (itemName,category,description,size,colour,initialCost,location,multiBarcode,quantity,supplierName) values(?,?,?,?,?,?,?,?,?,?)";
@@ -406,6 +380,7 @@ public class Item {
 		}
 		return null;
 	}
+	
 	public static List<Item> getItems(int id) {
 		String select="SELECT *  FROM ItemGroup where itemGroupID=?";
 		List<Item> list = new ArrayList<Item>(); 
@@ -426,6 +401,7 @@ public class Item {
 		}
 		return null;
 	}
+	
 	public static List<Item> search(String word) {
 		String select=	"select * from ItemGroup where UPPER(itemName) LIKE ? ORDER BY itemGroupID ASC";
 //		String select="SELECT * FROM ItemGroup WHERE LOWER(CONCAT(itemName, ' ', category, ' ', description, ' ',size,' ',colour,' ', initialCost,' ' , location,' ' multiBarcode, ' ', quantity,' ', supplierName)) LIKE LOWER(?)";

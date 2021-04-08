@@ -20,9 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import models.Event;
 import models.Supplier;
-import net.example.usermanagement.dao.AddQuery;
 import net.example.usermanagement.dao.UserDAOHibernate;
-import net.example.usermanagement.model.Item;
 import net.example.usermanagement.model.Logs;
 import net.example.usermanagement.model.User;
 
@@ -30,12 +28,10 @@ import net.example.usermanagement.model.User;
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDAOHibernate userDAO;
-	private AddQuery query;
 	private Supplier sup;
 
 	public void init() {
 		userDAO = new UserDAOHibernate();
-		query = new AddQuery();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -76,12 +72,12 @@ public class UserServlet extends HttpServlet {
 			case "/logout":
 				logoutUser(request, response);
 				break;
-			case "/item":
-				showItem(request, response);
-				break;
-			case "/addItem":
-				insertItem(request, response);
-				break;
+//			case "/item":
+//				showItem(request, response);
+//				break;
+//			case "/addItem":
+//				insertItem(request, response);
+//				break;
 			case "/viewLogs":
 				viewLogs(request, response);
 				break;
@@ -323,17 +319,17 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 		dispatcher.forward(request, response);
 	}
 
-	private void showItem(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("ItemForm.jsp");
-		dispatcher.forward(request, response);
-	}
+//	private void showItem(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		RequestDispatcher dispatcher = request.getRequestDispatcher("ItemForm.jsp");
+//		dispatcher.forward(request, response);
+//	}
 
-	private void insertItem(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		Item item = new Item();
-		query.doAdd(item);
-		response.sendRedirect("item");
-	}
+//	private void insertItem(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+//		Item item = new Item();
+//		query.doAdd(item);
+//		response.sendRedirect("item");
+//	}
 
 	private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		String name = request.getParameter("name");

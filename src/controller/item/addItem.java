@@ -11,13 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Item;
-import models.ItemsBarcode;
 import models.ItemSupplier;
 
 /**
  * Servlet implementation class addItem
  */
-@WebServlet("/Item")
+@WebServlet("/addItem")
 public class addItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -41,7 +40,7 @@ public class addItem extends HttpServlet {
         request.setAttribute("list",ItemSupplier.getAll());
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
 		dispatcher.forward(request, response);
-		doPost(request,response);
+//	    doPost(request,response);
 	} 	else
 		{
 			throw new RuntimeException("Invalid access");

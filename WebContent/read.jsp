@@ -40,7 +40,8 @@ function toggleSidebar(){
 </div>
 <ul>
 <li>Home</li>
-<li><a href="ItemForm.jsp">Add Item</a></li>
+<li><a href="addItem">Add Item</a></li>
+<!--  -->
 <li><a href="readItem"> Item List</a></li>
 </ul>
 </div>
