@@ -32,6 +32,9 @@ public class Category {
 	public String getCategoryType() {
 		return categoryType;
 	}
+	public boolean hasError() {
+		return hasError;
+	}
 	public int setId(int id) {
 		try {
 			this.id = id;
