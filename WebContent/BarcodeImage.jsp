@@ -33,7 +33,7 @@
 				
 				
 	</form>
-	<form  action="readItem" method="get" >
+	<form  action="ListItem" method="get" >
 	<button type="submit" id="addItem"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
 	<main class="rmdT">
@@ -72,8 +72,15 @@
 			<p >No Barcode  Found!</p>
 		</c:otherwise> 	
 	 </c:choose> 
-<a id="addItem" href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
-<a id="addItem" href="./ReadBarCode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
+ <c:choose>
+        	 <c:when test="${requestScope.model.quantity > 0}">  
+			<a id="addItem" href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
+			<a id="addItem" href="./ReadBarcode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
+			</c:when>
+      <c:otherwise>
+          <p id="addItem">Cannot add barcode with quantity 0, Please update quantity </p>  
+         </c:otherwise>
+      </c:choose>
 
 <%-- <form  action="CreateBarCode" method="get">
 <input type="date" name="date" value="${requestScope.ItemsBarcode.purchaseDate}" />

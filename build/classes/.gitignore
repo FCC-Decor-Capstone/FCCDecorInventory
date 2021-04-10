@@ -1,2 +1,8 @@
+/controller/
 /controllers/
+/dbConnection.properties
+/dbHelpers/
+/helpers/
 /models/
+/net/
+/resources/

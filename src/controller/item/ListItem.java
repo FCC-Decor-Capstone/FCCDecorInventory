@@ -9,19 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.ItemsBarcode;
+import models.Item;
+import models.ItemSupplier;
 
 /**
- * Servlet implementation class GenerateBarcode
+ * Servlet implementation class ListItem
  */
-@WebServlet("/GenerateBarcode")
-public class GenerateBarcode extends HttpServlet {
+@WebServlet("/ListItem")
+public class ListItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GenerateBarcode() {
+    public ListItem() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,14 +31,20 @@ public class GenerateBarcode extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		int id = Integer.parseInt(request.getParameter("ItemGroupID"));
-	       
-        ItemsBarcode.addNew(id);
-        request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
-	       RequestDispatcher   dispatcher = request.getRequestDispatcher("/barcodeTable.jsp");
-	
-	       dispatcher.forward(request, response);
+		if (request.getParameter("searchVal") != null) {
+			if (!request.getParameter("searchVal").trim().isEmpty()) {
+				request.setAttribute("search", request.getParameter("searchVal").trim());
+				request.setAttribute("list", Item.search(request.getParameter("searchVal")));	
+			} else {
+				request.setAttribute("list", Item.getAll());
+			}
+		} else {
+			request.setAttribute("ItemList", Item.getAll());
+			
+		}
+		request.setAttribute("list",ItemSupplier.getAll());
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/read.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	/**

@@ -36,7 +36,7 @@ function toggleSidebar(){
 <ul>
 <li>Home</a></li>
 <li><a href="addItem">Add Item</a></li>
-<li><a href="readItem"> Item List</a></li>
+<li><a href="ListItem"> Item List</a></li>
 </ul>
 </div>
  

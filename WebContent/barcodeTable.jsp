@@ -38,7 +38,7 @@
 							
 							<td><a  id="addItem" href="./DeleteBarcode?barcodeId=${barcode.id}">  Delete</a></td>
 						    <td><a  id="addItem" href="./UpdateBarcode?barcodeId=${barcode.id}">  Update</a></td>
-						    <td><a  id="addItem" href="./CreateBarCode?barcodeId=${barcode.id}">Get Barcode</a></td>
+						    <td><a  id="addItem" href="./CreateBarcode?barcodeId=${barcode.id}">Get Barcode</a></td>
 						   
 					 </tr>
 				</c:forEach> 
