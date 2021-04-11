@@ -1,23 +1,27 @@
 package controller.item;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.ItemsBarcode;
+
 /**
- * Servlet implementation class addItemServlet
+ * Servlet implementation class ReadBarcode
  */
-@WebServlet("/addItemServlet")
-public class addItemServlet extends HttpServlet {
+@WebServlet("/ReadBarcode")
+public class ReadBarcode extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public addItemServlet() {
+    public ReadBarcode() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,7 +31,12 @@ public class addItemServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+				 int id = Integer.parseInt(request.getParameter("ItemGroupID"));
+				 request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
+			
+			       RequestDispatcher   dispatcher = request.getRequestDispatcher("/barcodeTable.jsp");
+			
+			       dispatcher.forward(request, response);
 	}
 
 	/**
@@ -37,4 +46,5 @@ public class addItemServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
 }

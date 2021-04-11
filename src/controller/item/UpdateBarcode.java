@@ -29,7 +29,7 @@ public class UpdateBarcode extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //    	this.doPost(request, response);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/BarcodeForm.jsp");
@@ -38,8 +38,8 @@ public class UpdateBarcode extends HttpServlet {
 				int id = Integer.parseInt(request.getParameter("barcodeId"));
 				ItemsBarcode model = ItemsBarcode.getByID(id);
 				if (model != null) {
-					request.setAttribute("model", ItemsBarcode.getByID(id));
-					request.setAttribute("action", "Update");
+					request.setAttribute("model", model);
+					request.setAttribute("action", "UpdateBarcode");
 					dispatcher = request.getRequestDispatcher("/BarcodeForm.jsp");
 				} else {
 					request.setAttribute("ErrCtlMsg", " Not Found");
@@ -55,18 +55,17 @@ public class UpdateBarcode extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
- 	RequestDispatcher dispatcher = request.getRequestDispatcher("/BarcodeForm.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/BarcodeForm.jsp");
 		ItemsBarcode itemsBarcode = new ItemsBarcode();
 		
 		
 		//Request Verification (within Model for clean code)
-			try {
-				request.setAttribute("errName", itemsBarcode.setId(Integer.parseInt(request.getParameter("barcodeId"))));
-			} catch (NumberFormatException nfe) {
-				response.getWriter().append("Invalid ID, please restart Edit form.");
-				return;
-			} 
+//			try {
+				request.setAttribute("errId", itemsBarcode.setId(Integer.parseInt(request.getParameter("barcodeId"))));
+//			} catch (NumberFormatException nfe) {
+//				response.getWriter().append("Invalid ID, please restart Edit form.");
+//				return;
+//			} 
 			request.setAttribute("errName", itemsBarcode.setitemName(request.getParameter("itemName")));
 			request.setAttribute("errCondition", itemsBarcode.setCondition(request.getParameter("condition")));
 		    request.setAttribute("errComments", itemsBarcode.setComments(request.getParameter("description")));

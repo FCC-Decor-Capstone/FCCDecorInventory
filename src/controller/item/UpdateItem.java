@@ -13,16 +13,16 @@ import dbHelpers.UpdateQuery;
 import models.Item;
 
 /**
- * Servlet implementation class updateItem
+ * Servlet implementation class UpdateItem
  */
-@WebServlet("/updateItem")
-public class updateItem extends HttpServlet {
+@WebServlet("/UpdateItem")
+public class UpdateItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public updateItem() {
+    public UpdateItem() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,7 +30,7 @@ public class updateItem extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		this.doPost(request, response);
 	}
@@ -45,7 +45,7 @@ public class updateItem extends HttpServlet {
 		String itemName = request.getParameter("itemName");
 		String category = request.getParameter("category");
 		String description = request.getParameter("description");
-		double size = Double.parseDouble(request.getParameter("size"));
+		String size = request.getParameter("size");
 		String colour = request.getParameter("color");
 		double initialCost = Double.parseDouble(request.getParameter("initialCost"));
 		String location = request.getParameter("Location");
@@ -68,7 +68,7 @@ public class updateItem extends HttpServlet {
 		UpdateQuery dq = new UpdateQuery();
 		dq.doUpdate(item);
 		//pass the control to read servlet
-		String url="/readItem";
+		String url="/ListItem";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response); 
 	}

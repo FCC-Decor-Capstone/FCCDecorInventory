@@ -14,6 +14,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link href="style.css" rel="stylesheet" type="text/css">
+<style><%@include file="/resources/css/main.css"%></style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <title>Insert title here</title>
 <script type="text/javascript">
@@ -36,7 +37,7 @@ function toggleSidebar(){
 <ul>
 <li>Home</a></li>
 <li><a href="addItem">Add Item</a></li>
-<li><a href="ListItem"> Item List</a></li>
+<li><a href="readItem"> Item List</a></li>
 </ul>
 </div>
  
@@ -49,6 +50,10 @@ function toggleSidebar(){
 
 	<form  action="${requestScope.action}" method="POST">
 	<table align ="center">
+	
+	 <div>
+	<input type="hidden" name="barcodeId" value="${requestScope.model.id}" />
+	</div> 
 	
 	<div class="form-group row">
 	 <label class="col-sm-2 col-form-label">Item Name:</label>
@@ -65,7 +70,7 @@ function toggleSidebar(){
 
 			<label  class="col-sm-2 col-form-label" >Description:</label>
 			<div class="col-sm-7">	
-			<textarea  rows="4" cols="30" placeholder="Enter text here..." name="description"  value="${requestScope.model.comments}" ></textarea>
+			<textarea  rows="4" cols="30" placeholder="Enter text here..." name="description" >${requestScope.model.comments}</textarea>
 			<!--  <td><input type="text" name="description"> <BR></td> -->
 			<c:if test="${not empty requestScope.errComments}">
 				<br/><span >${requestScope.errComments}</span>
