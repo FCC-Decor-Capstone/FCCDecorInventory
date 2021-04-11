@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import models.Item;
 import models.ItemSupplier;
@@ -31,6 +32,8 @@ public class ListItem extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		if (request.getParameter("searchVal") != null) {
 			if (!request.getParameter("searchVal").trim().isEmpty()) {
 				request.setAttribute("search", request.getParameter("searchVal").trim());
@@ -45,7 +48,11 @@ public class ListItem extends HttpServlet {
 		request.setAttribute("list",ItemSupplier.getAll());
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/read.jsp");
 		dispatcher.forward(request, response);
+	} else
+	{
+		throw new RuntimeException("Invalid access");
 	}
+}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import models.ItemsBarcode;
 
@@ -31,6 +32,8 @@ public class GenerateBarcode extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		int id = Integer.parseInt(request.getParameter("ItemGroupID"));
 	       
         ItemsBarcode.addNew(id);
@@ -38,8 +41,11 @@ public class GenerateBarcode extends HttpServlet {
 	       RequestDispatcher   dispatcher = request.getRequestDispatcher("/barcodeTable.jsp");
 	
 	       dispatcher.forward(request, response);
+	} else
+	{
+		throw new RuntimeException("Invalid access");
 	}
-
+}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

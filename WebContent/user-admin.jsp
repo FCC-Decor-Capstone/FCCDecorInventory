@@ -204,7 +204,7 @@ table.table .avatar {
 				<!-- <li class="nav-item dropdown"><a class="nav-link " href="item"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Item </a></li> -->
-				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/readItem"
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/ListItem"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Item </a></li>	
 				<li class="nav-item dropdown"><a class="nav-link " href="viewLogs"
