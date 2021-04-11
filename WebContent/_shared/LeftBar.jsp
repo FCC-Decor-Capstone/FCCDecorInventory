@@ -7,128 +7,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style><%@include file="/resources/css/style.css"%></style>
 <script><%@include file="/resources/js/scripts.js" %></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<style><%@include file="/resources/css/bootstrap.min.css"%></style>
+	<script><%@include file="/resources/js/jquery-3.4.1.min.js" %></script>
+	<script><%@include file="/resources/js/bootstrap.min.js" %></script>
+	<style type="text/css">
+		body{
+	width : 80%;
+	margin-left: auto;
+	margin-right : auto;
+	}
+	.navbar{
+	width : 80%;
+    background-color : #2e3436;
+    color : white;
+	margin-left: auto;
+	margin-right : auto;
+	}
+	.navlink{
+	text-color : white;
+	}
+	</style>
 <%@ page import="helpers.Constants" %>
 </head>
 <body>
-<div class = "navtotal">
-<div class = "navHeader">
-<a href="#default" class="logo"><img src="logo.png" alt="logo"></a>
-
-  <div class="header-right">
-    <a class="active" href="#home">Home</a>
-    <a href="#contact">Profile</a>
-    <a href="#about">Logout</a>
-  </div>
-</div>
-<div class= "navNavBar">
-	<input type="checkbox" id="check">
-	<label for="check"> <i class="fas fa-bars" id="btn"></i> 
-		<i	class="fas fa-times" id="cancel"></i>
-	</label>
-
-	<div class="sidebar">
-		<header>
-			<c:if test="${sessionScope['uIsAdmin']}">Admin</c:if> Capstone 
-			<span id="Side_uname"> 
-			<c:if test="${not empty sessionScope['username']}">
-					<i class="fas fa-user"></i>
-          		${sessionScope['username']}</c:if>
-			</span>
-		</header>
-		<c:choose>
-			<%--
-            ==========================
-            	When not Signed
-            ==========================
-             --%>
-			<c:when test="${empty sessionScope['username']}">
-				<a href="../Noor"> <i class="fas fa-sign-in-alt"></i> 
-					<span>Sign in</span>
-				</a>
-			</c:when>
-			<c:otherwise>
-				<c:choose>
-					<%--
-		            ==========================
-		            	For Admin/Mellisa Only
-		            ==========================
-		             --%>
-					<c:when test="${sessionScope['uIsAdmin']}">
-						<a href="../noor/log"> <i class="fas fa-business-time"></i> 
-							<span>Logs</span>
-						</a>
-						
-						<a href="../"> <i class="far fa-file-alt"></i>
-							<span>Sales</span>
-						</a>     
-
-						
-					</c:when>
-					
-					<%--
-		            ==========================
-		            	For Managers & admin
-		            ==========================
-		             --%>
-		             
-				
-				<c:when test="${sessionScope['uIsManager']}">
-						<a href="../"> <i class="fas fa-business-time"></i> 
-							<span>Products</span>
-						</a>
-						<a href="../noor"> <i class="far fa-id-card"></i>
-							<span>List Users</span>
-						</a>
-						<a href="../noor"> <i class="far fa-id-card"></i>
-							<span>Create User</span>
-						</a>
-						<a href="../noor"> <i class="far fa-id-card"></i>
-							<span>Add Supplier</span>
-						</a>
-						
-						
-						
-						</c:when>
-												
-					<%--
-		            =====================
-		            	For everyone
-		            =====================
-		             --%>
-					<c:otherwise>
-						<a href="../"  > <i class="far fa-file-alt"></i>
-							<span>User Details</span>
-						</a>
-					
-						<a href="../"> <i class="fas fa-business-time"></i> 
-							<span>Add Event</span>
-						</a>
-						
-						<a href="../" > <i class="fas fa-business-time"></i> 
-							<span>Add Item</span>
-						</a>
-						<a href="../" > <i class="fas fa-business-time"></i> 
-							<span>Add Category</span>
-						</a>
-					</c:otherwise>
-				</c:choose>
-
-
-				<a href="../home/redir/signout.jsp"> <i class="fas fa-sign-out-alt">
-					</i> <span>Sign out</span>
-				</a>
-			</c:otherwise>
-		</c:choose>
-		<%--
-            ==================
-             Always show
-            ==================
-             --%>
-		<a href="../supplier/Test.jsp"> <i class="far fa-question-circle"></i> 
-			<span>About</span>
-		</a>
-	</div>
-	</div>
-	</div>
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+	    <ul class="navbar-nav w-100">
+	    <li class="nav-item dropdown"><a class="nav-link "
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						<c:out value="Hello ${user.name}" /><span class="blinker"> .</span> </a></li>
+		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Supplier </a></li>
+		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/readItem"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Item </a></li>					
+	      <li class="nav-item dropdown ml-auto">
+	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          Account
+	        </a>
+	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+	          <a class="dropdown-item" href="./">Home</a>
+	          <!-- <a class="dropdown-item" href="#editModal" data-toggle="modal">Edit User</a>-->
+	          <a class="dropdown-item" href="#editModalName" data-toggle="modal">Change Name</a>
+	          <a class="dropdown-item" href="#editModal" data-toggle="modal">Change Password</a>
+	          <a class="dropdown-item" href="logout">Logout</a>
+	        </div>
+	      </li>
+	    </ul>  
+	  </div>
+	</nav>
 </body>
 </html>
