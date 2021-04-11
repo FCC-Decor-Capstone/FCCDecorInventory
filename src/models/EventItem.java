@@ -10,6 +10,15 @@ import java.util.List;
 
 import dbHelpers.DB;
 
+/*
+ * Notes:
+ * 2020-01-01 is the minimum date, if it is inserted into database it is considered null
+ * 
+ * 
+ * */
+		
+
+
 public class EventItem {
 	
 	private int groupQuantity = 0;
@@ -24,7 +33,7 @@ public class EventItem {
 	
 	public EventItem(int itemID, String name, int quantity, boolean multibarcode) {
 		super();
-		setQuantity(quantity);;
+		setGroupQuantity(quantity);;
 		setMultibarcode(multibarcode);
 		setName(name);
 		setItemID(itemID);
@@ -35,11 +44,11 @@ public class EventItem {
 						String name,
 						boolean multibarcode,
 						int groupQuantity,
-						int quantity,
-						int userTaken, 
-						int userBack,  
+						int quantity,  
 						String dateTaken, 
-						String dateBack 
+						String dateBack ,
+						int userTaken, 
+						int userBack
 						) {
 		super();
 		setGroupQuantity(groupQuantity);
@@ -77,7 +86,7 @@ public class EventItem {
 	public static List<EventItem> getLinkedItems(int ID) {
 		List<EventItem> list = new ArrayList<EventItem>();
 //		String select="Select * from ItemGroup join Item using(itemGroupID) join ItemEvent ie using(itemID) WHERE eventID = ?;";
-		String select="Select itemID, itemName, quantityIE, multibarcode from ItemGroup join Item using(itemGroupID) join ItemEvent ie using(itemID) WHERE eventID = ?;";
+		String select="Select * from ItemGroup join Item using(itemGroupID) join ItemEvent ie using(itemID) WHERE eventID = ?;";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
@@ -85,22 +94,18 @@ public class EventItem {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) { 
-//				EventItem item = new EventItem(	ID,
-//												rs.getInt("itemID"),
-//												rs.getString("itemName"), 
-//												isMulti(rs.getString("multibarcode")),
-//												rs.getInt("quantity"),
-//												rs.getInt("quantityIE"),
-//												rs.getInt("userTaken"), 
-//												rs.getInt("userBack"),
-//												dateOF(rs.getDate("dateTaken")), 
-//												dateOF(rs.getDate("dateBack"))						
-//												) ;
-				EventItem item = new EventItem( 	rs.getInt("itemID"),
-													rs.getString("itemName"), 
-													rs.getInt("quantityIE"), 
-													isMulti(rs.getString("multibarcode"))
-													);
+				EventItem item = new EventItem(	ID,
+												rs.getInt("itemID"),
+												rs.getString("ItemGroup.itemName"), 
+												isMulti(rs.getString("multibarcode")),
+												rs.getInt("quantity"),
+												rs.getInt("quantityIE"),
+												dateOF(rs.getDate("dateTaken")), 
+												dateOF(rs.getDate("dateBack")),	
+												rs.getInt("userTaken"), 
+												rs.getInt("userBack")					
+												) ;
+
 				item.setEventID(ID);
 				list.add(item);
 			}
@@ -114,7 +119,9 @@ public class EventItem {
 	}
 	
 	public static boolean isMulti(String word) {
-		if (word.contains("y")) return true; else return false;
+		if (word != null)
+			if (word.contains("y")) return true; else return false;
+		else return false;
 	}
 	
 	public static String dateOF (Date sqlDate) {
@@ -130,7 +137,7 @@ public class EventItem {
 	
 	public static List<EventItem> getAllItems() {
 		List<EventItem> list = new ArrayList<EventItem>();
-		String select="Select * from Item join ItemGroup using(itemGroupID) join ItemEvent using(itemID) WHERE eventID = ?;";
+		String select="Select * from Item join ItemGroup using(itemGroupID);";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
@@ -138,8 +145,8 @@ public class EventItem {
 			
 			while(rs.next()) { 
 				list.add(new EventItem( 	rs.getInt("itemID"),
-											rs.getString("itemName"), 
-											rs.getInt("quantityIE"), 
+											rs.getString("ItemGroup.itemName"), 
+											rs.getInt("ItemGroup.quantity"), 
 											isMulti(rs.getString("multibarcode"))
 											));
 			}

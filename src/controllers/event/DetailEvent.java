@@ -65,7 +65,33 @@ public class DetailEvent extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator")) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		if (request.getParameter("id") != null) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				Event model = Event.getByID(id);
+				if (model != null) {
+					request.setAttribute("model", model);
+					request.setAttribute("listLinkedItems", EventItem.getLinkedItems(id));
+					request.setAttribute("listAllItems", EventItem.getAllItems());
+					request.setAttribute("listhmUsers", EventItem.getUsers());
+					dispatcher = request.getRequestDispatcher("/event/details.jsp");
+				} else {
+					request.setAttribute("ErrCtlMsg", "Event Not Found");
+				}
+			} catch (NumberFormatException nfe) {
+				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
+			} 
+		}
+		dispatcher.forward(request, response);
+	} else
+	{
+		throw new RuntimeException("Invalid access");
+	}
+		
 	}
 
 }

@@ -14,8 +14,7 @@
 	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-	
-	
+		
 </head>
 <body>
 	<%@ include file="/_shared/LeftBar.jsp"%>
@@ -30,6 +29,9 @@
 				
 				<button type="submit" formaction="./." formmethod="get"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
+	
+	
+	
 	<main class="rmdT">
 		<section class="elements">
 			<p><strong>Event Name:</strong> ${requestScope.model.name}</p>
@@ -50,14 +52,83 @@
 				<p id="comments"><strong>Comments:</strong> ${fn:trim(requestScope.model.comments)}</p>
 			</c:if>
 		</section>
+		<div class="toolBox"> 		
+			<div id="barcodeInput">
+				<label for="barcode">Enter barcode</label>
+				<input id="barcode" type="text" value="" placeholder="barcode" onkeypress="listen(event)"/>
+				<button onclick="findbarcode()" type="button">Insert</button>
+				<span style="color:red" id="error"></span>
+			</div>
+          <div id="actionSwitch">
+            <span>Return</span>
+          <label class="switch">
+            <input id="action" type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+          <span>Load</span>
+        </div>
+        </div>
 		<section class="rmdT">
-			
+			<c:forEach var="item" items="${requestScope.listLinkedItems}">
 			<script>
-				console.log(${requestScope.listLinkedItems})
-				console.log(${requestScope.listAllItems})
-				console.log(${userID})
-				console.log("${requestScope.listhmUsers[userID]}")
+				let item = {
+					quantity: ${item.groupQuantity},
+					multibarcode: ${item.multibarcode},
+					name: "${item.name}",
+					itemID: ${item.itemID}
+				}
+				loadedItems.set("${item.itemID}", item)
+				
 			</script>
+			</c:forEach>
+			
+			<c:forEach var="item" items="${requestScope.listAllItems}">
+			<script>
+				item = {
+					quantity: ${item.groupQuantity},
+					multibarcode: ${item.multibarcode},
+					name: "${item.name}",
+					itemID: ${item.itemID}
+				}
+				allItems.set("${item.itemID}", item)
+			</script>
+			</c:forEach>
+			<script>
+				console.log(loadedItems)
+				console.log(allItems)
+			</script>
+			   <form>
+        
+        <div class="hidden scanTable" id="loadItems">
+          <button class="btnSave" type="submit">Save All</button>
+          <h2>Loading Items</h2>
+          <table class="rmdT">
+              <tr>
+                <th>Barcode</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th></th>
+              </tr>
+              
+            </table> 
+        </div>
+
+        <div  class="hidden scanTable" id="returnItems">
+          <button class="btnSave" type="submit">Save All</button>
+          <h2>Returning Items</h2>
+          <table class="rmdT">
+              <tr>
+                <th>Barcode</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th></th>
+              </tr>
+              
+            </table> 
+        </div>
+    </form>
+			
+			
 				<table class="rmdT">				
 						<tr>
 							<th><span>Item</span></th>
@@ -68,12 +139,15 @@
 							<th><span>User Returned</span></th>
 						</tr>
 
+			<h1>Current List</h1>
 			<c:choose>
 			<c:when test="${not empty requestScope.listLinkedItems}">
-			not empty
 						<c:forEach var="item" items="${requestScope.listLinkedItems}">
 						<c:set var="userTaken">${item.userTaken}</c:set>
 						<c:set var="userBack">${item.userBack}</c:set>	
+							
+								
+						
 						<tr>											
 							<td><a href="./Details?id=${item.itemID}"><span>${item.name}</span></a></td>
 							<td><a href="./Details?id=${item.itemID}"><span>${item.quantity}</span></a></td>
@@ -83,6 +157,7 @@
 							<td><a href="./Details?id=${item.itemID}"><span>${requestScope.listhmUsers[userBack]}</span></a></td>
 						</tr>
 					</c:forEach>
+				
 				
 			</c:when>
 			<c:otherwise>
