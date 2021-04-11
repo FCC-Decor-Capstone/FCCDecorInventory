@@ -15,6 +15,7 @@
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <link rel="stylesheet" href="/${Constants.URL_PREFIX}style.css" />
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+            <style><%@include file="/resources/css/main.css"%></style>
 	<script src="/${Constants.URL_PREFIX}scripts.js"></script>
 	
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -40,7 +41,8 @@ function toggleSidebar(){
 </div>
 <ul>
 <li>Home</li>
-<li><a href="ItemForm.jsp">Add Item</a></li>
+<li><a href="addItem">Add Item</a></li>
+<!--  -->
 <li><a href="readItem"> Item List</a></li>
 </ul>
 </div>
@@ -48,7 +50,7 @@ function toggleSidebar(){
 <h1 id="ListOfItems">List Of Items</h1>
         <div id="float">
          
-           <form action="addItem" >
+           <form action="AddItem" >
                <button  class="w3-btn w3-black" type="submit" value="AddItem">Add New Item</button>
             </form>
             <form  class="search" action="SearchServlet" method="POST" >
@@ -68,14 +70,14 @@ function toggleSidebar(){
 					<tr>
 						<th><span>Item Name</span></th>
 						<th><span>Description</span></th>
-						<th><span>Size</span></th>
+						<!-- <th><span>Size</span></th> -->
 						<th><span>Colour</span></th>
 						<th><span>Initial Cost</span></th>
 						<th><span>Location</span></th>
-						<th><span>Multibarcode Item</span></th>
+						<!-- <th><span>Multibarcode Item</span></th> -->
 						<th><span>Quantity</span></th>
 						<th><span>Category</span></th>
-						<th><span>Supplier Name</span></th>
+						<!-- <th><span>Supplier Name</span></th> -->
 						<th><span>Delete Item</span></th>
 						<th><span>Update Item</span></th>
 						
@@ -83,19 +85,19 @@ function toggleSidebar(){
 					<c:forEach var="item" items="${requestScope.ItemList}">		
 					<tr>		
 														
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.name}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.description}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.size}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.colour}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.initialCost}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.location}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.multiBarcode}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.quantity}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.category}</span></a></td>
-						<td><a href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.supplierName}</span></a></td>
+						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.name}</span></a></td>
+						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.description}</span></a></td>
+						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.size}</span></a></td> --%>
+						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.colour}</span></a></td>
+						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.initialCost}</span></a></td>
+						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.location}</span></a></td>
+						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.multiBarcode}</span></a></td> --%>
+						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.quantity}</span></a></td>
+						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.category}</span></a></td>
+					<%-- 	<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.supplierName}</span></a></td> --%>
 						
 						
-						<td><a id="addItem"   href="./deleteServlet?itemGroupId=${item.itemGroupId}">  Delete</a></td>
+						<td><a id="addItem"   href="./DeleteServlet?itemGroupId=${item.itemGroupId}">  Delete</a></td>
 						<td><a  id="addItem" href="./UpdateServlet?itemGroupId=${item.itemGroupId}">  Update</a></td>
 						
 			

@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Item;
 import models.ItemsBarcode;
-import models.ItemSupplier;
 
 /**
  * Servlet implementation class ReadBarcodeServlet

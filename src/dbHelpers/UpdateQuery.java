@@ -65,7 +65,7 @@ public class UpdateQuery {
 			ps.setString(1,item.getName() );
 			ps.setString(2, item.getCategory());
 			ps.setString(3, item.getdescription());
-			ps.setDouble(4, item.getsize());
+			ps.setString(4, item.getsize());
 			ps.setNString(5, item.getColour());
 			ps.setDouble(6, item.getinitialCost());
 			ps.setString(7,item.getLocation());

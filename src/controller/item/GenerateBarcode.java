@@ -1,22 +1,14 @@
 package controller.item;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.krysalis.barcode4j.impl.code128.Code128Bean;
-import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
-
-import dbHelpers.BarcodeQuery;
-import models.Item;
 import models.ItemsBarcode;
 
 /**
@@ -38,15 +30,14 @@ public class GenerateBarcode extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-        int id = Integer.parseInt(request.getParameter("ItemGroupID"));
-       
+		// TODO Auto-generated method stub
+		int id = Integer.parseInt(request.getParameter("ItemGroupID"));
+	       
         ItemsBarcode.addNew(id);
         request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
 	       RequestDispatcher   dispatcher = request.getRequestDispatcher("/barcodeTable.jsp");
 	
 	       dispatcher.forward(request, response);
-				
 	}
 
 	/**

@@ -16,22 +16,19 @@ import org.krysalis.barcode4j.impl.code128.Code128Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 
 import dbHelpers.BarcodeQuery;
-import dbHelpers.ReadRecord;
 import models.Item;
-import models.ItemsBarcode;
-import models.ItemSupplier;
 
 /**
- * Servlet implementation class CreateBarCode
+ * Servlet implementation class CreateBarcode
  */
-@WebServlet("/CreateBarCode")
-public class CreateBarCode extends HttpServlet {
+@WebServlet("/CreateBarcode")
+public class CreateBarcode extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateBarCode() {
+    public CreateBarcode() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,24 +37,23 @@ public class CreateBarCode extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");	
 		//get items id
 		
 		String value=request.getParameter("barcodeId");
 	   
-	    
+		
+		    
 	    
 	   //get id to generate barcode for items
 	  
 				
  
 		//create ReadRecord class
-				BarcodeQuery rr = new BarcodeQuery(value);
-				rr.doBarcode();
+		BarcodeQuery rr = new BarcodeQuery(value);
+		rr.doBarcode();
 				
-				Item item = rr.getItem();
+		Item item = rr.getItem();
 		response.setContentType("image/jpg");
 		Code128Bean code128 = new Code128Bean();
 		code128.setHeight(15f);
@@ -66,6 +62,7 @@ public class CreateBarCode extends HttpServlet {
 		code128.doQuietZone(true);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		BitmapCanvasProvider canvas = new BitmapCanvasProvider(baos, "image/x-png",300,BufferedImage.TYPE_BYTE_BINARY,false,0);
+		
 		code128.generateBarcode(canvas, value);
 		canvas.finish();
 		
@@ -76,10 +73,11 @@ public class CreateBarCode extends HttpServlet {
 		
 				
 		//pass item and control to updateForm.jsp
-				request.setAttribute("item", item);
-		//		request.setAttribute("item", model);
-	    dispatcher.forward(request, response);
-							
+				 request.setAttribute("item", item);
+				 dispatcher = request.getRequestDispatcher("/BarcodeDisplay.jsp");
+				 dispatcher.forward(request, response);
+				
+				
 	}
 
 	/**

@@ -12,6 +12,7 @@ import java.util.List;
 import javax.servlet.annotation.WebServlet;
 
 import dbHelpers.DB;
+import models.Item;
 
 
 
@@ -23,7 +24,7 @@ public class Item {
     private int supplierID;
 	private String itemName;
 	private String description;
-	private double size;
+	private String size;
 	private String colour;
 	private double initialCost;
 	private String location;
@@ -38,7 +39,7 @@ public class Item {
 		this.supplierID = 0;
 		this.itemName = "";
 		this.description = ""; 
-		this.size = 0.0;
+		this.size = "";
 		this.colour = "";
 		this.initialCost = 0.0;
 		this.location = "";
@@ -48,7 +49,7 @@ public class Item {
 		this.supplierName="";
 	}
  
-	public Item(int itemGroupId, String itemName, String description,double size,String colour,double initialCost,String location,
+	public Item(int itemGroupId, String itemName, String description,String size,String colour,double initialCost,String location,
 			String multiBarcode,int quantity,String category,String supplierName){
 		this.itemGroupId =itemGroupId;
 		this.itemName = itemName;
@@ -142,14 +143,14 @@ public class Item {
 
 
 
-	public double getsize() {
+	public String getsize() {
 		// TODO Auto-generated method stub
 		return size;
 	}
-	public String setSize(double size) {
+	public String setSize(String size) {
 		// TODO Auto-generated method stub
 		try {
-			if (size > 45) {
+			if (size.length() > 45) {
 				hasError = true;
 				return "Telephone Field cannot exceed 45 characters";
 			}
@@ -201,7 +202,7 @@ public class Item {
 		// TODO Auto-generated method stub
 		
 		try {
-			if (size > 45) {
+			if (initialCost > 45) {
 				hasError = true;
 				return "Telephone Field cannot exceed 45 characters";
 			}
@@ -319,6 +320,27 @@ public class Item {
 		// TODO Auto-generated method stub
 		this.itemGroupId = itemGroupId;
 	}
+	public static Item updateQuantity() {
+		String update="UPDATE ItemGroup\r\n" + 
+				"SET quantity = 1\r\n" + 
+				"WHERE multiBarcode = 'no' ";
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(update);
+			
+			
+			int result = ps.executeUpdate();
+			if (result==1) {
+				return null;
+			}
+			else 
+				return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	public static Item addNew(Item item) {
@@ -329,7 +351,7 @@ public class Item {
 			ps.setString(1, item.getName());
 			ps.setString(2, item.getCategory());
 			ps.setString(3, item.getdescription());
-			ps.setDouble(4, item.getsize());
+			ps.setString(4, item.getsize());
 			ps.setString(5, item.getColour());
 			ps.setDouble(6, item.getinitialCost());
 			ps.setString(7, item.getLocation());
@@ -376,7 +398,7 @@ public class Item {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getDouble("size"),
+				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
 						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
 			}
 			if (list.size() > 0) return list; else return null;
@@ -395,7 +417,7 @@ public class Item {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) { 
-				return new Item(ID, rs.getString("itemName"),  rs.getString("description"), rs.getDouble("size"),
+				return new Item(ID, rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
 						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName"));
 			}
 			return null;
@@ -416,7 +438,7 @@ public class Item {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getDouble("size"),
+				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
 						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
 			}
 			if (list.size() > 0) return list; else return null;
@@ -437,7 +459,7 @@ public class Item {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getDouble("size"),
+				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
 						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
 			}
 			if (list.size() > 0) return list; else return null;

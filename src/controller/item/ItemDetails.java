@@ -9,11 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dbHelpers.DeleteQuery;
 import models.Item;
 import models.ItemsBarcode;
-
-
 
 /**
  * Servlet implementation class ItemDetails
@@ -35,6 +32,11 @@ public class ItemDetails extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+//		HttpSession session = request.getSession();
+//		if (session.getAttribute("urole").equals("Administrator"))
+//		{
+//			request.setAttribute("model", model);
+//		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		if (request.getParameter("itemGroupId") != null) {
 			try {

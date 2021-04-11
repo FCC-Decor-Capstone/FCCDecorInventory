@@ -119,7 +119,7 @@ public class ReadQuery {
 			    item.setName(this.results.getString("itemName"));
 			    item.setCategory(this.results.getString("category"));
 			    item.setDescription(this.results.getString("description"));
-			    item.setSize(this.results.getDouble("size"));
+			    item.setSize(this.results.getString("size"));
 			    item.setColour(this.results.getString("colour"));
 			    item.setinitialCost(this.results.getDouble("initialCost"));
 			    item.setLocation(this.results.getString("location"));

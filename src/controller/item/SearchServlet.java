@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dbHelpers.searchQuery;
 import models.Item;
-
 
 /**
  * Servlet implementation class SearchServlet
@@ -33,8 +31,7 @@ public class SearchServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-//		this.doPost(request, response);
-		
+
 		if (request.getParameter("searchVal") != null) {
 			if (!request.getParameter("searchVal").trim().isEmpty()) {
 				request.setAttribute("searchVal", request.getParameter("searchVal").trim());
@@ -55,24 +52,7 @@ public class SearchServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		// Get the text to search
-//		String itemName = request.getParameter("searchVal");
-//		//Create a SearchQuery helper object
-//		searchQuery sq = new searchQuery();
-//		
-//		
-//		//get the HTML table from the searchQuery
-//		
-//		sq.doSearch(itemName);
-//		
-//		String table =sq.getHTMLTable();
-//		
-//		//pass execution control to read.jsp along with table
-////		request.setAttribute("table", table);
-//		request.setAttribute("ItemList", Item.getAll());
-//		String url="/read.jsp";
-//		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-//		dispatcher.forward(request, response); 
 		doGet(request, response);
 	}
+
 }

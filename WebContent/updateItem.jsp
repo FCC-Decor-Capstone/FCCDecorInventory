@@ -16,6 +16,7 @@
 <meta charset="ISO-8859-1">
 <title>Update a Book</title>
 <link href="style.css" rel="stylesheet" type="text/css">
+ <style><%@include file="/resources/css/main.css"%></style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script type="text/javascript">
 function toggleSidebar(){
@@ -37,14 +38,14 @@ function toggleSidebar(){
 <li><a href="readItem"> Item List</a></li>
 </ul>
 </div>
-<form action="readItem" method="get">
+<form action="ListItem" method="get">
 	<input style="margin-left:200px;" type="submit" value="Back To List" id="addItem">
 	</form>
 
 <div class="container">
 	 <div class="card">
    <div class="card-body">
-	<form  action="updateItem" method="get">
+	<form  action="UpdateItem" method="get">
 	<div id="Header">
 	
 	

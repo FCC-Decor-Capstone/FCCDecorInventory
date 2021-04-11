@@ -37,7 +37,7 @@ function toggleSidebar(){
 </div>
 <ul>
 <li>Home</a></li>
-<li><a href="addItem">Add Item</a></li>
+<li><a href="addItem">Add Item</a></li> 
 <li><a href="readItem"> Item List</a></li>
 </ul>
 </div>
@@ -157,7 +157,7 @@ function toggleSidebar(){
 			<div class="col-sm-7">
         <select name="supplierList" >
         <c:forEach var="supplier" items="${requestScope.list}">
-       	 <option value="${supplier.name}">${supplier.name}</option>
+       	 <option value="${supplier.id}">${supplier.name}</option>
         </c:forEach>
         </select>
        </div>

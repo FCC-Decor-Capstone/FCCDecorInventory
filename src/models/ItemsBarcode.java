@@ -55,19 +55,20 @@ public class ItemsBarcode {
 //		this.itemId= iD;
 //	
 //	}
-	public ItemsBarcode(int iD,String itemName, String description,String condition, int itemGroupId) {
+	public ItemsBarcode(int iD,String itemName, String description,String condition, int quantity,int itemGroupId) {
 		super();
 		this.id= iD;
 		this.itemGroupId = itemGroupId;
 		this.itemName = itemName;
 		this.description = description; 
 		this.condition= condition;
+		this.quantity= quantity;
 		
 	
 	}
 	
 	public String getCondition() {
-		return condtion;
+		return condition;
 	}
 	public String setCondition(String condition) {
 		// TODO Auto-generated method stub
@@ -89,8 +90,8 @@ public class ItemsBarcode {
 		}
 	}
 	//select count(*) from item where groupID = ;
-	public static ItemsBarcode count(int itemId) {
-		String select="select count(itemID) from Item where itemGroupID =?";
+	public static int count(int itemId) {
+		String select="select count(*) from Item where itemGroupID =?";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
@@ -98,19 +99,21 @@ public class ItemsBarcode {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) { 
-				return new ItemsBarcode(rs.getInt("itemID"), rs.getString("itemName"),  rs.getString("comments"), rs.getString("cndition"),rs.getInt("itemGroupId"));
+				return rs.getInt(1); 
+						              
 			}
-			return null;
+			return 0;
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return 0;
 		
 	}
+	
 	public static ItemsBarcode addNew(int itemId) {
-		String insert="insert into Item (itemName,comments,itemGroupID)  Select  itemName, description,itemGroupID from ItemGroup where itemGroupID=?";
+		String insert="insert into Item (itemName,comments,itemGroupID,quantity)  Select  itemName, description,itemGroupID,quantity from ItemGroup where itemGroupID=?";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
@@ -144,7 +147,7 @@ public class ItemsBarcode {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				list.add(new ItemsBarcode(rs.getInt("itemID"), rs.getString("itemName"),  rs.getString("comments"), rs.getString("cndition"),rs.getInt("itemGroupId")));
+				list.add(new ItemsBarcode(rs.getInt("itemID"), rs.getString("itemName"),  rs.getString("comments"), rs.getString("cndition"),rs.getInt("quantity"),rs.getInt("itemGroupId")));
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
@@ -154,7 +157,7 @@ public class ItemsBarcode {
 		return null;
 	}
 	public static ItemsBarcode getByID(int ID) {
-		String select="SELECT * FROM Item WHERE itemGroupID = ?;";
+		String select="SELECT * FROM Item WHERE itemID = ?;";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
@@ -162,7 +165,12 @@ public class ItemsBarcode {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) { 
-				return new ItemsBarcode(rs.getInt("itemID"), rs.getString("itemName"),  rs.getString("comments"), rs.getString("cndition"),rs.getInt("itemGroupId"));
+				return new ItemsBarcode(rs.getInt("itemID"), 
+						             rs.getString("itemName"), 
+						             rs.getString("comments"), 
+						             rs.getString("cndition"),
+						             rs.getInt("quantity"),
+						             rs.getInt("itemGroupId"));
 			}
 			return null;
 		
@@ -187,6 +195,7 @@ public class ItemsBarcode {
 													rs.getString("itemName"),
 													rs.getString("comments"),
 													rs.getString("cndition"),
+													rs.getInt("quantity"),
 													rs.getInt("itemGroupId"));
 				list.add(item);
 			}
