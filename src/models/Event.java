@@ -36,9 +36,6 @@ public class Event {
 		
 	}
 	
-	
-
-	
 	public static Event addNew(Event newEvent) {
 		String insert="INSERT INTO Event (name, client, location, telephone, comments, eventDate) VALUES(?,?,?,?,?,?)";
 		PreparedStatement ps;

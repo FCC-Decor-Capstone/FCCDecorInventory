@@ -33,7 +33,7 @@ public class ListEvent extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		if (session.getAttribute("urole").equals("Administrator")) {
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")||session.getAttribute("urole").equals("General User")) {
 		if (request.getParameter("search") != null) {
 			if (!request.getParameter("search").trim().isEmpty()) {
 				request.setAttribute("search", request.getParameter("search").trim());

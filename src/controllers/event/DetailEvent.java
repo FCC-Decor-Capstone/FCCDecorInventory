@@ -34,7 +34,7 @@ public class DetailEvent extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		if (session.getAttribute("urole").equals("Administrator")) {
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")||session.getAttribute("urole").equals("General User")) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		if (request.getParameter("id") != null) {
 			try {

@@ -8,15 +8,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class DeleteQuery {
-	
+import models.Item;
+
+public class BarcodeQuery {
+	private Item item = new Item();
+	 private String value;
 	private Connection con;
 	private ResultSet results = null;
-	public DeleteQuery(){
+	public BarcodeQuery(String value){
 		System.out.println();
 		InputStream input=getClass().getClassLoader().getResourceAsStream("dbConnection.properties");
 		Properties props = new Properties();
+		this.value = value;
 		try {
 			props.load(input);
 		} catch (IOException e1) {
@@ -51,24 +57,34 @@ public class DeleteQuery {
 		System.out.println(url + " " +  passwd + "  " +  username + "  " + driver);
 	}
 	
-	public void doDelete(int itemGroupID) {
-		//set up a string to hold our query
-		
-		String query ="delete from ItemGroup where itemGroupID=?";
-		//create a prepared statement using our query string
-		try {
+	
+	public void doBarcode(){
+ String query = "select * from ItemGroup where itemGroupID =?";
+		 
+		 try {
 			PreparedStatement ps = con.prepareStatement(query);
 			
-			ps.setInt(1, itemGroupID);
-			
-			//execute the query
-			ps.executeUpdate();
+			ps.setString(1,this.value);
+			this.results = ps.executeQuery();
+			this.results.next();
+			 item.setItemGroupID(this.results.getInt(1));
+			    item.setName(this.results.getString("itemName"));
+			    item.setCategory(this.results.getString("category"));
+			    item.setDescription(this.results.getString("description"));
+			    item.setSize(this.results.getString("size"));
+			    item.setColour(this.results.getString("colour"));
+			    item.setinitialCost(this.results.getDouble("initialCost"));
+			    item.setLocation(this.results.getString("location"));
+			    item.setmultiBarcode(this.results.getString("multiBarcode"));
+			    item.setQuantity(this.results.getInt("quantity"));
+			   
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//fill in the prepared statement
-		//execute the query
-	}
+	 }
+   public Item getItem() {
+	   return this.item;
+   }
 
 }

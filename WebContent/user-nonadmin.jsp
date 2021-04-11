@@ -72,6 +72,12 @@
 	    <li class="nav-item dropdown"><a class="nav-link "
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						<c:out value="Hello ${user.name}"/><span class="blinker"> .</span></a></li>
+		<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Event/Details"
+		id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+		Event Details</a></li>
+		<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Event/"
+		id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+		Event List</a></li>
 	      <li class="nav-item dropdown ml-auto">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          Account
