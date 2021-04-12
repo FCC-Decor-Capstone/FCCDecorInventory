@@ -72,12 +72,6 @@
 	    <li class="nav-item dropdown"><a class="nav-link "
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						<c:out value="Hello ${user.name}"/><span class="blinker"> .</span></a></li>
-		<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Event/Details"
-		id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-		Event Details</a></li>
-		<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Event/"
-		id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-		Event List</a></li>
 	      <li class="nav-item dropdown ml-auto">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          Account
@@ -181,24 +175,25 @@
 	</div>
 	
   	<div class="container-fluid home-main">
+  	<%@include file="event/table.jsp" %>
 		<!-- <h2><c:out value="${user.name}" /> <span class="blinker">.</span></h2>
 		<form action="edit">
 			<input type="hidden" name="id" value="${user.id}"/>
 			<a href="#editModal" class="btn btn-primary trigger-btn" title="Edit" data-toggle="modal"><i class="material-icons">settings</i>Edit User</a>
 		</form> -->
 	</div>
-	<div class="container-fluid home-content1">
+	<!--  <div class="container-fluid home-content1">
 		<div class="row">
 			<div class="col-md-6 content1-left">
 				<h3> <span class="blinker">?</span></h3>
 				<p></p>
-				<!-- <div class="content1-left"></div> -->
+				<div class="content1-left"></div> 
 			</div>
 			<div class="col-md-6 content1-right">
 				<p></p>
 			</div>
 		</div>
-	</div>
+	</div>-->
 	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
 		<div class="footer-copyright text-center py-4" style="align-items: center;">
 			<a> © 2021 Internet Explorers </a>
