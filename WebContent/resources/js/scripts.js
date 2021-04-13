@@ -68,36 +68,44 @@ let loadedItems = new Map()
 } 
 
 const increase = (id) => {
-    if(!document.getElementById("action").checked) return; //only increments if loading  
-    let input = document.querySelector("#loadItems tbody #qty_" + id);
-    if (Number(input.getAttribute("value")) < Number(input.getAttribute("max"))) 
-        input.setAttribute("value", Number(input.getAttribute("value")) + 1); 
+    let input;
+    if (document.getElementById("action").checked) {
+        input= document.querySelector(".rmdT tbody #qty_Load" + id);
+    } else {
+        input = document.querySelector(".rmdT tbody #qty_Return" + id);
+    }
+    if (Number(input.value) < Number(input.max)) 
+        input.value =  Number(input.value) + 1; 
 }
 
 const decrease = (id) => {
-    let input = document.querySelector("#loadItems tbody #qty_" + id);
-    if (Number(input.getAttribute("value")) > 1)
-    input.setAttribute("value", Number(input.getAttribute("value")) - 1); 
+    let input;
+    if (document.getElementById("action").checked) {
+        input= document.querySelector(".rmdT tbody #qty_Load" + id);
+    } else {
+        input = document.querySelector(".rmdT tbody #qty_Return" + id);
+    }
+    if (Number(input.value) > 1)
+    input.value =  Number(input.value) -1; 
 }
 
 const deleteRow = (e) => {
-    // let scanTables = document.querySelectorAll(".scanTable tbody");
-    // let row = document.getElementById("td_" + id);
-
-    // scanTables.forEach(element => {
-    //     element.removeChild(row); 
-    //     let testRows = element.querySelector("td");
-    //     if (!testRows) element.classList.add("hidden");
-    // });
     let row = e.target.parentElement.parentElement;
     let tbody = row.parentElement;
     let scanDiv = tbody.parentElement.parentElement;
-    console.log(row,tbody,scanDiv)
     
     tbody.removeChild(row);
     if (!tbody.querySelector("td")) scanDiv.classList.add("hidden")
     
     
+}
+
+const insertReturn = (barcode) => {
+    let txtbox = document.getElementById("barcode");
+    txtbox.value = barcode;
+    document.getElementById("action").checked = false;
+    findbarcode();
+
 }
 
 const findbarcode = () => {
@@ -106,15 +114,16 @@ const findbarcode = () => {
     let itemMap;
     let table;
     let postfix;
-    if (action) {
+    if (!action) {
+        //return items
+        table = document.querySelector("#returnItems tbody");
+        itemMap = loadedItems;
+        postfix = "Return"
+    } else {
         //Load Items
         table = document.querySelector("#loadItems tbody");
         itemMap = allItems;
         postfix = "Load"
-    } else {
-        table = document.querySelector("#returnItems tbody");
-        itemMap = loadedItems;
-        postfix = "Return"
     }
 
     let lblError = document.getElementById("error");
@@ -126,14 +135,14 @@ const findbarcode = () => {
         return;
     }
 
-
     let element = itemMap.get(txtbox.value.trim()) ;
     if (element) { 
         table.parentElement.parentElement.classList.remove("hidden");
 
         let checkExist = table.querySelector("#td_" + element.itemID)
         if (checkExist) {
-            increase(element.itemID)
+
+            if (!element.multibarcode) increase(element.itemID); else lblError.innerText="Item already added."
             txtbox.focus();
 
         } else {
@@ -155,37 +164,38 @@ const findbarcode = () => {
                     tdName.colSpan = nameRowColSpan
                 tblRow.appendChild(tdName);    
                 if (!element.multibarcode) {
-                let tdQty = document.createElement("td");
-                if (action) { //quantity editor for loading only
-                        let btnQtyDec = document.createElement("button");
-                        btnQtyDec.setAttribute("type", "button");
-                        btnQtyDec.classList.add("qtyBtn")
-                        btnQtyDec.setAttribute("onclick", "decrease("+element.itemID+")");
-                        btnQtyDec.innerHTML = "<i class=\"fas fa-minus\"></i>"
-                    tdQty.appendChild(btnQtyDec)
+                    let tdQty = document.createElement("td");
+                    
+                            let btnQtyDec = document.createElement("button");
+                            btnQtyDec.setAttribute("type", "button");
+                            btnQtyDec.classList.add("qtyBtn")
+                            btnQtyDec.setAttribute("onclick", "decrease("+element.itemID+")");
+                            btnQtyDec.innerHTML = "<i class=\"fas fa-minus\"></i>"
+                        tdQty.appendChild(btnQtyDec)
 
-                        let inputQty = document.createElement("input");
-                        inputQty.setAttribute("type", "number");
-                        inputQty.setAttribute("min", "1");
-                        inputQty.setAttribute("max", element.quantity);
-                        inputQty.setAttribute("id", "qty_"+element.itemID);
-                        inputQty.setAttribute("name", "qty_"+element.itemID);
-                        inputQty.setAttribute("value", 1);    
-                    tdQty.appendChild(inputQty)
+                            let inputQty = document.createElement("input");
+                            inputQty.setAttribute("type", "number");
+                            inputQty.setAttribute("min", "1");
+                            if (action) 
+                                inputQty.setAttribute("max", element.quantityLeft);
+                            else 
+                                inputQty.setAttribute("max", element.quantity);
+                            inputQty.setAttribute("id", "qty_"+ postfix +element.itemID);
+                            inputQty.setAttribute("name", "qty_"+ postfix +element.itemID);
+                            
+                            if (action)
+                                inputQty.setAttribute("value", 1);    
+                            else
+                                inputQty.setAttribute("value", element.quantity);    
+                        tdQty.appendChild(inputQty)
 
-                        let btnQtyInc = document.createElement("button");
-                        btnQtyInc.setAttribute("type", "button");
-                        btnQtyInc.classList.add("qtyBtn")
-                        btnQtyInc.setAttribute("onclick", "increase("+element.itemID+")");
-                        btnQtyInc.innerHTML = "<i class=\"fas fa-plus\"></i>"
-                    tdQty.appendChild(btnQtyInc)
-                } else { //
-                    let inputQty = document.createElement("span");
-                        inputQty.innerText =  element.quantity;
-                        inputQty.style.marginRight = "1em"
-                    tdQty.appendChild(inputQty)
-                }
-                tblRow.appendChild(tdQty);
+                            let btnQtyInc = document.createElement("button");
+                            btnQtyInc.setAttribute("type", "button");
+                            btnQtyInc.classList.add("qtyBtn")
+                            btnQtyInc.setAttribute("onclick", "increase("+element.itemID+")");
+                            btnQtyInc.innerHTML = "<i class=\"fas fa-plus\"></i>"
+                        tdQty.appendChild(btnQtyInc)
+                    tblRow.appendChild(tdQty);
                 }
                 
                 let tdDelete = document.createElement("td");
@@ -205,6 +215,7 @@ const findbarcode = () => {
     } else {
         if (txtbox.value) {
             lblError.innerText = "Barcode not found";
+            txtbox.value = "";
             return;
         }
     }

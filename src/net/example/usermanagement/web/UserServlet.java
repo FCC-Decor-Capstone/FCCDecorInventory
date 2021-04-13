@@ -246,6 +246,7 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 			HttpSession session = request.getSession();
 			session.setAttribute("uemail", user.getEmail());
 			session.setAttribute("urole", user.getRole());
+			session.setAttribute("uid", user.getId());
 			
 			response.sendRedirect("list");
 		} else {

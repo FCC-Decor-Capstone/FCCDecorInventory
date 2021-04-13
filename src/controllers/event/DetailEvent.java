@@ -1,6 +1,11 @@
 package controllers.event;
 
+import java.awt.event.ItemEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,8 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import helpers.Constants;
 import models.Event;
 import models.EventItem;
+import net.example.usermanagement.model.User;
 
 /**
  * Servlet implementation class DetailEvent
@@ -34,15 +41,28 @@ public class DetailEvent extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		if (session.getAttribute("urole").equals("Administrator")) {
+//		if (session.getAttribute("urole").equals("Administrator")) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		if (request.getParameter("id") != null) {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
 				Event model = Event.getByID(id);
 				if (model != null) {
+					
+					List<EventItem> linkedList = EventItem.getLinkedItems(id);
+					double totalCost = 0D; 
+					for (EventItem item : linkedList) {
+						if (!item.isMultibarcode()) 
+						{
+							totalCost+=item.getQuantityHistoric()*item.getCost();
+							continue;
+						}
+						
+						totalCost += item.getCost();
+					}
 					request.setAttribute("model", model);
-					request.setAttribute("listLinkedItems", EventItem.getLinkedItems(id));
+					request.setAttribute("listLinkedItems", linkedList);
+					request.setAttribute("totalCost", totalCost);
 					request.setAttribute("listAllItems", EventItem.getAllItems());
 					request.setAttribute("listhmUsers", EventItem.getUsers());
 					dispatcher = request.getRequestDispatcher("/event/details.jsp");
@@ -54,10 +74,10 @@ public class DetailEvent extends HttpServlet {
 			} 
 		}
 		dispatcher.forward(request, response);
-	} else
-	{
-		throw new RuntimeException("Invalid access");
-	}
+//	} else
+//	{
+//		throw new RuntimeException("Invalid access");
+//	}	
 }
 
 	/**
@@ -67,23 +87,94 @@ public class DetailEvent extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		HttpSession session = request.getSession();
-		if (session.getAttribute("urole").equals("Administrator")) {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");
-		if (request.getParameter("id") != null) {
+		String urole = (String) session.getAttribute("urole");
+		int uid = (int) session.getAttribute("uid");
+			
+		if (urole != null) {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/event/details.jsp");
+		if (request.getParameter("eventID") != null) {
 			try {
-				int id = Integer.parseInt(request.getParameter("id"));
-				Event model = Event.getByID(id);
-				if (model != null) {
-					request.setAttribute("model", model);
-					request.setAttribute("listLinkedItems", EventItem.getLinkedItems(id));
-					request.setAttribute("listAllItems", EventItem.getAllItems());
-					request.setAttribute("listhmUsers", EventItem.getUsers());
-					dispatcher = request.getRequestDispatcher("/event/details.jsp");
-				} else {
-					request.setAttribute("ErrCtlMsg", "Event Not Found");
+				int eventId = Integer.parseInt(request.getParameter("eventID"));
+				Event model = Event.getByID(eventId);
+				if (model != null) {  
+					
+				int[] barcodesLoadArr = convertBarcodesToIntArray(request.getParameterValues("barcodesLoad"));
+				int[] barcodesReturnArr = convertBarcodesToIntArray(request.getParameterValues("barcodesReturn"));
+				
+				
+				
+				if (barcodesLoadArr != null || barcodesReturnArr != null) {
+						List<EventItem> barcodesLoad = new ArrayList<EventItem>();
+						List<EventItem> barcodesReLoad = new ArrayList<EventItem>();
+						List<EventItem> barcodesQtyReLoad = new ArrayList<EventItem>();
+						List<EventItem> barcodesReturn = new ArrayList<EventItem>();
+						
+						
+						HashMap<String, EventItem> linkedMap =  EventItem.getHashedLinkedItems(eventId);
+						HashMap<String, EventItem> availableMap =   EventItem.getHashedAllItems();
+						//request.setAttribute("listhmUsers", EventItem.getUsers());
+						int affectedRows = 0;
+						//Iterates through Load Barcodes coming from request
+						if (barcodesLoadArr != null ) {
+							for (int barcode : barcodesLoadArr) {
+								EventItem newItem = availableMap.get(String.valueOf(barcode));
+								if (newItem != null) {
+									//If not first Time
+									if (linkedMap.get(String.valueOf(newItem.getItemID())) != null) {
+										//getting the item from LinkedMap method cuz it has more data about the item
+										newItem = linkedMap.get(String.valueOf(newItem.getItemID()));
+										if (!newItem.isMultibarcode()) {
+											newItem.setAddedQty(Integer.parseInt(request.getParameter("qty_Load"+barcode)));
+											barcodesQtyReLoad.add(newItem);
+										} else {
+											barcodesReLoad.add(newItem);
+										}
+										continue; //as newItem is added to another list now to Update instead of Insert new Items
+									}					
+									
+									barcodesLoad.add(newItem);//first time loaded items
+								}
+							}
+							affectedRows += EventItem.insertNewLoaded(barcodesLoad, eventId, uid);
+							affectedRows += EventItem.IncreaseQuantity(barcodesQtyReLoad,eventId, uid);
+							affectedRows += EventItem.updateReload(barcodesReLoad,eventId, uid);
+						}
+						
+						if (barcodesReturnArr != null ) {
+							for (int barcode : barcodesReturnArr) {
+								EventItem returnItem = linkedMap.get(String.valueOf(barcode));
+								if (returnItem != null) {
+									if (!returnItem.isMultibarcode()) {
+										int removedQuantity = Integer.parseInt(request.getParameter("qty_Return"+barcode));
+										//Removes quantity from current if already exists 
+										if (removedQuantity < returnItem.getQuantity()) {
+											if(EventItem.decreaseQuantity(returnItem,eventId, uid,removedQuantity)) affectedRows++;
+											continue;
+										} 	
+									}
+									
+									barcodesReturn.add(returnItem);
+								}
+							}
+							affectedRows+= EventItem.updateReturned(barcodesReturn, eventId, uid);
+						}
+						
+						request.setAttribute("model", model);
+						request.setAttribute("listLinkedItems",EventItem.getLinkedItems(eventId));
+						request.setAttribute("listAllItems", EventItem.getAllItems());
+						request.setAttribute("listhmUsers", EventItem.getUsers());
+						dispatcher = request.getRequestDispatcher("/event/details.jsp");
+					
+						request.setAttribute("SucCtlMsg", "Event Updated (" + affectedRows + " Items)");
+						
+//						response.sendRedirect(Constants.URL_PREFIX+"Event/Details?=" + eventId);
+//						return;
+					} else {
+						request.setAttribute("ErrCtlMsg", "Event Not Found");
+					}
 				}
 			} catch (NumberFormatException nfe) {
-				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
+				request.setAttribute("ErrCtlMsg", "Can't fulfil request without Event ID");
 			} 
 		}
 		dispatcher.forward(request, response);
@@ -94,4 +185,17 @@ public class DetailEvent extends HttpServlet {
 		
 	}
 
+	private int[] convertBarcodesToIntArray(String[] strings) {
+		int[] array;
+        try {
+        	array = Arrays.asList(strings).stream().mapToInt(Integer::parseInt).toArray();
+        } catch (Exception e) {
+        	return null;
+        }
+	    
+	    return array;
+	}
+
+	
+	
 }

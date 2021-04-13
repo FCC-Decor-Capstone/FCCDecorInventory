@@ -22,11 +22,12 @@
 	<h1>${requestScope.model.name} Event Details</h1>
 	<form class="toolBox"> 			
 		<input type="hidden" name="id" value="${requestScope.model.id}" />
+			<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 				<div>
 					<button type="submit" formaction="Edit" formmethod="get"><i class="fas fa-pen tablebtn" style="color:green;"> Edit</i></button>
 					<button type="button"  onClick="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${requestScope.model.id}')"><i class="fa fa-close tablebtn" style="color:red;"> Delete</i></button>
 				</div>
-				
+			</c:if>	
 				<button type="submit" formaction="./." formmethod="get"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
 	
@@ -48,9 +49,22 @@
 			<c:if test="${not empty requestScope.model.telephone}">
 				<p><strong>Contact Telephone:</strong> ${requestScope.model.telephone}</p>
 			</c:if>
+			
+			<c:if test="${sessionScope.urole == 'Administrator'}">
+				<c:if test="${not empty requestScope.totalCost}">
+					<p><strong>Total Cost Involved:</strong> ${requestScope.totalCost} CAD</p>
+				</c:if>
+			</c:if>
+			
 			<c:if test="${not empty requestScope.model.comments}">
 				<p id="comments"><strong>Comments:</strong> ${fn:trim(requestScope.model.comments)}</p>
 			</c:if>
+			
+		
+
+			
+			
+			
 		</section>
 		<div class="toolBox"> 		
 			<div id="barcodeInput">
@@ -69,36 +83,45 @@
         </div>
         </div>
 		<section class="rmdT">
+		<script>let item;</script>
 			<c:forEach var="item" items="${requestScope.listLinkedItems}">
-			<script>
-				let item = {
-					quantity: ${item.groupQuantity},
-					multibarcode: ${item.multibarcode},
-					name: "${item.name}",
-					itemID: ${item.itemID}
-				}
-				loadedItems.set("${item.itemID}", item)
-				
-			</script>
+				<c:if test="${empty item.dateBack}"> 
+					<script>
+						item = {
+							quantity: ${item.quantity},
+							multibarcode: ${item.multibarcode},
+							name: "${item.name}",
+							itemID: ${item.itemID},
+						}
+						loadedItems.set("${item.itemID}", item)
+						
+					</script>
+				</c:if>
 			</c:forEach>
 			
 			<c:forEach var="item" items="${requestScope.listAllItems}">
-			<script>
-				item = {
-					quantity: ${item.groupQuantity},
-					multibarcode: ${item.multibarcode},
-					name: "${item.name}",
-					itemID: ${item.itemID}
-				}
-				allItems.set("${item.itemID}", item)
-			</script>
+				<c:set var="someleft" value="${!multibarcode and item.qtyLeft != 0}"/>
+				<c:if test="${someleft or item.multibarcode}"> 
+					<script>
+						item = {
+							quantityLeft: ${item.qtyLeft},
+							quantity: ${item.quantity},
+							multibarcode: ${item.multibarcode},
+							name: "${item.name}",
+							itemID: ${item.itemID}
+						}
+						allItems.set("${item.itemID}", item)
+					</script>
+				</c:if>
 			</c:forEach>
 			<script>
 				console.log(loadedItems)
 				console.log(allItems)
 			</script>
-			   <form>
-        
+	<form method="POST">   
+	
+	
+		<input type="hidden" value="${requestScope.model.id}" name="eventID"/>
         <div class="hidden scanTable" id="loadItems">
           <button class="btnSave" type="submit">Save All</button>
           <h2>Loading Items</h2>
@@ -132,29 +155,59 @@
 				<table class="rmdT">				
 						<tr>
 							<th><span>Item</span></th>
-							<th><span>Quantity</span></th>
+							<th><span>Qty Out(Total)</span></th>
+							<c:if test="${sessionScope.urole == 'Administrator'}">
+								<th><span>Cost</span></th>
+							</c:if>
 							<th><span>Date Taken</span></th>
 							<th><span>User Taken</span></th>
 							<th><span>Date Returned</span></th>
 							<th><span>User Returned</span></th>
 						</tr>
 
-			<h1>Current List</h1>
+		
 			<c:choose>
 			<c:when test="${not empty requestScope.listLinkedItems}">
 						<c:forEach var="item" items="${requestScope.listLinkedItems}">
 						<c:set var="userTaken">${item.userTaken}</c:set>
 						<c:set var="userBack">${item.userBack}</c:set>	
-							
-								
-						
+									
 						<tr>											
 							<td><a href="./Details?id=${item.itemID}"><span>${item.name}</span></a></td>
-							<td><a href="./Details?id=${item.itemID}"><span>${item.quantity}</span></a></td>
+							<td><a href="./Details?id=${item.itemID}"><span>
+								<c:if test="${item.quantity != 0 or item.quantityHistoric != 0}">
+									${item.quantity} (${item.quantityHistoric})
+								</c:if>
+							</span></a></td>
+							
+							<c:if test="${sessionScope.urole == 'Administrator'}">
+								<td><a href="./Details?id=${item.itemID}"><span>
+									<c:if test="${item.cost != 0}">${item.cost}</c:if></span>
+								</a></td>
+							</c:if>
 							<td><a href="./Details?id=${item.itemID}"><span>${item.dateTaken}</span></a></td>
 							<td><a href="./Details?id=${item.itemID}"><span>${requestScope.listhmUsers[userTaken]}</span></a></td>
-							<td><a href="./Details?id=${item.itemID}"><span>${item.dateBack}</span></a></td>
-							<td><a href="./Details?id=${item.itemID}"><span>${requestScope.listhmUsers[userBack]}</span></a></td>
+							<td class="<c:if test="${empty item.dateBack}">returnable" onclick="insertReturn(${item.itemID})</c:if>">
+								<c:choose>
+									<c:when test="${empty item.dateBack}">
+										<a href="#"><span>${item.dateBack}</span></a>
+									</c:when>
+									<c:otherwise>
+										<a href="./Details?id=${item.itemID}"><span>${item.dateBack}</span></a>
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td class="<c:if test="${empty item.dateBack}">returnable" onclick="insertReturn(${item.itemID})</c:if> " >
+								<c:choose>
+									<c:when test="${empty item.dateBack}">
+										<a href="#""><span>${requestScope.listhmUsers[userBack]}</span></a>
+									</c:when>
+									<c:otherwise>
+										<a href="./Details?id=${item.itemID}"><span>${requestScope.listhmUsers[userBack]}</span></a>
+									</c:otherwise>
+								</c:choose>
+									
+							</td>
 						</tr>
 					</c:forEach>
 				

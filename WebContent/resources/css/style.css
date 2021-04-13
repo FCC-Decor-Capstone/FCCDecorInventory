@@ -217,6 +217,12 @@ table.rmdT  {
    	
 }
 
+.rmdT td.returnable:hover {
+  background-color: rgb(219, 255, 219);
+  color:darkgreen;
+  cursor: pointer;
+}
+
 .rmdT td>*, .rmdT th * {
 	padding: 1em;
 }
@@ -249,6 +255,7 @@ form#searchBox button#clearButton {
 	background-color: var(--white);
 	border: 1px solid var(--dark-color);
 	padding: 0.5em;
+
 	
 }
 
