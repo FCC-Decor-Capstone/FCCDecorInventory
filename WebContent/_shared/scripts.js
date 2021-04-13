@@ -1,3 +1,4 @@
+
 /**
  * Confirm before Client side redirect
  */

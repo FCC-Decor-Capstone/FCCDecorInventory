@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import models.Item;
 import models.ItemsBarcode;
@@ -37,6 +38,8 @@ public class ItemDetails extends HttpServlet {
 //		{
 //			request.setAttribute("model", model);
 //		}
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		if (request.getParameter("itemGroupId") != null) {
 			try {
@@ -58,7 +61,11 @@ public class ItemDetails extends HttpServlet {
 			} 
 		}
 		dispatcher.forward(request, response);
+	} else
+	{
+		throw new RuntimeException("Invalid access");
 	}
+}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
