@@ -1,6 +1,8 @@
 package controllers.event;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Event;
+import models.Logs;
 
 /**
  * Servlet implementation class AddEvent
@@ -34,47 +37,55 @@ public class AddEvent extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
-		request.setAttribute("action", "Add");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/event/form.jsp");
-		dispatcher.forward(request, response);
-	} else
-	{
-		throw new RuntimeException("Invalid access");
-	}
+			request.setAttribute("action", "Add");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/event/form.jsp");
+			dispatcher.forward(request, response);
+		} else
+		{
+			throw new RuntimeException("Invalid access");
+		}
 }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("action", "Add");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/event/form.jsp");
-		Event newEvent = new Event();
-		
-		
-		//Request Verification (within Model for clean code)
-			request.setAttribute("errName", newEvent.setName(request.getParameter("name")));
-			request.setAttribute("errClient", newEvent.setClient(request.getParameter("client")));
-			request.setAttribute("errLocation", newEvent.setLocation(request.getParameter("location")));
-			request.setAttribute("errTelephone", newEvent.setTelephone(request.getParameter("telephone")));
-			request.setAttribute("errComments", newEvent.setComments(request.getParameter("comments")));
-			request.setAttribute("errEventDate", newEvent.setEventDate(request.getParameter("eventDate")));
-		
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
+			request.setAttribute("action", "Add");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/event/form.jsp");
+			Event newEvent = new Event();
 			
-		request.setAttribute("model",newEvent);
 			
-		if (newEvent.hasError()) {
-			request.setAttribute("ErrCtlMsg", "Event Adding Error");
-		} else {
-			Event.addNew(newEvent);
-			request.setAttribute("SucCtlMsg", "Event Added Successfully");
-			request.setAttribute("list", Event.getAll());
-			dispatcher = request.getRequestDispatcher("/event/table.jsp");
-			// TODO redirect to Details
-			//
+			//Request Verification (within Model for clean code)
+				request.setAttribute("errName", newEvent.setName(request.getParameter("name")));
+				request.setAttribute("errClient", newEvent.setClient(request.getParameter("client")));
+				request.setAttribute("errLocation", newEvent.setLocation(request.getParameter("location")));
+				request.setAttribute("errTelephone", newEvent.setTelephone(request.getParameter("telephone")));
+				request.setAttribute("errComments", newEvent.setComments(request.getParameter("comments")));
+				request.setAttribute("errEventDate", newEvent.setEventDate(request.getParameter("eventDate")));
+			
+				
+			request.setAttribute("model",newEvent);
+				
+			if (newEvent.hasError()) {
+				request.setAttribute("ErrCtlMsg", "Event Adding Error");
+			} else {
+				Event.addNew(newEvent);
+				Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event","Added New Event Name:" + newEvent.getName() + ", on Date: " + newEvent.getEventDate() ,""));
+				request.setAttribute("SucCtlMsg", "Event Added Successfully");
+				request.setAttribute("list", Event.getAll());
+				dispatcher = request.getRequestDispatcher("/event/table.jsp");
+				// TODO redirect to Details
+				//
+			}
+			
+			dispatcher.forward(request, response);
+		} else
+		{
+			throw new RuntimeException("Invalid access");
 		}
 		
-		dispatcher.forward(request, response);
 	}
 
 }
