@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Event;
+import models.Logs;
 
 /**
  * Servlet implementation class EditEvent
@@ -61,42 +62,48 @@ public class EditEvent extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/event/form.jsp");
-		Event newEvent = new Event();
-		
-		
-		//Request Verification (within Model for clean code)
-			try {
-				request.setAttribute("errName", newEvent.setId(Integer.parseInt(request.getParameter("id"))));
-			} catch (NumberFormatException nfe) {
-				response.getWriter().append("Invalid ID, please restart Edit form.");
-				return;
-			} 
-			request.setAttribute("errName", newEvent.setName(request.getParameter("name")));
-			request.setAttribute("errClient", newEvent.setClient(request.getParameter("client")));
-			request.setAttribute("errLocation", newEvent.setLocation(request.getParameter("location")));
-			request.setAttribute("errTelephone", newEvent.setTelephone(request.getParameter("telephone")));
-			request.setAttribute("errComments", newEvent.setComments(request.getParameter("comments")));
-			request.setAttribute("errEventDate", newEvent.setEventDate(request.getParameter("eventDate")));
-		
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/event/form.jsp");
+			Event newEvent = new Event();
 			
-		request.setAttribute("model",newEvent);
 			
-		if (newEvent.hasError()) {
-			request.setAttribute("action", "Edit");
-			request.setAttribute("ErrCtlMsg", "Event Editing Error");
-		} else {
+			//Request Verification (within Model for clean code)
+				try {
+					request.setAttribute("errName", newEvent.setId(Integer.parseInt(request.getParameter("id"))));
+				} catch (NumberFormatException nfe) {
+					response.getWriter().append("Invalid ID, please restart Edit form.");
+					return;
+				} 
+				request.setAttribute("errName", newEvent.setName(request.getParameter("name")));
+				request.setAttribute("errClient", newEvent.setClient(request.getParameter("client")));
+				request.setAttribute("errLocation", newEvent.setLocation(request.getParameter("location")));
+				request.setAttribute("errTelephone", newEvent.setTelephone(request.getParameter("telephone")));
+				request.setAttribute("errComments", newEvent.setComments(request.getParameter("comments")));
+				request.setAttribute("errEventDate", newEvent.setEventDate(request.getParameter("eventDate")));
 			
-			Event.editByID(newEvent);
-			request.setAttribute("SucCtlMsg", "Event Edited Successfully");
-			System.out.println("Edited" + newEvent.getName() + " With ID of " + newEvent.getId());
-			request.setAttribute("list", Event.getAll());
-			dispatcher = request.getRequestDispatcher("/event/table.jsp");
+				
+			request.setAttribute("model",newEvent);
+				
+			if (newEvent.hasError()) {
+				request.setAttribute("action", "Edit");
+				request.setAttribute("ErrCtlMsg", "Event Editing Error");
+			} else {
+				
+				Event.editByID(newEvent);
+				request.setAttribute("SucCtlMsg", "Event Edited Successfully");
+				Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event","Edited Event Name:" + newEvent.getName() + ", on Date: " + newEvent.getEventDate() ,""));
+				System.out.println("Edited" + newEvent.getName() + " With ID of " + newEvent.getId());
+				request.setAttribute("list", Event.getAll());
+				dispatcher = request.getRequestDispatcher("/event/table.jsp");
+				
+			}
 			
+			dispatcher.forward(request, response);
+		} else
+		{
+			throw new RuntimeException("Invalid access");
 		}
-		
-		dispatcher.forward(request, response);
 	}
 
 }

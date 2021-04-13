@@ -34,7 +34,7 @@
 	    <ul class="navbar-nav w-100">
 	    <li class="nav-item dropdown"><a class="nav-link "
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						<c:out value="Hello ${user.name}" /><span class="blinker"> .</span> </a></li>
+						<c:out value="Hello ${sessionScope.uname}" /><span class="blinker">.</span> </a></li>
 		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Supplier </a></li>

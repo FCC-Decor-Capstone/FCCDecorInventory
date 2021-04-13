@@ -34,7 +34,7 @@
 					<button type="submit"><i class="fa fa-search"></i></button>
 				</div>
 				<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
-					w<button type="submit" formaction="Add" formmethod="get"><i class="fas fa-plus"> Add New</i></button>
+					<button type="submit" formaction="Add" formmethod="get"><i class="fas fa-plus"> Add New</i></button>
 				</c:if>
 		</form>
 	<c:choose>
