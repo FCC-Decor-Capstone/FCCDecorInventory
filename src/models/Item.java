@@ -105,7 +105,7 @@ public class Item {
 		try {
 			if (supplierName.trim().isEmpty()) {
 				hasError = true;
-				return "Name Field cannot be empty";
+				return " Supplier Name Field cannot be empty";
 			}
 			if (supplierName.length() > 45) {
 				hasError = true;

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Category;
 import models.Item;
 import models.ItemSupplier;
 
@@ -34,6 +35,7 @@ public class AddItem extends HttpServlet {
 		// TODO Auto-generated method stub
 				request.setAttribute("action", "AddItem");
 		        request.setAttribute("list",ItemSupplier.getAll());
+		        request.setAttribute("Categorylist",Category.getAll());
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
 				dispatcher.forward(request, response);
 				/* doPost(request,response); */
@@ -81,6 +83,7 @@ public class AddItem extends HttpServlet {
 //				    dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
 					request.setAttribute("ItemList", Item.getAll());
 					request.setAttribute("list",ItemSupplier.getAll());
+					request.setAttribute("Categorylist",Category.getAll());
 					dispatcher = request.getRequestDispatcher("/read.jsp");
 					// TODO redirect to Details
 					//
