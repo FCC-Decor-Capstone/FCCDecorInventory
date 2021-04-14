@@ -25,7 +25,7 @@
 	<%@ include file="/_shared/message.jsp"%>
 	
 	<h1>Events' List</h1>	
-		<form action="" Method="POST" id="searchBox"> 
+		<form action="/user-management-master/list/?search" Method="GET" id="searchBox"> 
 				<div class="searchItem">
 					<c:if test="${not empty requestScope.search}">
 						<button id="clearButton" onclick="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
