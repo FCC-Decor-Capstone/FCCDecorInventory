@@ -216,12 +216,19 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 	
 	private void viewLogs(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-
-		RequestDispatcher dispatcher = null;
-		List<Logs> myLogs = userDAO.selectAllLogs();
-		request.setAttribute("logs", myLogs);
-		dispatcher = request.getRequestDispatcher("logs-form.jsp");
-		dispatcher.forward(request, response);
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator")) {
+			RequestDispatcher dispatcher = null;
+			List<Logs> myLogs = userDAO.selectAllLogs();
+			request.setAttribute("logs", myLogs);
+			dispatcher = request.getRequestDispatcher("logs-form.jsp");
+			dispatcher.forward(request, response);
+		}
+		else
+		{
+			throw new RuntimeException("Invalid access");
+		}
+		
 	}
 
 	private void showLoginForm(HttpServletRequest request, HttpServletResponse response)
@@ -290,8 +297,20 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
 						(String) session.getAttribute("urole"));
 				request.setAttribute("user", user);
-				List<Event> events = Event.getAll();
-				request.setAttribute("list", events);
+				if (request.getParameter("search") != null) {
+					if (!request.getParameter("search").trim().isEmpty()) {
+						request.setAttribute("search", request.getParameter("search").trim());
+						request.setAttribute("list", Event.search(request.getParameter("search")));	
+					} else {
+						//List<Event> events = Event.getAll();
+						//request.setAttribute("list", events);
+						request.setAttribute("list", Event.getAll());
+					}
+				} else {
+					request.setAttribute("list", Event.getAll());
+				}
+				//List<Event> events = Event.getAll();
+				//request.setAttribute("list", events);
 				dispatcher = request.getRequestDispatcher("managers.jsp");
 			} 
 			

@@ -33,7 +33,7 @@ public class ListItem extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")  || session.getAttribute("urole").equals("General User")) {
 		if (request.getParameter("searchVal") != null) {
 			if (!request.getParameter("searchVal").trim().isEmpty()) {
 				request.setAttribute("search", request.getParameter("searchVal").trim());

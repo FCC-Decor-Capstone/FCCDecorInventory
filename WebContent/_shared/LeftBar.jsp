@@ -35,10 +35,12 @@
 	    <li class="nav-item dropdown"><a class="nav-link "
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						<c:out value="Hello ${sessionScope.uname}" /><span class="blinker">.</span> </a></li>
+		<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">				
 		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Supplier </a></li>
-		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/readItem"
+		</c:if>
+		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/ListItem"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Item </a></li>					
 	      <li class="nav-item dropdown ml-auto">
