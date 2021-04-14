@@ -4,11 +4,14 @@
    <%
    	ItemSupplier supplier = (ItemSupplier) request.getAttribute("Supplier");
    %>
-    <%@ page import="models.Item" %>
+   <%@ page import="models.Item" %>
    <% Item item = (Item) request.getAttribute("Item"); %>
    <!DOCTYPE html>
 <html>
     <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
    
     <style><%@include file="/resources/css/bootstrap.min.css"%></style>
 	<script><%@include file="/resources/js/jquery-3.4.1.min.js" %></script>
@@ -16,9 +19,9 @@
 
 	
 	<style type="text/css">
-    body {
+   body {
         color: #566787;
-		background: #ebebeb;
+		background: linear-gradient(90deg, rgba(122,127,133,1) 0%, rgba(228,232,237,1) 49%, rgba(122,127,133,1) 100%, rgba(88,95,102,0.975249474789916) 100%);
 		font-family: 'Varela Round', sans-serif;
 		font-size: 13px;
 	}
@@ -136,9 +139,10 @@
     .text-danger {
         color: #ff5b5b;
     }
+    </style>
     
 
-           <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+          <%--  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <title>JSP Page</title>
             <link href="style.css" rel="stylesheet" type="text/css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -148,50 +152,48 @@
 	<script src="/${Constants.URL_PREFIX}scripts.js"></script>
 	
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-	
-<!--      <script type="text/javascript">
-function toggleSidebar(){
-	document.getElementById("sidebar").classList.toggle('active');
-}
-
-
-</script> -->
+	 --%>
     </head>
 
     <% String table = (String) request.getAttribute("table"); %>
 
     <body>
 
+
    <%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 
-<h1 id="ListOfItems">List Of Items</h1>
-        <!-- <div id="float"> -->
-         
-          <%--  <form action="AddItem" >
-               <button  class="w3-btn w3-black" type="submit" value="AddItem">Add New Item</button>
-            </form>
-            <form  class="search" action="SearchServlet" method="POST" >
-              <div class="w3-show-inline-block">
-                <input type="text" name="searchVal"  placeholder="Search.." value="${requestScope.searchVal}">
-                <button class="w3-btn w3-teal"  type="submit" ><i class="fa fa-search"></i></button>
-               </div>
-            </form> --%>
-  
-         </div>  
-        
-<!-- <div id="itemList"> -->
+    <div id="sidebar">
+<div class="toggle-btn" onclick="toggleSidebar()">
+<span></span>
+<span></span>
+<span></span>
+</div>
+<ul>
+<li>Home</li>
+<li><a href="AddItem">Add Item</a></li>
+<!--  -->
+
+</ul>
+</div>
+
+
+<h1 id="ListOfItems"></h1>
+   
  <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-5">
-						<h2></h2>
+						<h2>List Of Items</h2>
 					</div>
 					<div class="col-sm-7">
+		<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 					<form action="AddItem" >
-               <button  class="btn btn-primary" type="submit" value="AddItem">Add New Item</button>
-            </form>
+                        <button  class="btn btn-primary" type="submit" value="AddItem">Add New Item</button>
+                  </form>
+        </c:if>
+						
             <form  class="search" action="SearchServlet" method="POST" >
              
                 <input type="text" name="searchVal"  placeholder="Search.." value="${requestScope.searchVal}">
@@ -211,19 +213,13 @@ function toggleSidebar(){
 			 </thead>
                 <tbody>	
 					<tr>
-					<c:if test="${sessionScope.urole=='Administrator'}">
+					
 						<th><span>Item Name</span></th>
 						<th><span>Description</span></th>
-						<!-- <th><span>Size</span></th> -->
 						<th><span>Colour</span></th>
 						<th><span>Initial Cost</span></th>
-						<!-- <th><span>Location</span></th> -->
-						<!-- <th><span>Multibarcode Item</span></th> -->
 						<th><span>Quantity</span></th>
-						
-						
-						<!-- <th><span>Category</span></th> -->
-						<!-- <th><span>Supplier Name</span></th> -->
+						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 						<th><span>Delete Item</span></th>
 						<th><span>Update Item</span></th>
 						</c:if>
@@ -232,7 +228,7 @@ function toggleSidebar(){
 					</tr>
 					<c:forEach var="item" items="${requestScope.ItemList}">		
 					<tr>		
-						<c:if test="${sessionScope.urole=='Administrator'}">								
+														
 						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.name}</span></a></td>
 						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.description}</span></a></td>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.size}</span></a></td> --%>
@@ -245,16 +241,11 @@ function toggleSidebar(){
 					<%-- 	<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.supplierName}</span></a></td> --%>
 						
 						
-						
-						<td><a id="addItem"   href="./DeleteServlet?itemGroupId=${item.itemGroupId}">  Delete</a></td>
-						<td><a  id="addItem" href="./UpdateServlet?itemGroupId=${item.itemGroupId}">  Update</a></td>
-						</c:if>
+						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+						<td><a class="btn btn-primary"   href="./DeleteServlet?itemGroupId=${item.itemGroupId}">  Delete</a></td>
+						<td><a  class="btn btn-primary" href="./UpdateServlet?itemGroupId=${item.itemGroupId}">  Update</a></td>
 					
-			
-						<%-- <td class="actionCell"><div>
-							<a href="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${item.id}')"><i class="fa fa-close tablebtn" style="color:red;"> Delete</i> </a> 
-	                		<a href="./Edit?id=${item.id}"><i class="fas fa-pen tablebtn" style="color:green;"> Edit</i> </a>
-	                	</div></td> --%>
+					</c:if>
 					</tr>
 				</c:forEach>
 				
@@ -275,47 +266,7 @@ function toggleSidebar(){
 	</c:choose>
 	
 
-       <%--  <h1 id="ListOfItems">List Of Items</h1>
-        <div id="searchAdd">
-        <form action="ItemForm.jsp" >
-        <button type="submit" value="AddItem">Add New Item</button>
-        </form>
-        <form  class="search" action="SearchServlet" method="get">
-       
-        <input type="text" name="searchVal"  placeholder="Search..">
-       <button type="submit" ><i class="fa fa-search"></i></button>
-    
-        </form>
-       
-    
-		<c:choose>
-        <c:when test="${not empty requestScope.list }">
-        <table>
-        <tr>
-        <th><span>Select Supplier</span></th>
-        </tr><select name="supplierList" >
-        <c:forEach var="supplier" items="${requestScope.list}">
-        
-       	 <option value="${supplier.id}"><c:out value="${supplier.name}" /></option>
-        
-        </c:forEach>
-        </select>
-        </table>
-        </c:when>
-        <c:otherwise>
-        	<p>You dont have any suppliers yet</p>
-        	<a href="/Supplier/Add">Add new Supplier</a>
-        	<!-- <button type="button">Add new Supplier</button> -->
-        </c:otherwise>
-        </c:choose>
-        </div>
-        <div class="container">
-        <%= table%>
-        
       
-        </div>
-        </div>  --%>
-      <!--   <a href="readI">Add a new friend</a> -->
      </body>
 
 </html> 

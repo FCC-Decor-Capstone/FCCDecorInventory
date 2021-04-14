@@ -14,9 +14,20 @@
 	<script><%@include file="/resources/js/bootstrap.min.js" %></script>
 	
 	<style type="text/css">
+	body{
+	width : 80%;
+	margin-left: auto;
+	margin-right : auto;
+	}
+	.navbar{
+	width : 80%;
+	margin-left: auto;
+	margin-right : auto;
+	
+	}
 		.home-main{
 			background: rgb(2,0,36);
-			background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(6,43,55,1) 0%, rgba(35,116,170,0.975249474789916) 60%);
+			background: linear-gradient(90deg, rgba(122,127,133,1) 0%, rgba(228,232,237,1) 49%, rgba(122,127,133,1) 100%, rgba(88,95,102,0.975249474789916) 100%);
 			padding: 13%;
 			text-align: center;
 		}
@@ -66,7 +77,7 @@
 </head>
 <body>
 	<!-- NAVBAR -->
-	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar fixed-top navbar-expand-lg navbar-bold bg-light">
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 	    <ul class="navbar-nav w-100">
 	    <li class="nav-item dropdown"><a class="nav-link "

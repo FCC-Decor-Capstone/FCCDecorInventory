@@ -246,6 +246,8 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 			HttpSession session = request.getSession();
 			session.setAttribute("uemail", user.getEmail());
 			session.setAttribute("urole", user.getRole());
+			session.setAttribute("uid", user.getId());
+			session.setAttribute("uname", user.getName()); 
 			
 			response.sendRedirect("list");
 		} else {
@@ -279,6 +281,10 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
 						(String) session.getAttribute("urole"));
 				request.setAttribute("user", user);
+				dispatcher = request.getRequestDispatcher("user-nonadmin.jsp");
+				
+				List<Event> events = Event.getAll();
+				request.setAttribute("list", events);
 				dispatcher = request.getRequestDispatcher("user-nonadmin.jsp");
 			} else if(session.getAttribute("urole").equals("Manager")){
 				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
@@ -419,4 +425,5 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 		userDAO.deleteUser(id);
 		response.sendRedirect("list");
 	}
+
 }

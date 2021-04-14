@@ -15,7 +15,8 @@
 	<style type="text/css">
 	body {
 		color: #fff;
-		background: #344a71;
+		background: linear-gradient(90deg, rgba(85,85,91,1) 0%, rgba(172,174,177,1) 49%, rgba(88,95,102,0.975249474789916) 100%, rgba(5,21,27,1) 100%);
+		<!--#344a71;-->
 		font-family: 'Roboto', sans-serif;
 	}
 	.form-control {		
@@ -117,8 +118,8 @@
 	    
 	    <c:if test="${user == null}">
 		  <form action="insert" method="post">
-			<h2>Insert User</h2>
-			<p>Fill all data and submit to create new user.</p>
+			<h2>User Registration</h2>
+			<p>Fill all the fields below:</p>
 	    </c:if>
 		   <c:if test="${user != null}">
 	        	<input type="hidden" name="id" value="<c:out value='${user.id}' />" />

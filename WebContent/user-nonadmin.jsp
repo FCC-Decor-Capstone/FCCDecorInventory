@@ -16,7 +16,7 @@
 	<style type="text/css">
 		.home-main{
 			background: rgb(2,0,36);
-			background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(6,43,55,1) 0%, rgba(35,116,170,0.975249474789916) 60%);
+			background: linear-gradient(90deg, rgba(122,127,133,1) 0%, rgba(228,232,237,1) 49%, rgba(122,127,133,1) 100%, rgba(88,95,102,0.975249474789916) 100%);
 			padding: 13%;
 			text-align: center;
 		}
@@ -175,24 +175,25 @@
 	</div>
 	
   	<div class="container-fluid home-main">
+  	<%@include file="event/table.jsp" %>
 		<!-- <h2><c:out value="${user.name}" /> <span class="blinker">.</span></h2>
 		<form action="edit">
 			<input type="hidden" name="id" value="${user.id}"/>
 			<a href="#editModal" class="btn btn-primary trigger-btn" title="Edit" data-toggle="modal"><i class="material-icons">settings</i>Edit User</a>
 		</form> -->
 	</div>
-	<div class="container-fluid home-content1">
+	<!--  <div class="container-fluid home-content1">
 		<div class="row">
 			<div class="col-md-6 content1-left">
 				<h3> <span class="blinker">?</span></h3>
 				<p></p>
-				<!-- <div class="content1-left"></div> -->
+				<div class="content1-left"></div> 
 			</div>
 			<div class="col-md-6 content1-right">
 				<p></p>
 			</div>
 		</div>
-	</div>
+	</div>-->
 	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
 		<div class="footer-copyright text-center py-4" style="align-items: center;">
 			<a> © 2021 Internet Explorers </a>

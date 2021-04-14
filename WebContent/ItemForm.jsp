@@ -14,6 +14,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -107,16 +109,19 @@ function toggleSidebar(){
 </head>
 <body>
 <%--<%@ include file="/_shared/message.jsp"%>  --%>
-
- 
-	<form action="ListItem" method="get">
-	<input class="btn btn-primary"  type="submit" value="Back To List" id="addItem">
+<form  action="ListItem" method="get" >
+	<button type="submit" class="btn btn-primary"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
+ 
+
 <div class="layout-form">
 
 <h1 >Add Items</h1>
 
 
+
+	
+	
 
 	<form  action="${requestScope.action}" method="POST">
 	<table align ="center">
@@ -205,7 +210,7 @@ function toggleSidebar(){
 			</div>
 			</div>
 			<div class=" form-group">
-			<label  class="col-sm-2 col-form-label" >Multibarcode Group:</label>
+			<label  class="col-sm-2 col-form-label" >Items Countable:</label>
 			<div class="col-sm-7">
 			yes<input type="radio" id="yes" name="multiBarcode" value="yes">
 			 no<input type="radio" id="no" name="multiBarcode" value="no"> <BR>
@@ -271,14 +276,14 @@ function toggleSidebar(){
         </c:choose> --%> 
 			
         
+
 		<td><input class="btn btn-primary"  type="submit" value="Add Item" id="addItem"></td>
-		  
 		
+		
+		  
+
 	</table> 	
 	</form>
-		
-		
-	
 	</div>
 	</div>
 	</div>

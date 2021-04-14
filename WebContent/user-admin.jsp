@@ -20,7 +20,7 @@
 <style type="text/css">
 body {
 	color: #566787;
-	background: #ebebeb;
+	background: linear-gradient(90deg, rgba(122,127,133,1) 0%, rgba(228,232,237,1) 49%, rgba(122,127,133,1) 100%, rgba(88,95,102,0.975249474789916) 100%);
 	font-family: 'Varela Round', sans-serif;
 	font-size: 13px;
 }
@@ -175,7 +175,7 @@ table.table .avatar {
 </script>
 </head>
 <body>
-	<div id="deleteModal" class="modal fade">
+	<!--<div id="deleteModal" class="modal fade">
 		<div class="modal-dialog modal-confirm">
 			<div class="modal-content">
 				<div class="mpdal-header">
@@ -195,7 +195,7 @@ table.table .avatar {
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<!-- NAVBAR -->
 	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
@@ -204,7 +204,7 @@ table.table .avatar {
 				<!-- <li class="nav-item dropdown"><a class="nav-link " href="item"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Item </a></li> -->
-				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/readItem"
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/ListItem"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Item </a></li>	
 				<li class="nav-item dropdown"><a class="nav-link " href="viewLogs"
@@ -238,7 +238,7 @@ table.table .avatar {
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-5">
-						<h2>User Management</h2>
+						<h2>Administrator - User Management</h2>
 					</div>
 					<div class="col-sm-7">
 						<a href="new" class="btn btn-primary"><i
@@ -284,7 +284,7 @@ table.table .avatar {
 								data-toggle="modal"><i class="material-icons">&#xE5C9;</i></a></td> -->
 								
 								<a href="changePass?id=<c:out value='${user.id}' />"
-								class="delete trigger-btn set-userid" title="Change Password" data-toggle="tooltip"><i
+								class="trigger-btn set-userid" title="Change Password" data-toggle="tooltip"><i
 									class="material-icons lock">&#xe897;</i></a> </td>
 							</tr>
 					</c:forEach>

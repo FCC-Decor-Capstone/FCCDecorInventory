@@ -36,7 +36,122 @@ div.fail {
 }	
 
 
+/* Controller Message */
+div.CtlMsg {
+	float: right;
+	z-index: -1;
+	padding: 1em;
+	border-radius: 1em;
+	
+}	
 
+div.success {
+	background-color: var(--success-back);
+	color: var( --success-font);
+	border: 1px var( --success-font) solid;
+	
+}	
+
+div.fail {
+	background-color: var(--warning-back);
+	color: var(--warning-font);
+	border: 1px var(--warning-font) solid;
+	
+}	
+
+/* Events Details */
+.scanTable.hidden {
+    display:none;
+}
+
+div.scanTable .btnSave {
+    float:right;
+    display:block;
+}
+
+.scanTable {
+    /* Default background is return */
+    background-color: rgb(219, 255, 219);
+    padding:1em;
+    margin:.5em 1em;
+    border-radius: 1em;
+    box-shadow:  2px 2px rgb(189, 189, 189);
+}
+
+
+
+
+
+
+#loadItems{
+    background-color: rgb(255, 242, 219);
+}
+
+
+
+.scanTable td {
+    text-align: center;
+}
+
+#actionSwitch {
+    display:inline-block;
+}
+
+#actionSwitch .switch {
+    position: relative;
+    display: inline-block;
+    width: 4em;
+    height: 1.7em;
+  }
+
+#actionSwitch .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  #actionSwitch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(219, 255, 219);
+    -webkit-transition: .4s;
+    transition: .4s;
+    box-shadow: -1px -1px #ccc ;
+  }
+  
+  #actionSwitch .slider:before {
+    position: absolute;
+    content: "";
+    height: 1.10em;
+    width: 1.8em;
+    left: 2px;
+    bottom: 6px;
+    background-color: var(--dark-color);
+    -webkit-transition: .4s;
+    transition: .4s;
+    box-shadow: 2px 2px #ccc ;
+  }
+  
+  #actionSwitch input:checked + .slider {
+    background-color: rgb(255, 242, 219);
+  }
+  
+
+  
+  #actionSwitch input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  #actionSwitch {
+      float:right;
+  }
 
 /* Suppliers Form */
 .rmdT .formElement {
@@ -54,14 +169,24 @@ div.fail {
 
 
 
-form#searchBox, form.toolBox {
+form#searchBox, .toolBox {
 	display:flex;
 	justify-content: space-between;
-	background-color: var(--dark-color);
+	align-items: center;
+  background-color: var(--dark-color);
 	padding: 0.2em 1em;
 	flex-wrap:wrap;
 	white-space:nowrap;
-	flex-direction: row-reverse;
+	color: var(--white);
+  font-weight: bold;
+}
+
+form.toolBox {
+  flex-direction: row-reverse;
+}
+
+div.toolBox {
+  margin-left: -2em;
 }
 
 
@@ -92,6 +217,12 @@ table.rmdT  {
    	
 }
 
+.rmdT td.returnable:hover {
+  background-color: rgb(219, 255, 219);
+  color:darkgreen;
+  cursor: pointer;
+}
+
 .rmdT td>*, .rmdT th * {
 	padding: 1em;
 }
@@ -105,7 +236,7 @@ form#searchBox input {
 	padding: 0.5em;
 }
 
-.rmdT .tablebtn, form#searchBox button {
+.rmdT .tablebtn, form#searchBox button, .rmdT .qtyBtn {
 	background-color: var(--light-color);
 	border: 1px solid var(--dark-color);
 	padding: 0.5em;
@@ -124,6 +255,7 @@ form#searchBox button#clearButton {
 	background-color: var(--white);
 	border: 1px solid var(--dark-color);
 	padding: 0.5em;
+
 	
 }
 
@@ -138,6 +270,13 @@ form#searchBox button#clearButton {
     color: var(--white);
 }
 
+.rmdT i {
+  cursor: pointer;
+}
+
+main section {
+  margin: 1em 0;
+}
 
 main section.elements {
 	display: flex;
@@ -307,7 +446,7 @@ label #cancel{
   .sidebar a i{
     margin-left: -10px;
   }
-  a:hover {
+  .sidebar a:hover {
     width: 200px;
     background: inherit;
   }
@@ -316,5 +455,6 @@ label #cancel{
     visibility: visible;
   }
 }
+
 
 

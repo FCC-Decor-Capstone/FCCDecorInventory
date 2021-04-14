@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Logs;
 import models.Supplier;
 
 /**
@@ -38,9 +39,13 @@ public class DeleteSupplier extends HttpServlet {
 		if (request.getParameter("id") != null) {
 			try {
 				
+				
 				int id = Integer.parseInt(request.getParameter("id"));
+				String oldName = Supplier.getByID(id).getName();
+
 				if (Supplier.deleteByID(id)) {
 					request.setAttribute("SucCtlMsg", "Deleted Supplier Successfully");
+					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier","Deleted Name:" + oldName,""));
 					response.sendRedirect("./.");return;
 				} else {
 					request.setAttribute("ErrCtlMsg", "Error Deleting Supplier");

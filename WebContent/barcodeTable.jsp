@@ -138,14 +138,14 @@
     .text-danger {
         color: #ff5b5b;
     }
-    
+    </style>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<%-- <title>Insert title here</title>
 <link href="style.css" rel="stylesheet" type="text/css">
            
             <link rel="stylesheet" href="/${Constants.URL_PREFIX}style.css" />
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-            <style><%@include file="/resources/css/main.css"%></style>
+            <style><%@include file="/resources/css/main.css"%></style> --%>
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -186,13 +186,16 @@
 						   <%--  <td>${barcode.quantity}</td> --%>
 							
 							
-							<td><a  id="addItem" href="./DeleteBarcode?barcodeId=${barcode.id}">  Delete</a></td>
-						    <td><a  id="addItem" href="./UpdateBarcode?barcodeId=${barcode.id}">  Update</a></td>
+							<td><a  class="btn btn-primary"  href="./DeleteBarcode?barcodeId=${barcode.id}">  Delete</a></td>
+							<c:if test="${not empty requestScope.SucCtlMsg}">
+				<br/><span >${requestScope.SucCtlMsg}</span>
+			</c:if>
+						    <td><a  class="btn btn-primary"  href="./UpdateBarcode?barcodeId=${barcode.id}">  Update</a></td>
 						   
 
 
 						    <td>${barcode.itemName}	    <img alt="my Image" src="CreateBarcode?barcodeId=${barcode.id}"></a></td>
-						    <td><a  id="addItem" href="./CreateBarcode?barcodeId=${barcode.id}">Get Barcode</a></td>
+						    <td><a  class="btn btn-primary"  href="./CreateBarcode?barcodeId=${barcode.id}">Get Barcode</a></td>
     
 			
 						    

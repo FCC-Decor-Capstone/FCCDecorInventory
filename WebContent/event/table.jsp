@@ -34,7 +34,9 @@
 					<button type="submit"><i class="fa fa-search"></i></button>
 				</div>
 				
-				<button type="submit" formaction="Add" formmethod="get"><i class="fas fa-plus"> Add New</i></button>
+				<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+					<button type="submit" formaction="/user-management-master/Event/Add" formmethod="get"><i class="fas fa-plus"> Add New</i></button>
+				</c:if>
 		</form>
 	<c:choose>
 		<c:when test="${not empty requestScope.list}">
@@ -44,19 +46,22 @@
 						<th><span>Date</span></th>
 						<th><span>Client</span></th>
 						<th><span>Location</span></th>
-						<th><span>Actions</span></th>
+						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+							<th><span>Actions</span></th>
+						</c:if>
 					</tr>
 					<c:forEach var="event" items="${requestScope.list}">		
 					<tr>											
-						<td><a href="./Details?id=${event.id}"><span>${event.name}</span></a></td>
-						<td><a href="./Details?id=${event.id}"><span>${event.eventDate}</span></a></td>
-						<td><a href="./Details?id=${event.id}"><span>${event.client}</span></a></td>
-						<td><a href="./Details?id=${event.id}"><span>${event.location}</span></a></td>
-						
-						<td class="actionCell"><div>
-							<a href="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${event.id}')"><i class="fa fa-close tablebtn" style="color:red;"> Delete</i> </a> 
-	                		<a href="./Edit?id=${event.id}"><i class="fas fa-pen tablebtn" style="color:green;"> Edit</i> </a>
-	                	</div></td>
+						<td><a href="/user-management-master/Event/Details?id=${event.id}"><span>${event.name}</span></a></td>
+						<td><a href="/user-management-master/Event/Details?id=${event.id}"><span>${event.eventDate}</span></a></td>
+						<td><a href="/user-management-master/Event/Details?id=${event.id}"><span>${event.client}</span></a></td>
+						<td><a href="/user-management-master/Event/Details?id=${event.id}"><span>${event.location}</span></a></td>
+						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+							<td class="actionCell"><div>
+								<a href="javascript:confirmGo('Are you sure you want to delete?','/user-management-master/Event/Delete?id=${event.id}')"><i class="fa fa-close tablebtn" style="color:red;"> Delete</i> </a> 
+		                		<a href="/user-management-master/Event/Edit?id=${event.id}"><i class="fas fa-pen tablebtn" style="color:green;"> Edit</i> </a>
+		                	</div></td>
+	                	</c:if>
 					</tr>
 				</c:forEach>
 				</table>

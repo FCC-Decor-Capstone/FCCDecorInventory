@@ -19,7 +19,7 @@
 	<style type="text/css">
     body {
         color: #566787;
-		background: #ebebeb;
+		background: linear-gradient(90deg, rgba(122,127,133,1) 0%, rgba(228,232,237,1) 49%, rgba(122,127,133,1) 100%, rgba(88,95,102,0.975249474789916) 100%);
 		font-family: 'Varela Round', sans-serif;
 		font-size: 13px;
 	}
@@ -137,20 +137,24 @@
     .text-danger {
         color: #ff5b5b;
     }
-<meta charset="ISO-8859-1">
+    #text{
+    color:black;
+    }
+    </style>
+<%-- <meta charset="ISO-8859-1">
 <title>Insert title here</title>
  <link href="style.css" rel="stylesheet" type="text/css">
            
             <link rel="stylesheet" href="/${Constants.URL_PREFIX}style.css" />
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-            <style><%@include file="/resources/css/main.css"%></style>
+            <style><%@include file="/resources/css/main.css"%></style> --%>
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
 <form>
-<h1>${requestScope.model.name} Item Details</h1>
+<h1 id="text">${requestScope.model.name} Item Details</h1>
 	<form class="toolBox"> 			
 		<input type="hidden" name="id" value="${requestScope.model.itemGroupId}" />
 				<%-- <div>
@@ -163,27 +167,35 @@
 	<form  action="ListItem" method="get" >
 	<button type="submit" class="btn btn-primary"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
-	<main class="rmdT">
-			<p>Item Name: ${requestScope.model.name}</p>
+	<main >
+	 <div class="col-sm-5">
+			<h3 id="text">Item Name: ${requestScope.model.name}</h3>
 			<c:if test="${not empty requestScope.model.description}">
-				<p>Description: ${requestScope.model.description}</p>
+				<h5 id="text">Description: ${requestScope.model.description}</h5>
 			</c:if>
+			</div>
 			
 	<c:choose>
 		<c:when test="${not empty requestScope.count}">
-			<p>The number of barcodes linked with ${requestScope.model.name}: ${requestScope.count}</p>
+		<div class="col-sm-5">
+			<h5 id="text">The number of barcodes linked with ${requestScope.model.name}: ${requestScope.count}</h5>
+	   </div>
 		</c:when>
 		<c:otherwise>
-			<p>Quantity: ${requestScope.model.quantity}</p>
+		<div class="col-sm-5">
+			<h5 id="text">Quantity: ${requestScope.model.quantity}</h5>
+		</div>
 		</c:otherwise> 	
 	 </c:choose>
 			
 <%-- 			<c:if test="${not empty requestScope.model.quantity}">
 				<p>Quantity: ${requestScope.model.quantity}</p>
 			</c:if> --%>
+			<div class="col-sm-5">
 			<c:if test="${not empty requestScope.model.multiBarcode}">
-				<p>Items Countable: ${requestScope.model.multiBarcode}</p>
+				<h5 id="text">Items Countable: ${requestScope.model.multiBarcode}</h5>
 			</c:if>
+			</div>
 		<section>
 		
 		
@@ -229,17 +241,17 @@
             </div>
         </div>
     </div> 
-
+<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
  <c:choose>
         	 <c:when test="${requestScope.model.quantity > 0}">  
-			<a id="addItem" href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
-			<a id="addItem" href="./ReadBarcode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
+			<a class="btn btn-primary"  href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
+			<a class="btn btn-primary"  href="./ReadBarcode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
 			</c:when>
       <c:otherwise>
           <p id="addItem">Cannot add barcode with quantity 0, Please update quantity </p>  
          </c:otherwise>
       </c:choose>
-
+</c:if>
 		</section>
 	</main>
 <div>

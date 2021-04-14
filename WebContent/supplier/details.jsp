@@ -19,11 +19,12 @@
 	<h1>${requestScope.model.name} Supplier Details</h1>
 	<form class="toolBox" action="details"> 			
 		<input type="hidden" name="id" value="${requestScope.model.id}" />
+			<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 				<div>
 					<button type="submit" formaction="Edit" formmethod="get"><i class="fas fa-pen tablebtn" style="color:green;"> Edit</i></button>
 					<button type="button"  onClick="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${requestScope.model.id}')"><i class="fa fa-close tablebtn" style="color:red;"> Delete</i></button>
 				</div>
-				
+			</c:if>
 				<button type="submit" formaction="./." formmethod="get"><i class="fas fa-arrow-left"> Back to List</i></button>
 	</form>
 	<main class="rmdT">

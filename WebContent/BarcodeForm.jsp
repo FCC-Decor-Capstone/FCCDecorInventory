@@ -12,41 +12,101 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<style><%@include file="/resources/css/bootstrap.min.css"%></style>
+	<script><%@include file="/resources/js/jquery-3.4.1.min.js" %></script>
+	<script><%@include file="/resources/js/bootstrap.min.js" %></script>
+	
+	<style type="text/css">
+	body {
+		color: #fff;
+		background: #344a71;
+		font-family: 'Roboto', sans-serif;
+	}
+	.form-control {		
+		min-height: 41px;
+		box-shadow: none;
+		border-color: #e1e4e5;
+	}
+	.form-control:focus {
+		border-color: #49c1a2;
+	}
+	.form-control, .btn {        
+        border-radius: 3px;
+    }
+	.layout-form {
+		width: 600px;
+		margin: 0 auto;
+		padding: 30px 0;
+	}
+	.layout-form form {
+		color: #9ba5a8;
+		border-radius: 3px;
+    	margin-bottom: 15px;
+        background: #fff;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+	.layout-form h2 {
+		color: #333;
+		font-weight: bold;
+        margin-top: 0;
+    }
+    .layout-form hr {
+        margin: 0 -30px 20px;
+    }    
+	.layout-form .form-group {
+		margin-bottom: 20px;
+	}
+	.layout-form label {
+		font-weight: normal;
+		font-size: 13px;
+	}
+	.layout-form .btn {        
+        font-size: 16px;
+        font-weight: bold;
+		background: #49c1a2;
+		border: none;
+		min-width: 140px;
+    }
+	.layout-form .btn:hover, .signup-form .btn:focus {
+		background: #3cb094;
+        outline: none !important;
+	}
+	.layout-form a {
+		color: #fff;
+		text-decoration: underline;
+	}
+	.layout-form a:hover {
+		text-decoration: none;
+	}
+	.layout-form form a {
+		color: #49c1a2;
+		text-decoration: none;
+	}	
+	.layout-form form a:hover {
+		text-decoration: underline;
+	}
+		</style>
+<%-- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link href="style.css" rel="stylesheet" type="text/css">
 <style><%@include file="/resources/css/main.css"%></style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<title>Insert title here</title>
+<title>Insert title here</title> --%>
 <script type="text/javascript">
-function toggleSidebar(){
-	document.getElementById("sidebar").classList.toggle('active');
-}
+
 </script>
 <link href="${contextPath}/resource/bootstrap.min.css" rel="stylesheet">
 
 </head>
 <body>
-<%--<%@ include file="/_shared/message.jsp"%>  --%>
- 
-<div id="sidebar">
-<div class="toggle-btn" onclick="toggleSidebar()">
-<span></span>
-<span></span>
-<span></span>
-</div>
-<ul>
-<li>Home</a></li>
-<li><a href="addItem">Add Item</a></li>
-<li><a href="readItem"> Item List</a></li>
-</ul>
-</div>
- 
-	
-	<div class="container">
-	 <div class="card">
-   <div class="card-body">
-<h1 id="iS">Inventory Management System</h1>
-<h2 id="iS">Update Item description</h2>
+
+<div class="layout-form">
+
+<h1 >Update </h1>
 
 	<form  action="${requestScope.action}" method="POST">
 	<table align ="center">
@@ -55,7 +115,7 @@ function toggleSidebar(){
 	<input type="hidden" name="barcodeId" value="${requestScope.model.id}" />
 	</div> 
 	
-	<div class="form-group row">
+	<div class="form-group">
 	 <label class="col-sm-2 col-form-label">Item Name:</label>
 	         <div class="col-sm-7">
 			<input type="text" name="itemName" placeholder="Item Name" value="${requestScope.model.itemName}"> <BR>
@@ -66,7 +126,7 @@ function toggleSidebar(){
 			 </div>
 			
 		
-    <div class=" form-group row">
+    <div class=" form-group">
 
 			<label  class="col-sm-2 col-form-label" >Description:</label>
 			<div class="col-sm-7">	
@@ -77,7 +137,7 @@ function toggleSidebar(){
 			</c:if>
 			</div>
 			</div>
-			<div class=" form-group row">
+			<div class=" form-group">
 		  <label class="col-sm-2 col-form-label" > Condition:</label>
 		  <div class="col-sm-7">
 			<input type="text" name="condition" placeholder="Condition"  value="${requestScope.model.condition}" > <BR>
@@ -89,7 +149,7 @@ function toggleSidebar(){
 			
 			
         
-		<td><input type="submit" value="Update Item" id="addItem"></td><span class="SucCtlMsg">${requestScope.SucCtlMsg}</span>
+		<td><input type="submit" value="Update Item" class="btn btn-primary"></td><span class="SucCtlMsg">${requestScope.SucCtlMsg}</span>
 		  
 		
 	</table> 	
