@@ -194,10 +194,6 @@
 			</div>
 		</div>
 	</div>-->
-	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
-		<div class="footer-copyright text-center py-4" style="align-items: center;">
-			<a> © 2021 Internet Explorers </a>
-		</div>
-	</footer>
+	
 </body>
 </html>

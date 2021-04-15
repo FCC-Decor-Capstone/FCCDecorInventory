@@ -32,7 +32,8 @@
 					class="col-lg-4 col-md-4 col-sm-4 container justify-content-center">
 					<form action="dologin" method="post">
 						<fieldset>
-						<img src="logo.png" alt="logo">
+						<%-- <img src='<c:url value="/logo.png"></c:url>' />     --%>
+				
 							<h2>Please Sign In</h2>
 							<hr class="colorgraph">
 							<div class="form-group">

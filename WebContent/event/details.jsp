@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 		
 </head>
-<body>
+<body class="rmdB">
 	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 	<h1>${requestScope.model.name} Event Details</h1>
@@ -66,22 +66,7 @@
 			
 			
 		</section>
-		<div class="toolBox"> 		
-			<div id="barcodeInput">
-				<label for="barcode">Enter barcode</label>
-				<input id="barcode" type="text" value="" placeholder="barcode" onkeypress="listen(event)"/>
-				<button onclick="findbarcode()" type="button">Insert</button>
-				<span style="color:red" id="error"></span>
-			</div>
-          <div id="actionSwitch">
-            <span>Return</span>
-          <label class="switch">
-            <input id="action" type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <span>Load</span>
-        </div>
-        </div>
+
 		<section class="rmdT">
 		<script>let item;</script>
 			<c:forEach var="item" items="${requestScope.listLinkedItems}">
@@ -125,7 +110,7 @@
         <div class="hidden scanTable" id="loadItems">
           <button class="btnSave" type="submit">Save All</button>
           <h2>Loading Items</h2>
-          <table class="rmdT">
+          <table class="rmdT table-striped table-hover">
               <tr>
                 <th>Barcode</th>
                 <th>Item Name</th>
@@ -139,7 +124,7 @@
         <div  class="hidden scanTable" id="returnItems">
           <button class="btnSave" type="submit">Save All</button>
           <h2>Returning Items</h2>
-          <table class="rmdT">
+          <table class="rmdT table-striped table-hover">
               <tr>
                 <th>Barcode</th>
                 <th>Item Name</th>
@@ -151,8 +136,34 @@
         </div>
     </form>
 			
-			
-				<table class="rmdT">				
+			<div class="table-wrapper">
+	<div class="table-title">
+				<div class="row">
+					<div class="col-sm-5">
+						<h1>Supplier Details</h1>
+					</div>
+					<div class="col-sm-7">
+							<div class="toolBox" id="searchBox"> 		
+						<div id="barcodeInput" class="searchItem">
+							<label for="barcode">Enter barcode</label>
+							<input id="barcode" type="text" value="" placeholder="barcode" onkeypress="listen(event)"/>
+							<button onclick="findbarcode()" type="button">Insert</button>
+							<span style="color:red" id="error"></span>
+						</div>
+			          <div id="actionSwitch">
+			            <span>Return</span>
+			          <label class="switch">
+			            <input id="action" type="checkbox" checked>
+			            <span class="slider"></span>
+			          </label>
+			          <span>Load</span>
+			        </div>
+			        </div>
+
+					</div>
+				</div>
+			</div>
+				<table class="rmdT table-striped table-hover">				
 						<tr>
 							<th><span>Item</span></th>
 							<th><span>Qty Out(Total)</span></th>
@@ -218,7 +229,13 @@
 			</c:otherwise>
 		</c:choose>
 			</table>
+			</div>
 		</section>
+		<footer class="page-footer font-small" style="background-color: #f5f5f5;">
+		<div class="footer-copyright text-center py-4" style="align-items: center;">
+			<a> © 2021 Internet Explorers </a>
+		</div>
+	</footer>
 	</main>
 </body>
 </html>

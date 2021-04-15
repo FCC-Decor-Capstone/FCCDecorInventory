@@ -45,7 +45,7 @@ public class DetailSupplier extends HttpServlet {
 				int id = Integer.parseInt(request.getParameter("id"));
 				Supplier model = Supplier.getByID(id);
 				if (model != null) {
-					request.setAttribute("  ", model);
+					request.setAttribute("model", model);
 					request.setAttribute("list", SupplierItem.getItems(id));
 					dispatcher = request.getRequestDispatcher("/supplier/details.jsp");
 				} else {

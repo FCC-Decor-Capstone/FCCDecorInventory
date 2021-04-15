@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import helpers.Constants;
 import models.Event;
 import models.EventItem;
+import models.Logs;
 import net.example.usermanagement.model.User;
 
 /**
@@ -116,31 +117,41 @@ public class DetailEvent extends HttpServlet {
 						int affectedRows = 0;
 						//Iterates through Load Barcodes coming from request
 						if (barcodesLoadArr != null ) {
+							List<Logs> logList = new ArrayList<Logs>();
 							for (int barcode : barcodesLoadArr) {
 								EventItem newItem = availableMap.get(String.valueOf(barcode));
 								if (newItem != null) {
 									//If not first Time
+									String qty= "";
 									if (linkedMap.get(String.valueOf(newItem.getItemID())) != null) {
 										//getting the item from LinkedMap method cuz it has more data about the item
 										newItem = linkedMap.get(String.valueOf(newItem.getItemID()));
 										if (!newItem.isMultibarcode()) {
+											
+											logList.add(new Logs(uid, "Items Loaded", session.getAttribute("uname") + " Loaded "  + newItem.getAddedQty() + " "+ newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 											newItem.setAddedQty(Integer.parseInt(request.getParameter("qty_Load"+barcode)));
 											barcodesQtyReLoad.add(newItem);
 										} else {
+											logList.add(new Logs(uid, "Item Loaded", session.getAttribute("uname") + " reLoaded "  + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 											barcodesReLoad.add(newItem);
 										}
 										continue; //as newItem is added to another list now to Update instead of Insert new Items
-									}					
-									
+									}	
+									qty = newItem.getQuantity()==0?"":String.valueOf(newItem.getQuantity()); 
+									logList.add(new Logs(uid, "Item Loaded", session.getAttribute("uname") + " Loaded " + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 									barcodesLoad.add(newItem);//first time loaded items
 								}
+								
 							}
 							affectedRows += EventItem.insertNewLoaded(barcodesLoad, eventId, uid);
 							affectedRows += EventItem.IncreaseQuantity(barcodesQtyReLoad,eventId, uid);
 							affectedRows += EventItem.updateReload(barcodesReLoad,eventId, uid);
+							Logs.addNewGroup(logList);
+							
 						}
 						
 						if (barcodesReturnArr != null ) {
+							List<Logs> logList = new ArrayList<Logs>();
 							for (int barcode : barcodesReturnArr) {
 								EventItem returnItem = linkedMap.get(String.valueOf(barcode));
 								if (returnItem != null) {
@@ -148,15 +159,17 @@ public class DetailEvent extends HttpServlet {
 										int removedQuantity = Integer.parseInt(request.getParameter("qty_Return"+barcode));
 										//Removes quantity from current if already exists 
 										if (removedQuantity < returnItem.getQuantity()) {
+											logList.add(new Logs(uid, "Items Returned", session.getAttribute("uname") + " returned " + removedQuantity + " " + returnItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 											if(EventItem.decreaseQuantity(returnItem,eventId, uid,removedQuantity)) affectedRows++;
 											continue;
 										} 	
 									}
-									
+									logList.add(new Logs(uid, "Item Returned", session.getAttribute("uname") + " returned " + returnItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 									barcodesReturn.add(returnItem);
 								}
 							}
 							affectedRows+= EventItem.updateReturned(barcodesReturn, eventId, uid);
+							Logs.addNewGroup(logList);
 						}
 						
 						request.setAttribute("model", model);

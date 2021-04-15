@@ -69,7 +69,7 @@ public class AddEvent extends HttpServlet {
 				request.setAttribute("ErrCtlMsg", "Event Adding Error");
 			} else {
 				Event.addNew(newEvent);
-				Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event", session.getAttribute("uname") + "Added New Event Name:" + newEvent.getName() + ", on Date: " + newEvent.getEventDate() ,""));
+				Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event", session.getAttribute("uname") + " Added New Event Name:" + newEvent.getName() + ", on Date: " + newEvent.getEventDate() ,""));
 				request.setAttribute("SucCtlMsg", "Event Added Successfully");
 				request.setAttribute("list", Event.getAll());
 				dispatcher = request.getRequestDispatcher("/event/table.jsp");

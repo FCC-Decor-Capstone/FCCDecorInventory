@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Logs;
 import models.Supplier;
 
 /**
@@ -50,7 +51,7 @@ public class EditSupplier extends HttpServlet {
 				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
 			} 
 		}
-		dispatcher.forward(request, response);
+			dispatcher.forward(request, response);
 		}else
 		{
 			throw new RuntimeException("Invalid access");
@@ -63,7 +64,9 @@ public class EditSupplier extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/form.jsp");
-		Supplier newSupplier = new Supplier();
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
+			Supplier newSupplier = new Supplier();
 		
 		
 		//Request Verification (within Model for clean code)
@@ -79,22 +82,24 @@ public class EditSupplier extends HttpServlet {
 			request.setAttribute("errComments", newSupplier.setComments(request.getParameter("comments")));
 		
 			
-		request.setAttribute("model",newSupplier);
-			
-		if (newSupplier.hasError()) {
-			request.setAttribute("action", "Edit");
-			request.setAttribute("ErrCtlMsg", "Supplier Editing Error");
-		} else {
-			
-			Supplier.editByID(newSupplier);
-			request.setAttribute("SucCtlMsg", "Supplier Edited Successfully");
-			System.out.println("Edited" + newSupplier.getName() + " With ID of " + newSupplier.getId());
-			request.setAttribute("list", Supplier.getAll());
-			dispatcher = request.getRequestDispatcher("/supplier/table.jsp");
-			
+			request.setAttribute("model",newSupplier);
+				
+			if (newSupplier.hasError()) {
+				request.setAttribute("action", "Edit");
+				request.setAttribute("ErrCtlMsg", "Supplier Editing Error");
+			} else {	
+				Supplier.editByID(newSupplier);
+				request.setAttribute("SucCtlMsg", "Supplier Edited Successfully");
+				Logs.addNew(new Logs((int) session.getAttribute("uid"),"Supplier", session.getAttribute("uname") + " Editted Supplier Name:" + newSupplier.getName() ,""));
+				System.out.println("Edited" + newSupplier.getName() + " With ID of " + newSupplier.getId());
+				request.setAttribute("list", Supplier.getAll());
+				dispatcher = request.getRequestDispatcher("/supplier/table.jsp");	
+			}
+			dispatcher.forward(request, response);
+	
+		}else
+		{
+			throw new RuntimeException("Invalid access");
 		}
-		
-		dispatcher.forward(request, response);
 	}
-
 }

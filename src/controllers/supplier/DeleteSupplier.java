@@ -45,7 +45,7 @@ public class DeleteSupplier extends HttpServlet {
 
 				if (Supplier.deleteByID(id)) {
 					request.setAttribute("SucCtlMsg", "Deleted Supplier Successfully");
-					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier","Deleted Name:" + oldName,""));
+					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier",session.getAttribute("uname") + " Deleted Supplier Name:" + oldName,""));
 					response.sendRedirect("./.");return;
 				} else {
 					request.setAttribute("ErrCtlMsg", "Error Deleting Supplier");

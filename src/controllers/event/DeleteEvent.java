@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Event;
+import models.Logs;
 
 /**
  * Servlet implementation class DeleteEvent
@@ -39,8 +40,10 @@ public class DeleteEvent extends HttpServlet {
 			try {
 				
 				int id = Integer.parseInt(request.getParameter("id"));
+				Event oldEvent = Event.getByID(id) ;
 				if (Event.deleteByID(id)) {
 					request.setAttribute("SucCtlMsg", "Deleted Event Successfully");
+					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event", session.getAttribute("uname") + " Deleted Event Name:" + oldEvent.getName() + ", on Date: " + oldEvent.getEventDate() ,""));
 					response.sendRedirect("./.");return;
 				} else {
 					request.setAttribute("ErrCtlMsg", "Error Deleting Event");

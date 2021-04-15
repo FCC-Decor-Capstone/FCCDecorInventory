@@ -48,8 +48,7 @@ public class ListSupplier extends HttpServlet {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/table.jsp");
 		dispatcher.forward(request, response);
-		}else
-		{
+		} else {
 			throw new RuntimeException("Invalid access");
 		}
 	}

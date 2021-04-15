@@ -20,26 +20,39 @@
 	}
 	</script>
 </head>
-<body>
+<body class="rmdB">
 	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 	
-	<h1>Suppliers' List</h1>	
-		<form action="" Method="POST" id="searchBox"> 
-				<div class="searchItem">
-					<c:if test="${not empty requestScope.search}">
-						<button id="clearButton" onclick="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
-					</c:if>
-					<input type="text" placeholder="Type a keyword" name="search" id="search" value="${requestScope.search}"/>
-					<button type="submit"><i class="fa fa-search"></i></button>
+		
+
+		<div class="table-wrapper">
+		<div class="table-title">
+				<div class="row">
+					<div class="col-sm-5">
+						<h1>Suppliers' List</h1>
+					</div>
+					<div class="col-sm-7">
+						<form action="" Method="POST" id="searchBox" class="table-title">
+							<div class="searchItem">
+								<c:if test="${not empty requestScope.search}">
+									<button id="clearButton" onclick="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
+								</c:if>
+								<input type="text" placeholder="Type a keyword" name="search" id="search" value="${requestScope.search}"/>
+								<button type="submit"><i class="fa fa-search"></i></button>
+							</div>
+							<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+								<button type="submit" formaction="Add" formmethod="get"><i class="fas fa-plus"> Add New</i></button>
+							</c:if>
+					</form>
+					</div>
 				</div>
-				<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
-					<button type="submit" formaction="Add" formmethod="get"><i class="fas fa-plus"> Add New</i></button>
-				</c:if>
-		</form>
+			</div>
 	<c:choose>
 		<c:when test="${not empty requestScope.list}">
-			<table class="rmdT">				
+		
+			
+			<table class="rmdT table-striped table-hover">				
 					<tr>
 						<th><span>Name</span></th>
 						<th><span>Contact</span></th>
@@ -55,8 +68,8 @@
 						<td><a href="./Details?id=${supplier.id}"><span>${supplier.telephone}</span></a></td>
 						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 						<td class="actionCell"><div>
-							<a href="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${supplier.id}')"><i class="fa fa-close tablebtn" style="color:red;"> Delete</i> </a> 
-	                		<a href="./Edit?id=${supplier.id}"><i class="fas fa-pen tablebtn" style="color:green;"> Edit</i> </a>
+							<a href="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${supplier.id}')"><i class="fa fa-close" style="color:red;"></i> </a> 
+	                		<a href="./Edit?id=${supplier.id}"><i class="fas fa-pen" style="color:green;"></i> </a>
 	                	</div></td>
 	                	</c:if>
 					</tr>
@@ -67,6 +80,12 @@
 			<p>No Supplier Found.</p>
 		</c:otherwise>
 	</c:choose>
+		</div>
 		
+		<footer class="page-footer font-small" style="background-color: #f5f5f5;">
+		<div class="footer-copyright text-center py-4" style="align-items: center;">
+			<a> © 2021 Internet Explorers </a>
+		</div>
+	</footer>
 </body>
 </html>

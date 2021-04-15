@@ -15,7 +15,7 @@
 	
 	<style type="text/css">
 	body{
-	width : 80%;
+	width : 100%;
 	margin-left: auto;
 	margin-right : auto;
 	}
@@ -75,7 +75,8 @@
 		}
 	</style>
 </head>
-<body>
+<%@include file="event/table.jsp" %>
+<%-- <body>
 	<!-- NAVBAR -->
 	<nav class="navbar fixed-top navbar-expand-lg navbar-bold bg-light">
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -183,7 +184,7 @@
 		</div>
 	</div>
 	<!--controllers.supplier-->
-	<form action="supplier">
+<!-- 	<form action="supplier"> -->
   	<div class="container-fluid home-main">
   	<%@include file="event/table.jsp" %>
 		<!-- <h2><c:out value="${user.name}" /> <span class="blinker">.</span></h2>
@@ -192,7 +193,7 @@
 			<a href="#editModal" class="btn btn-primary trigger-btn" title="Edit" data-toggle="modal"><i class="material-icons">settings</i>Edit User</a>
 		</form> -->
 	</div>
-	</form>
+<!-- 	</form> -->
 	<!--<div class="container-fluid home-content1">
 		<div class="row">
 			<div class="col-md-6 content1-left">
@@ -212,5 +213,5 @@
 			<a> © 2021 Internet Explorers </a>
 		</div>
 	</footer>
-</body>
+</body> --%>
 </html>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Logs;
 import models.Supplier;
 
 /**
@@ -47,29 +48,37 @@ public class AddSupplier extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("action", "Add");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/form.jsp");
-		Supplier newSupplier = new Supplier();
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {	
+			request.setAttribute("action", "Add");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/supplier/form.jsp");
+			Supplier newSupplier = new Supplier();
+			
+			//Request Verification (within Model for clean code)
+				request.setAttribute("errName", newSupplier.setName(request.getParameter("name")));
+				request.setAttribute("errContact", newSupplier.setContact(request.getParameter("contact")));
+				request.setAttribute("errTelephone", newSupplier.setTelephone(request.getParameter("telephone")));
+				request.setAttribute("errComments", newSupplier.setComments(request.getParameter("comments")));
+				
+			request.setAttribute("model",newSupplier);
+				
+			if (newSupplier.hasError()) {
+				request.setAttribute("ErrCtlMsg", "Supplier Adding Error");
+			} else {
+				Supplier.addNew(newSupplier);
+				Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier", session.getAttribute("uname") + " Added New Supplier Name:" + newSupplier.getName() ,""));
+				request.setAttribute("SucCtlMsg", "Supplier Added Successfully");
+				request.setAttribute("list", Supplier.getAll());
+				dispatcher = request.getRequestDispatcher("/supplier/table.jsp");
+				// TODO redirect to Details
+				//
+			}
+			
+			dispatcher.forward(request, response);
 		
-		//Request Verification (within Model for clean code)
-			request.setAttribute("errName", newSupplier.setName(request.getParameter("name")));
-			request.setAttribute("errContact", newSupplier.setContact(request.getParameter("contact")));
-			request.setAttribute("errTelephone", newSupplier.setTelephone(request.getParameter("telephone")));
-			request.setAttribute("errComments", newSupplier.setComments(request.getParameter("comments")));
-			
-		request.setAttribute("model",newSupplier);
-			
-		if (newSupplier.hasError()) {
-			request.setAttribute("ErrCtlMsg", "Supplier Adding Error");
-		} else {
-			Supplier.addNew(newSupplier);
-			request.setAttribute("SucCtlMsg", "Supplier Added Successfully");
-			request.setAttribute("list", Supplier.getAll());
-			dispatcher = request.getRequestDispatcher("/supplier/table.jsp");
-			// TODO redirect to Details
-			//
+		} else
+		{
+			throw new RuntimeException("Invalid access");
 		}
-		
-		dispatcher.forward(request, response);
 	}
 }

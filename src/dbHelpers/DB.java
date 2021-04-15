@@ -37,7 +37,11 @@ public class DB {
 		}
 		
 		try {
+			if(connection == null || !connection.isClosed()) {
 			connection = DriverManager.getConnection(url,username,passwd);
+			} else {
+				return connection;
+			}
 		} catch (SQLException e) {
 			// TODO remove
 			e.printStackTrace();

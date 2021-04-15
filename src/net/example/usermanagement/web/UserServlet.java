@@ -282,7 +282,7 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 			if (session.getAttribute("urole").equals("Administrator")) {
 				List<User> listUser = userDAO.selectAllUsers();
 				request.setAttribute("listUser", listUser);
-
+				
 				dispatcher = request.getRequestDispatcher("user-admin.jsp");
 			} else if(session.getAttribute("urole").equals("General User")){ 
 				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
@@ -290,8 +290,21 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 				request.setAttribute("user", user);
 				dispatcher = request.getRequestDispatcher("user-nonadmin.jsp");
 				
-				List<Event> events = Event.getAll();
-				request.setAttribute("list", events);
+				/*
+				 * List<Event> events = Event.getAll(); request.setAttribute("list", events);
+				 */
+				if (request.getParameter("search") != null) {
+					if (!request.getParameter("search").trim().isEmpty()) {
+						request.setAttribute("search", request.getParameter("search").trim());
+						request.setAttribute("list", Event.search(request.getParameter("search")));	
+					} else {
+						//List<Event> events = Event.getAll();
+						//request.setAttribute("list", events);
+						request.setAttribute("list", Event.getAll());
+					}
+				} else {
+					request.setAttribute("list", Event.getAll());
+				}
 				dispatcher = request.getRequestDispatcher("user-nonadmin.jsp");
 			} else if(session.getAttribute("urole").equals("Manager")){
 				User user = userDAO.selectUser((String) session.getAttribute("uemail"),
