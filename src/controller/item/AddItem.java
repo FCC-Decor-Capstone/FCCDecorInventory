@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Category;
 import models.Item;
 import models.ItemSupplier;
+import models.Logs;
 
 /**
  * Servlet implementation class AddItem
@@ -37,6 +39,7 @@ public class AddItem extends HttpServlet {
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 				request.setAttribute("action", "AddItem");
 		        request.setAttribute("list",ItemSupplier.getAll());
+		        request.setAttribute("Categorylist",Category.getAll());
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
 				dispatcher.forward(request, response);
 				/* doPost(request,response); */
@@ -51,6 +54,7 @@ public class AddItem extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
 				request.setAttribute("action", "AddItem");
 				
 				request.setAttribute("list",ItemSupplier.getAll());
@@ -86,8 +90,10 @@ public class AddItem extends HttpServlet {
 						
 //					request.setAttribute("list",Supplier.getAll());
 //				    dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
+					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Item", session.getAttribute("uname") + "Added New Item :" + item.getName(),""));
 					request.setAttribute("ItemList", Item.getAll());
 					request.setAttribute("list",ItemSupplier.getAll());
+					request.setAttribute("Categorylist",Category.getAll());
 					dispatcher = request.getRequestDispatcher("/read.jsp");
 					// TODO redirect to Details
 					//
@@ -95,43 +101,7 @@ public class AddItem extends HttpServlet {
 				
 				dispatcher.forward(request, response);
 			}
-//			//get the data
-//						String itemName = request.getParameter("itemName");
-//						String category = request.getParameter("category");
-//						String description = request.getParameter("description");
-//						double size = Double.parseDouble(request.getParameter("size"));
-//						String colour = request.getParameter("color");
-//						double initialCost = Double.parseDouble(request.getParameter("initialCost"));
-//						String location = request.getParameter("Location");
-//						String multiBarcode = request.getParameter("multiBarcode");
-//						int quantity = Integer.parseInt(request.getParameter("quantity"));
-//						
-//						
-//						
-//						//set up a item object
-//						Item item = new Item();
-//						item.setName(itemName);
-//						item.setCategory(category);
-//						item.setDescription(description);
-//						item.setSize(size);
-//						item.setColour(colour);
-//						item.setinitialCost(initialCost);
-//						item.setLocation(location);
-//						item.setmultiBarcode(multiBarcode);
-//						item.setQuantity(quantity);
-//						
-//						
-//						
-//						
-//						//set up an addQuery object
-//						AddQuery  aq = new AddQuery();
-//						//pass the item to addQuery to add to the database
-//						aq.doAdd(item);
-//						
-//						//pass execution control to the ReadServlet
-//						String url ="/readItem";
-//						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-//						dispatcher.forward(request, response);
+
 //						
 //					
 //			}
