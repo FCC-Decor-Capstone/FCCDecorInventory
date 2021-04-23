@@ -163,7 +163,7 @@
    <%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 
-    <div id="sidebar">
+    <div id="sidebar" style="display:none;">
 <div class="toggle-btn" onclick="toggleSidebar()">
 <span></span>
 <span></span>
@@ -217,7 +217,9 @@
 						<th><span>Item Name</span></th>
 						<th><span>Description</span></th>
 						<th><span>Colour</span></th>
+						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 						<th><span>Initial Cost</span></th>
+						</c:if>
 						<th><span>Quantity</span></th>
 						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 						<th><span>Delete Item</span></th>
@@ -233,7 +235,9 @@
 						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.description}</span></a></td>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.size}</span></a></td> --%>
 						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.colour}</span></a></td>
-						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.initialCost}</span></a></td>
+						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+							<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.initialCost}</span></a></td>
+						</c:if>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.location}</span></a></td> --%>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.multiBarcode}</span></a></td> --%>
 						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.quantity}</span></a></td>

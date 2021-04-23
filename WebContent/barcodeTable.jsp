@@ -138,6 +138,9 @@
     .text-danger {
         color: #ff5b5b;
     }
+    .brImg {
+    	height:4em;
+    }
     </style>
 <meta charset="ISO-8859-1">
 <%-- <title>Insert title here</title>
@@ -194,7 +197,7 @@
 						   
 
 
-						    <td>${barcode.itemName}	    <img alt="my Image" src="CreateBarcode?barcodeId=${barcode.id}"></a></td>
+						    <td><img alt="my Image" class="brImg" src="CreateBarcode?barcodeId=${barcode.id}"></a></td>
 						    <td><a  class="btn btn-primary"  href="./CreateBarcode?barcodeId=${barcode.id}">Get Barcode</a></td>
     
 			

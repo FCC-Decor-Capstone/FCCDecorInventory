@@ -19,8 +19,8 @@
 <body class="rmdB">
 	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
-	<h1>${requestScope.model.name} Event Details</h1>
-	<form class="toolBox"> 			
+	
+	<form class="toolBox" id="topbox"> 			
 		<input type="hidden" name="id" value="${requestScope.model.id}" />
 			<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 				<div>
@@ -34,7 +34,7 @@
 	
 	
 	<main class="rmdT">
-		<section class="elements">
+		<section class="elements" id="topopen">
 			<p><strong>Event Name:</strong> ${requestScope.model.name}</p>
 
 			<c:if test="${not empty requestScope.model.eventDate}">
@@ -143,7 +143,7 @@
 						<h1>Supplier Details</h1>
 					</div>
 					<div class="col-sm-7">
-							<div class="toolBox" id="searchBox"> 		
+						<div class="toolBox" id="searchBox"> 		
 						<div id="barcodeInput" class="searchItem">
 							<label for="barcode">Enter barcode</label>
 							<input id="barcode" type="text" value="" placeholder="barcode" onkeypress="listen(event)"/>
@@ -184,37 +184,37 @@
 						<c:set var="userBack">${item.userBack}</c:set>	
 									
 						<tr>											
-							<td><a href="./Details?id=${item.itemID}"><span>${item.name}</span></a></td>
-							<td><a href="./Details?id=${item.itemID}"><span>
+							<td><a href="${pageContext.request.contextPath}/UpdateBarcode?barcodeId=${item.itemID}"><span>${item.name}</span></a></td>
+							<td><a href="${pageContext.request.contextPath}/UpdateBarcode?barcodeId=${item.itemID}"><span>
 								<c:if test="${item.quantity != 0 or item.quantityHistoric != 0}">
 									${item.quantity} (${item.quantityHistoric})
 								</c:if>
 							</span></a></td>
 							
 							<c:if test="${sessionScope.urole == 'Administrator'}">
-								<td><a href="./Details?id=${item.itemID}"><span>
+								<td><a href="${pageContext.request.contextPath}/UpdateBarcode?barcodeId=${item.itemID}"><span>
 									<c:if test="${item.cost != 0}">${item.cost}</c:if></span>
 								</a></td>
 							</c:if>
-							<td><a href="./Details?id=${item.itemID}"><span>${item.dateTaken}</span></a></td>
-							<td><a href="./Details?id=${item.itemID}"><span>${requestScope.listhmUsers[userTaken]}</span></a></td>
+							<td><a href="${pageContext.request.contextPath}/UpdateBarcode?barcodeId=${item.itemID}"><span>${item.dateTaken}</span></a></td>
+							<td><a href="${pageContext.request.contextPath}/UpdateBarcode?barcodeId=${item.itemID}"><span>${requestScope.listhmUsers[userTaken]}</span></a></td>
 							<td class="<c:if test="${empty item.dateBack}">returnable" onclick="insertReturn(${item.itemID})</c:if>">
 								<c:choose>
 									<c:when test="${empty item.dateBack}">
 										<a href="#"><span>${item.dateBack}</span></a>
 									</c:when>
 									<c:otherwise>
-										<a href="./Details?id=${item.itemID}"><span>${item.dateBack}</span></a>
+										<a href="${pageContext.request.contextPath}/UpdateBarcode?barcodeId=${item.itemID}"><span>${item.dateBack}</span></a>
 									</c:otherwise>
 								</c:choose>
 							</td>
 							<td class="<c:if test="${empty item.dateBack}">returnable" onclick="insertReturn(${item.itemID})</c:if> " >
 								<c:choose>
 									<c:when test="${empty item.dateBack}">
-										<a href="#""><span>${requestScope.listhmUsers[userBack]}</span></a>
+										<a href="#"><span>${requestScope.listhmUsers[userBack]}</span></a>
 									</c:when>
 									<c:otherwise>
-										<a href="./Details?id=${item.itemID}"><span>${requestScope.listhmUsers[userBack]}</span></a>
+										<a href="${pageContext.request.contextPath}/UpdateBarcode?barcodeId=${item.itemID}"><span>${requestScope.listhmUsers[userBack]}</span></a>
 									</c:otherwise>
 								</c:choose>
 									
@@ -231,11 +231,13 @@
 			</table>
 			</div>
 		</section>
-		<footer class="page-footer font-small" style="background-color: #f5f5f5;">
+		
+	</main>
+	
+	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
 		<div class="footer-copyright text-center py-4" style="align-items: center;">
 			<a> © 2021 Internet Explorers </a>
 		</div>
 	</footer>
-	</main>
 </body>
 </html>

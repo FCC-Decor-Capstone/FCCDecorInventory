@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -107,12 +108,13 @@ public class EventItem {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
-		}
+		} 
 	}
 	
 	public static int updateReload(List<EventItem> barcodesReLoad, int eventID, int userID) {
 		// TODO Auto-generated method stub
-		String update="UPDATE ItemEvent SET userTaken = ?, dateTaken, ?, userBack = 0, dateBack = null WHERE itemID = ? AND eventID = ?";
+		
+		String update="UPDATE ItemEvent SET userTaken = ?, dateTaken = ?, userBack = 0, dateBack = null WHERE itemID = ? AND eventID = ?";
 		PreparedStatement ps;
 		try {
 			
@@ -121,6 +123,7 @@ public class EventItem {
 
 				ps.setInt(1,userID);
 				ps.setDate(2,new Date(System.currentTimeMillis()));
+				/* ps.setNull(3,Types.INTEGER); */
 				ps.setInt(3,item.getItemID());
 				ps.setInt(4,eventID);
 				

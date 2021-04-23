@@ -64,7 +64,8 @@
 		}
 	</style>
 </head>
-<body>
+<%@include file="event/table.jsp" %>
+<%-- <body>
 	<!-- NAVBAR -->
 	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -195,5 +196,5 @@
 		</div>
 	</div>-->
 	
-</body>
+</body> --%>
 </html>

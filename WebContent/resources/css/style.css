@@ -3,6 +3,7 @@
 :root {
   --blue: #1e90ff;
   --white: #ffffff;
+  --black: #000;
   --dark-color: #2e3436;
   --light-color: rgb(225, 224, 224);
   --success-back: #9bd68c;
@@ -192,9 +193,17 @@ div.scanTable .btnSave {
   font-size:16px;
 }
 
-#searchBox button {
-	border-radius: .5em;
+#topbox{
+	width:80%;	
+	background-color: var(--black);
+	justify-content: space-between;
+	
 }
+
+
+/* #searchBox button { */
+/* 	border-radius: .5em;
+} */
 
 form.toolBox {
   flex-direction: row-reverse;
@@ -255,12 +264,17 @@ form#searchBox input {
 	padding: 0.5em;
 }
 
-.rmdT .tablebtn, #searchBox button, .rmdT .qtyBtn {
+.rmdT .tablebtn, #searchBox button, .rmdT .qtyBtn, .btnSave, #topbox button {
 	background-color: var(--light-color);
 	border: 1px solid var(--dark-color);
 	padding: 0.75em;
 	overflow: hidden;
 	cursor: pointer;
+}
+
+
+.btnSave {
+	border: 1px solid #999;
 }
 
 #searchBox button#clearButton {
@@ -271,7 +285,7 @@ form#searchBox input {
 }
 
 .rmdT .tablebtn:hover {
-	background-color: var(--white);
+/* 	background-color: var(--white); */
 	/* border: 1px solid var(--dark-color); */
 	padding: 0.5em;
 	
@@ -461,8 +475,10 @@ main section:first-child {
   border-radius: 1em;
 }
 
-
-
+main section#topopen{
+  border-top-left-radius: 0em;
+  border-top-right-radius: 0em;
+}
 
 
 main section.elements {

@@ -137,7 +137,7 @@ public class DetailEvent extends HttpServlet {
 										}
 										continue; //as newItem is added to another list now to Update instead of Insert new Items
 									}	
-									qty = newItem.getQuantity()==0?"":String.valueOf(newItem.getQuantity()); 
+									qty = String.valueOf(newItem.getQuantity()); 
 									logList.add(new Logs(uid, "Item Loaded", session.getAttribute("uname") + " Loaded " + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 									barcodesLoad.add(newItem);//first time loaded items
 								}
@@ -172,8 +172,20 @@ public class DetailEvent extends HttpServlet {
 							Logs.addNewGroup(logList);
 						}
 						
+						double totalCost = 0D;
+						List<EventItem> linkedList = EventItem.getLinkedItems(eventId);
+						for (EventItem item : linkedList) {
+							if (!item.isMultibarcode()) 
+							{
+								totalCost+=item.getQuantityHistoric()*item.getCost();
+								continue;
+							}
+							
+							totalCost += item.getCost();
+						}
 						request.setAttribute("model", model);
-						request.setAttribute("listLinkedItems",EventItem.getLinkedItems(eventId));
+						request.setAttribute("listLinkedItems", linkedList);
+						request.setAttribute("totalCost", totalCost);
 						request.setAttribute("listAllItems", EventItem.getAllItems());
 						request.setAttribute("listhmUsers", EventItem.getUsers());
 						dispatcher = request.getRequestDispatcher("/event/details.jsp");

@@ -68,7 +68,7 @@
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Supplier </a></li>
 		</c:if>
-		<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">				
+		<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager' or sessionScope.urole == 'General User'}">				
 		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Event/"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Events </a></li>

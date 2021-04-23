@@ -122,10 +122,10 @@ function toggleSidebar(){
 
 
 	
-	<div class="form-group">
+	<div class="form-group" style="display:none;">
 	 <label>Item Id:</label>
 	         <div class="col-sm-7">
-			<input type="text" name="itemGroupID" value="<%= item.getitemGroupId()%>"  > 
+			<input type="hidden" name="itemGroupID" value="<%= item.getitemGroupId()%>"  > 
 			</div>
 			 </div>
 	<div class="form-group">
