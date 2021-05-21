@@ -107,9 +107,11 @@ public class Logs {
 				
 				ps.addBatch();
 				}
-			return IntStream.of(ps.executeBatch()).sum();
+			int result = IntStream.of(ps.executeBatch()).sum();
+			DB.closeConnection();
+			return result;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 			return 0;
 		}
@@ -134,9 +136,9 @@ public class Logs {
 			    id = rs.getInt(1);
 			    System.out.println(id);
 			}
-
+			DB.closeConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -149,7 +151,7 @@ public class Logs {
 			ps = DB.getConnection().prepareStatement(delete);
 			ps.setInt(1,ID);
 			int result = ps.executeUpdate();
-			
+			DB.closeConnection();
 			if (result==1) {
 				return true;
 			}
@@ -157,7 +159,7 @@ public class Logs {
 				return false;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 		}
 		return false;
@@ -177,11 +179,13 @@ public class Logs {
 						rs.getString("Activity"), 
 						rs.getString("Target")));
 			}
+			DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 	//this will only get info of a particular id(person)
@@ -200,9 +204,11 @@ public class Logs {
 										rs.getString("Activity"), 
 										rs.getString("Target")));
 			}
+			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
+			DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;

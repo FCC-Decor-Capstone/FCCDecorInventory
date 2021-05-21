@@ -97,7 +97,7 @@ public class ItemsBarcode {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,itemId);
 			ResultSet rs = ps.executeQuery();
-			
+			DB.closeConnection();
 			while(rs.next()) { 
 				return rs.getInt(1); 
 						              
@@ -105,7 +105,7 @@ public class ItemsBarcode {
 			return 0;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 		}
 		return 0;
@@ -130,9 +130,9 @@ public class ItemsBarcode {
 				itemGroupId = rs.getInt(1);
 			    System.out.println(itemGroupId);
 			}
-
+			DB.closeConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -149,9 +149,10 @@ public class ItemsBarcode {
 			while(rs.next()) {
 				list.add(new ItemsBarcode(rs.getInt("itemID"), rs.getString("itemName"),  rs.getString("comments"), rs.getString("cndition"),rs.getInt("quantity"),rs.getInt("itemGroupId")));
 			}
+			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -163,7 +164,7 @@ public class ItemsBarcode {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,ID);
 			ResultSet rs = ps.executeQuery();
-			
+			DB.closeConnection();
 			while(rs.next()) { 
 				return new ItemsBarcode(rs.getInt("itemID"), 
 						             rs.getString("itemName"), 
@@ -175,7 +176,7 @@ public class ItemsBarcode {
 			return null;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -199,9 +200,10 @@ public class ItemsBarcode {
 													rs.getInt("itemGroupId"));
 				list.add(item);
 			}
+			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -213,7 +215,7 @@ public class ItemsBarcode {
 			ps = DB.getConnection().prepareStatement(delete);
 			ps.setInt(1,ID);
 			int result = ps.executeUpdate();
-			
+			  DB.closeConnection();
 			if (result==1) {
 				return true;
 			}
@@ -221,7 +223,7 @@ public class ItemsBarcode {
 				return false;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return false;
@@ -237,13 +239,14 @@ public class ItemsBarcode {
 			ps.setInt(4, newBarcode.getId());
 			
 			int result = ps.executeUpdate();
+			  DB.closeConnection();
 			if (result==1) {
 				return newBarcode;
 			}
 			else 
 				return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;

@@ -44,9 +44,9 @@ public class Supplier {
 			    id = rs.getInt(1);
 			    System.out.println(id);
 			}
-
+			  DB.closeConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -63,13 +63,14 @@ public class Supplier {
 			ps.setString(4,newSupplier.getComments());
 			ps.setInt(5,newSupplier.getId());
 			int result = ps.executeUpdate();
+			  DB.closeConnection();
 			if (result==1) {
 				return newSupplier;
 			}
 			else 
 				return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -82,7 +83,7 @@ public class Supplier {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,ID);
 			ResultSet rs = ps.executeQuery();
-			
+			  DB.closeConnection();
 			while(rs.next()) { 
 				return new Supplier(ID, 	rs.getString("name"), 
 											rs.getString("contact"), 
@@ -92,7 +93,7 @@ public class Supplier {
 			return null;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -105,7 +106,7 @@ public class Supplier {
 			ps = DB.getConnection().prepareStatement(delete);
 			ps.setInt(1,ID);
 			int result = ps.executeUpdate();
-			
+			  DB.closeConnection();
 			if (result==1) {
 				return true;
 			}
@@ -113,7 +114,7 @@ public class Supplier {
 				return false;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return false;
@@ -126,7 +127,7 @@ public class Supplier {
 		try {
 			ps = DB.getConnection().prepareStatement(select);
 			ResultSet rs = ps.executeQuery();
-			
+			  DB.closeConnection();
 			while(rs.next()) {
 				list.add(new Supplier(	rs.getInt("supplierID"), 
 										rs.getString("name"), 
@@ -136,7 +137,7 @@ public class Supplier {
 			}
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -158,9 +159,11 @@ public class Supplier {
 										rs.getString("telephone"), 
 										rs.getString("comments")));
 			}
+			
+			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;

@@ -102,10 +102,12 @@ public class EventItem {
 				thePS.addBatch();
 			}
 			
-			return IntStream.of(ps.executeBatch()).sum() + IntStream.of(psQty.executeBatch()).sum();
+			int result = IntStream.of(ps.executeBatch()).sum() + IntStream.of(psQty.executeBatch()).sum();
+			DB.closeConnection();
+			return result;
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 			return 0;
 		} 
@@ -129,11 +131,12 @@ public class EventItem {
 				
 				ps.addBatch();
 			}
-			
-			return IntStream.of(ps.executeBatch()).sum();
+			int result = IntStream.of(ps.executeBatch()).sum();
+			DB.closeConnection();
+			return result;
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 			return 0;
 		}
@@ -156,12 +159,13 @@ public class EventItem {
 				ps.addBatch();
 			}
 			
-			
-			return IntStream.of(ps.executeBatch()).sum();
+			int result =  IntStream.of(ps.executeBatch()).sum();
+			DB.closeConnection();
+			return result;
 			
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 			return 0;
 		}
@@ -182,11 +186,12 @@ public class EventItem {
 				
 				ps.addBatch();
 			}
-			
-			return IntStream.of(ps.executeBatch()).sum();
+			int result = IntStream.of(ps.executeBatch()).sum();
+			DB.closeConnection();
+			return result;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 			return 0;
 		}
@@ -202,12 +207,14 @@ public class EventItem {
 		ps.setInt(1,item.getQuantity() - removedAmount);
 		ps.setInt(2,item.getItemID());
 		ps.setInt(3,eventID);	
-		if (ps.executeUpdate() > 0) 
+		int result = ps.executeUpdate();
+		DB.closeConnection();
+		if (result > 0) 
 			return true;
 		else return false;
 
 	} catch (SQLException e) {
-		// TODO Auto-generated catch block
+		DB.closeConnection();
 		e.printStackTrace();
 		return false;
 	}
@@ -224,10 +231,11 @@ public class EventItem {
 			while(rs.next()) { 
 				hmUsers.put(String.valueOf(rs.getInt("id")), rs.getString("name"));
 			}
+			DB.closeConnection();
 			return hmUsers;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			return null;
 		}		
 		
@@ -288,10 +296,11 @@ public class EventItem {
 				item.setEventID(eventID);
 				list.add(item);
 			}
+			DB.closeConnection();
 			return list;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			System.err.println(e.getCause() +"\n\n" +   e.getMessage());
 			return null;
 		}		
@@ -334,9 +343,10 @@ public class EventItem {
 											isMulti(rs.getString("multibarcode"))
 											));
 			}
+			DB.closeConnection();
 			return list;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			return null;
 		}	
 	}

@@ -65,9 +65,10 @@ public class SupplierItem {
 			while(rs.next()) {
 				list.add(new SupplierItem(rs.getInt("itemGroupID"), rs.getString("itemName"), rs.getString("category"), rs.getString("description")));
 			}
+			DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;

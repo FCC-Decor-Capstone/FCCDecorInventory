@@ -77,8 +77,10 @@ public class Category {
 				id = rs.getInt(1);
 				System.out.println();
 			}
+			  DB.closeConnection();
 		}
 		catch(SQLException e) {
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -91,13 +93,14 @@ public class Category {
 			ps.setString(1, newCategory.getCategoryType());
 			ps.setInt(2,newCategory.getId());
 			int result = ps.executeUpdate();
+			  DB.closeConnection();
 			if (result==1) {
 				return newCategory;
 			}
 			else 
 				return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -109,14 +112,14 @@ public class Category {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1, ID);
 			ResultSet rs = ps.executeQuery();
-			
+			  DB.closeConnection();
 			while(rs.next()) {
 				return new Category(ID,rs.getString("category"));
 			}
 			return null;
 		}
 		catch(SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -128,6 +131,7 @@ public class Category {
 			ps = DB.getConnection().prepareStatement(delete);
 			ps.setInt(1, ID);
 			int result = ps.executeUpdate();
+			  DB.closeConnection();
 			if(result == 1) {
 				return true;
 			}
@@ -135,7 +139,7 @@ public class Category {
 				return false;
 		}
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return false;
@@ -147,7 +151,7 @@ public class Category {
 		try {
 			ps = DB.getConnection().prepareStatement(select);
 			ResultSet rs = ps.executeQuery();
-			
+			  DB.closeConnection();
 			while(rs.next()) {
 				list.add(new Category(rs.getInt("categoryID"),rs.getString("category")));				
 			}
@@ -157,7 +161,7 @@ public class Category {
 				return null;
 		}
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -176,9 +180,11 @@ public class Category {
 				list.add(new Category(	rs.getInt("categoryID"), 
 										rs.getString("category")));
 			}
+			
+			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;

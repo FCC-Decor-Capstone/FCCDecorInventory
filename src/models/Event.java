@@ -58,9 +58,9 @@ public class Event {
 			    id = rs.getInt(1);
 			    System.out.println(id);
 			}
-
+			  DB.closeConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -80,13 +80,14 @@ public class Event {
 			ps.setDate(6,newEvent.getEventDate());
 			ps.setInt(7,newEvent.getId());
 			int result = ps.executeUpdate();
+			  DB.closeConnection();
 			if (result==1) {
 				return newEvent;
 			}
 			else 
 				return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -99,7 +100,7 @@ public class Event {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,ID);
 			ResultSet rs = ps.executeQuery();
-			
+			  DB.closeConnection();
 			while(rs.next()) { 
 				return new Event(	ID, 
 									rs.getString("name"), 
@@ -112,7 +113,7 @@ public class Event {
 			return null;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -125,7 +126,7 @@ public class Event {
 			ps = DB.getConnection().prepareStatement(delete);
 			ps.setInt(1,ID);
 			int result = ps.executeUpdate();
-			
+			  DB.closeConnection();
 			if (result==1) {
 				return true;
 			}
@@ -133,7 +134,7 @@ public class Event {
 				return false;
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return false;
@@ -156,9 +157,10 @@ public class Event {
 									rs.getString("comments"),
 									rs.getDate("eventDate")));
 			}
+			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
@@ -182,9 +184,10 @@ public class Event {
 									rs.getString("comments"),
 									rs.getDate("eventDate")));
 			}
+			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;

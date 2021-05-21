@@ -40,12 +40,15 @@ public class ItemSupplier {
 			while(rs.next()) {
 				list.add(new ItemSupplier(rs.getInt("supplierID"),rs.getString("name")));
 			}
-			if(list.size()>0) return list;
-			else return null;
+			  DB.closeConnection();
+			if(list.size()>0) 
+				return list;
+				else return null;
 			
 		
 
 }catch(SQLException e) {
+	  DB.closeConnection();
 	e.printStackTrace();
 }
 		return null;
@@ -69,9 +72,9 @@ public class ItemSupplier {
 				itemGroupId = rs.getInt(1);
 			    System.out.println(itemGroupId);
 			}
-
+			DB.closeConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			  DB.closeConnection();
 			e.printStackTrace();
 		}
 		return null;
