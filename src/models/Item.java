@@ -417,12 +417,13 @@ public class Item {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,ID);
 			ResultSet rs = ps.executeQuery();
-			  DB.closeConnection();
+			Item item = null; 
 			while(rs.next()) { 
-				return new Item(ID, rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
+				item = new Item(ID, rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
 						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName"));
 			}
-			return null;
+			 DB.closeConnection();
+			return item;
 		
 		} catch (SQLException e) {
 			  DB.closeConnection();

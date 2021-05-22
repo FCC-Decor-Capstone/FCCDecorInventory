@@ -100,9 +100,9 @@ public class Event {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,ID);
 			ResultSet rs = ps.executeQuery();
-			  DB.closeConnection();
+			Event event = null;
 			while(rs.next()) { 
-				return new Event(	ID, 
+				event = new Event(	ID, 
 									rs.getString("name"), 
 									rs.getString("client"), 
 									rs.getString("location"),
@@ -110,7 +110,8 @@ public class Event {
 									rs.getString("comments"),
 									rs.getDate("eventDate"));
 			}
-			return null;
+			DB.closeConnection();
+			return event;
 		
 		} catch (SQLException e) {
 			  DB.closeConnection();

@@ -2,3 +2,8 @@
 
 /build/*
 
+/src/dbConnection.properties
+/src/resources/hibernate.cfg.xml
+/src/resources/dbConnection.properties
+/src/resources/dbConnection
+/src/net/example/usermanagement/dao/dbConnection

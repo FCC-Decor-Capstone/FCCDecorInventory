@@ -97,12 +97,12 @@ public class ItemsBarcode {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,itemId);
 			ResultSet rs = ps.executeQuery();
-			DB.closeConnection();
+			int result = 0;
 			while(rs.next()) { 
-				return rs.getInt(1); 
-						              
+				result =  rs.getInt(1); 		              
 			}
-			return 0;
+			DB.closeConnection();
+			return result;
 		
 		} catch (SQLException e) {
 			DB.closeConnection();
@@ -164,16 +164,17 @@ public class ItemsBarcode {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,ID);
 			ResultSet rs = ps.executeQuery();
-			DB.closeConnection();
+			ItemsBarcode itembarcode = null;
 			while(rs.next()) { 
-				return new ItemsBarcode(rs.getInt("itemID"), 
+				itembarcode =  new ItemsBarcode(rs.getInt("itemID"), 
 						             rs.getString("itemName"), 
 						             rs.getString("comments"), 
 						             rs.getString("cndition"),
 						             rs.getInt("quantity"),
 						             rs.getInt("itemGroupId"));
 			}
-			return null;
+			DB.closeConnection();
+			return itembarcode;
 		
 		} catch (SQLException e) {
 			  DB.closeConnection();

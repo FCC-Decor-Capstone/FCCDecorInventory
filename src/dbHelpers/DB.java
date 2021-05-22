@@ -37,10 +37,14 @@ public class DB {
 		}
 		
 		try {
-			if(connection == null || !connection.isClosed()) {
-			connection = DriverManager.getConnection(url,username,passwd);
+			if(connection != null) {
+				if (!connection.isClosed()) { 
+					return connection;
+				} else {
+					connection = DriverManager.getConnection(url,username,passwd);	
+				}
 			} else {
-				return connection;
+				connection = DriverManager.getConnection(url,username,passwd);
 			}
 		} catch (SQLException e) {
 			// TODO remove

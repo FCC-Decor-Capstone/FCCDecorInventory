@@ -112,11 +112,19 @@ public class Category {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1, ID);
 			ResultSet rs = ps.executeQuery();
-			  DB.closeConnection();
+			String category = "";
 			while(rs.next()) {
-				return new Category(ID,rs.getString("category"));
+				category = rs.getString("category");
 			}
-			return null;
+			DB.closeConnection();
+			if (category.equalsIgnoreCase("")) {
+				return null;
+			} else {
+				return new Category(ID,category);
+			}
+				
+			
+			
 		}
 		catch(SQLException e) {
 			  DB.closeConnection();
@@ -151,10 +159,11 @@ public class Category {
 		try {
 			ps = DB.getConnection().prepareStatement(select);
 			ResultSet rs = ps.executeQuery();
-			  DB.closeConnection();
 			while(rs.next()) {
 				list.add(new Category(rs.getInt("categoryID"),rs.getString("category")));				
 			}
+			
+			DB.closeConnection();
 			if (list.size()>0)
 				return list;
 			else

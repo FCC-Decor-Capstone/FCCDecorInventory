@@ -83,14 +83,15 @@ public class Supplier {
 			ps = DB.getConnection().prepareStatement(select);
 			ps.setInt(1,ID);
 			ResultSet rs = ps.executeQuery();
-			  DB.closeConnection();
+			Supplier supplier = null;
 			while(rs.next()) { 
-				return new Supplier(ID, 	rs.getString("name"), 
+				supplier = new Supplier(ID, 	rs.getString("name"), 
 											rs.getString("contact"), 
 											rs.getString("telephone"), 
 											rs.getString("comments"));
 			}
-			return null;
+			DB.closeConnection();
+			return supplier;
 		
 		} catch (SQLException e) {
 			  DB.closeConnection();
@@ -127,7 +128,6 @@ public class Supplier {
 		try {
 			ps = DB.getConnection().prepareStatement(select);
 			ResultSet rs = ps.executeQuery();
-			  DB.closeConnection();
 			while(rs.next()) {
 				list.add(new Supplier(	rs.getInt("supplierID"), 
 										rs.getString("name"), 
@@ -135,6 +135,7 @@ public class Supplier {
 										rs.getString("telephone"), 
 										rs.getString("comments")));
 			}
+			DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
 		} catch (SQLException e) {
 			  DB.closeConnection();
