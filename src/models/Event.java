@@ -261,7 +261,7 @@ public class Event {
 				hasError = true;
 				return "Contact Field cannot exceed 255 characters";
 			}
-			this.location = client;
+			this.location = location;
 			return "";
 		} catch (NullPointerException npx) {
 			hasError = true;
