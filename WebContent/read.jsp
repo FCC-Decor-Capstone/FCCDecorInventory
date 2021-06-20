@@ -103,6 +103,10 @@
 		display: inline-block;
 		text-decoration: none;
 	}
+	
+	table.table td a[class*="btn"] {
+		color: white;
+		}
 	table.table td a:hover {
 		color: #2196F3;
 	}

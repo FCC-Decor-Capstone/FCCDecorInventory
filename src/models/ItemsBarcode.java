@@ -184,7 +184,7 @@ public class ItemsBarcode {
 	}
 	
 	public static List<ItemsBarcode> getItems(int id) {
-		String select="SELECT * FROM FCCDecor.Item where itemGroupID=?";
+		String select="SELECT * FROM Item where itemGroupID=?";
 		List<ItemsBarcode> list = new ArrayList<ItemsBarcode>(); 
 		PreparedStatement ps;
 		try {

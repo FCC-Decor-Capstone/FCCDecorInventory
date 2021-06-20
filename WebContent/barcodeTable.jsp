@@ -45,7 +45,7 @@
 		font-size: 24px;
 	}
 	.table-title .btn {
-		color: #566787;
+		color: white;
 		float: right;
 		font-size: 13px;
 		background: #fff;
@@ -98,7 +98,7 @@
     }
 	table.table td a {
 		font-weight: bold;
-		color: #566787;
+		color: white;
 		display: inline-block;
 		text-decoration: none;
 	}
@@ -152,6 +152,15 @@
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<script>
+		function printPage(id) {
+			
+			let prt = document.getElementById("chbxPrt").checked;
+            let cls = document.getElementById("chbxCls").checked;
+            //alert("./ShowBarcode?barcodeId="+id+"&prt="+ prt + "&cls="+cls)
+			window.open("./ShowBarcode?barcodeId="+id+"&prt="+ prt + "&cls="+cls);
+		} 
+	</script>
 </head>
 <body>
 
@@ -177,6 +186,16 @@
 						<th><span>condition</span></th>
 						
 						<th><span>Actions</span></th>
+						<th style="background-color:lightgrey" colspan="3">
+							<span> Print Options: 
+								<span><input id="chbxPrt" type="checkbox" name="prt" checked/>
+								<label for="chbxPrt">Auto Print</label></span>
+								
+								<span><input id="chbxCls" type="checkbox" name="cls" checked/>
+								<label for="chbxCls">Auto Close</label></span>
+							</span>
+						</th>
+						
 						
 					</tr>
 			</thead>
@@ -198,7 +217,7 @@
 
 
 						    <td><img alt="my Image" class="brImg" src="CreateBarcode?barcodeId=${barcode.id}"></a></td>
-						    <td><a  class="btn btn-primary"  href="./CreateBarcode?barcodeId=${barcode.id}">Get Barcode</a></td>
+						    <td><a  class="btn btn-primary" style="color:white;" onclick="printPage(${barcode.id})">Print</a></td>
     
 			
 						    

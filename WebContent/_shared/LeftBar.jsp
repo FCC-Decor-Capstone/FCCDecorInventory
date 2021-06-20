@@ -52,7 +52,7 @@
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						<c:out value="Hello ${sessionScope.uname}" /><span class="blinker">.</span> </a></li>
 		<c:if test="${sessionScope.urole == 'Administrator'}">				
-		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}"
+		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/list"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Users </a></li>
 		</c:if>

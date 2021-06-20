@@ -97,7 +97,7 @@
     }
 	table.table td a {
 		font-weight: bold;
-		color: #566787;
+		color: white;
 		display: inline-block;
 		text-decoration: none;
 	}
@@ -198,7 +198,19 @@
 			</div>
 		<section>
 		
-		
+		<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+ <c:choose>
+        	 <c:when test="${requestScope.model.quantity > 0}">  
+			<a class="btn btn-primary"  href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
+			<a class="btn btn-primary"  href="./ReadBarcode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
+			</c:when>
+      <c:otherwise>
+          <p id="addItem">Cannot add barcode with quantity 0, Please update quantity </p>  
+         </c:otherwise>
+      </c:choose>
+</c:if>
+
+
 		<div class="container">
         <div class="table-wrapper">
             <div class="table-title">
@@ -241,17 +253,7 @@
             </div>
         </div>
     </div> 
-<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
- <c:choose>
-        	 <c:when test="${requestScope.model.quantity > 0}">  
-			<a class="btn btn-primary"  href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
-			<a class="btn btn-primary"  href="./ReadBarcode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
-			</c:when>
-      <c:otherwise>
-          <p id="addItem">Cannot add barcode with quantity 0, Please update quantity </p>  
-         </c:otherwise>
-      </c:choose>
-</c:if>
+
 		</section>
 	</main>
 <div>

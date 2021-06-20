@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.krysalis.barcode4j.impl.code128.Code128Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -38,9 +37,6 @@ public class CreateBarcode extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession();
-		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");	
 		//get items id
 		
@@ -54,10 +50,10 @@ public class CreateBarcode extends HttpServlet {
 				
  
 		//create ReadRecord class
-		BarcodeQuery rr = new BarcodeQuery(value);
-		rr.doBarcode();
+		//BarcodeQuery rr = new BarcodeQuery(value);
+		//rr.doBarcode();
 				
-		Item item = rr.getItem();
+		//Item item = rr.getItem();
 		response.setContentType("image/jpg");
 		Code128Bean code128 = new Code128Bean();
 		code128.setHeight(15f);
@@ -77,15 +73,12 @@ public class CreateBarcode extends HttpServlet {
 		
 				
 		//pass item and control to updateForm.jsp
-				 request.setAttribute("item", item);
-				 dispatcher = request.getRequestDispatcher("/BarcodeDisplay.jsp");
-				 dispatcher.forward(request, response);
+			//	 request.setAttribute("item", item);
+			//	 dispatcher = request.getRequestDispatcher("/BarcodeDisplay.jsp");
+			//	 dispatcher.forward(request, response);
 				
-	} else
-	{
-		throw new RuntimeException("Invalid access");
+				
 	}
-}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
