@@ -10,19 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Item;
+import models.ItemSupplier;
 import models.ItemsBarcode;
 
 /**
- * Servlet implementation class GenerateBarcode
+ * Servlet implementation class ItemDetails
  */
-@WebServlet("/GenerateBarcode")
-public class GenerateBarcode extends HttpServlet {
+@WebServlet("/ItemDetailsOld")
+public class ItemDetailsOld extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GenerateBarcode() {
+    public ItemDetailsOld() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,21 +34,41 @@ public class GenerateBarcode extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+//		HttpSession session = request.getSession();
+//		if (session.getAttribute("urole").equals("Administrator"))
+//		{
+//			request.setAttribute("model", model);
+//		}
 		HttpSession session = request.getSession();
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
-		int id = Integer.parseInt(request.getParameter("ItemGroupID"));
-	       
-        ItemsBarcode.addNew(id);
-        request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
-	      // RequestDispatcher   dispatcher = request.getRequestDispatcher("/barcodeTable.jsp");
-	       response.sendRedirect(request.getContextPath() + "/ItemDetails?itemGroupId=" + id);
-	
-	       //dispatcher.forward(request, response);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		if (request.getParameter("itemGroupId") != null) {
+			try {
+				int id = Integer.parseInt(request.getParameter("itemGroupId"));
+				
+				Item model = Item.getByID(id);
+				if (model != null) {
+					request.setAttribute("model", model);
+					request.setAttribute("list", Item.getItems(id));
+					request.setAttribute("supplierList",ItemSupplier.getAll());
+				    request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
+				    request.setAttribute("count", ItemsBarcode.count(id));
+					
+					dispatcher = request.getRequestDispatcher("/BarcodeImage.jsp");
+				} else {
+					request.setAttribute("ErrCtlMsg", " Not Found");
+				}
+			} catch (NumberFormatException nfe) {
+				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
+			} 
+		}
+		dispatcher.forward(request, response);
 	} else
 	{
 		throw new RuntimeException("Invalid access");
 	}
 }
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

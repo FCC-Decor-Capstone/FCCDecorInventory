@@ -9,9 +9,9 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<style><%@include file="/resources/css/bootstrap.min.css"%></style>
+<%-- 	<style><%@include file="/resources/css/bootstrap.min.css"%></style>
 	<script><%@include file="/resources/js/jquery-3.4.1.min.js" %></script>
-	<script><%@include file="/resources/js/bootstrap.min.js" %></script>
+	<script><%@include file="/resources/js/bootstrap.min.js" %></script> --%>
 	
 	<style type="text/css">
 		.home-main{

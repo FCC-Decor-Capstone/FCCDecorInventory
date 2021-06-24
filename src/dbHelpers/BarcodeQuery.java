@@ -110,12 +110,14 @@ public class BarcodeQuery {
 			    item.setLocation(this.results.getString("location"));
 			    item.setmultiBarcode(this.results.getString("multiBarcode"));
 			    item.setQuantity(this.results.getInt("quantity"));
+			    item.setSupplierID(this.results.getInt("supplierID"));
 			    
 			 //Added in case reused
 			    DB.closeConnection();
 			 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 		}
 	 }

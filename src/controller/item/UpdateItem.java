@@ -64,6 +64,12 @@ public class UpdateItem extends HttpServlet {
 		item.setLocation(location);
 		item.setmultiBarcode(multiBarcode);
 		item.setQuantity(quantity);
+		try {
+			item.setsupplierID(Integer.parseInt(request.getParameter("supplierList")));
+		} catch (Exception e) {
+			item.setsupplierID(2);
+		}
+		
 		//create an UpdateQuery object and use it to update  a item
 		UpdateQuery dq = new UpdateQuery();
 		dq.doUpdate(item);

@@ -142,8 +142,30 @@ function toggleSidebar(){
 		
 		 <div class=" form-group">	
 	<select name="category" id="category"  >
-  <option  value="Master">Master</option>
-  <option value="Maint $ Supply">Maint $ Supply</option>
+	<option value="Accessories">Accessories</option>
+	<option value="Catering">Catering</option>
+	<option value="Centerpieces & Vases">Centerpieces & Vases</option>
+	<option value="Charger Plates & Misc">Charger Plates & Misc</option>
+  	<option  value="Decor Props">Decor Props</option>
+  	<option  value="Equipment">Equipment</option>
+  	<option  value="Fabrics & Panels">Fabrics & Panels</option>
+  	<option  value="Florals">Florals</option>
+  	<option  value="Furnitures & Misc">Furnitures & Misc</option>
+  	<option  value="Indian Props">Indian Props</option>
+  	<option  value="Maint & Supply">Maint & Supply</option>
+  	<option  value="Office Supplies & Equipment">Office Supplies & Equipment</option>
+  	<option  value="Pipe & Drape">Pipe & Drape</option>
+  	<option  value="Private Dishware">Private Dishware</option>
+  	<option  value="Promotional Items">Promotional Items</option>
+  	<option  value="Sashes, Runners, and Chair Covers">Sashes, Runners, and Chair Covers</option>
+  	<option  value="Skirting">Skirting</option>
+  	<option  value="Supply - Florals">Supply - Florals</option>
+  	<option  value="Table Cloth">Table Cloth</option>
+
+  	
+  	
+  		
+<!--   <option value="Maint $ Supply">Maint $ Supply</option>
   <option value="serveware catering">serveware catering</option>
   <option value="indian statues and props">indian statues and props</option>
   <option value="florals">florals</option>
@@ -155,7 +177,7 @@ function toggleSidebar(){
      <option value="tablecloth">tablecloth</option>
      <option value="Skirting">Skirting</option>
      <option value="Backdrop Fabrics">Backdrop Fabrics</option>
-     <option value="Pipe and Drape">Pipe and Drape</option>
+     <option value="Pipe and Drape">Pipe and Drape</option> -->
 </select>
 <c:if test="${not empty requestScope.errCategory}">
 				<br/><span>${requestScope.errCategory}</span>
@@ -166,7 +188,7 @@ function toggleSidebar(){
 
 			<label  >Description:</label>
 			<div class="col-sm-7">	
-			<textarea  rows="4" cols="30" required="required" placeholder="Enter text here..." name="description"  value="${requestScope.model.description}" ></textarea>
+			<textarea  rows="4" cols="30" placeholder="Enter text here..." name="description" >${fn:trim(requestScope.model.description)}</textarea>
 			<!--  <td><input type="text" name="description"> <BR></td> -->
 			<c:if test="${not empty requestScope.errDescription}">
 				<br/><span>${requestScope.errDescription}</span>
@@ -176,7 +198,7 @@ function toggleSidebar(){
 			<div class=" form-group">
 		  <label class="col-sm-2 col-form-label" > Initial Cost:</label>
 		  <div class="col-sm-7">
-			<input type="text"required="required"  name="initialCost" value="${requestScope.model.initialCost}" > <BR>
+			<input type="text" name="initialCost" value="${requestScope.model.initialCost}" > <BR>
 			<c:if test="${not empty requestScope.errCost}">
 				<br/><span>${requestScope.errCost}</span>
 			   </c:if>
@@ -185,7 +207,7 @@ function toggleSidebar(){
 			<div class=" form-group">
 			<label  class="col-sm-2 col-form-label" >Size:</label>
 			<div class="col-sm-7">
-			<input type="text" required="required" name="size" value="${requestScope.model.size}"> <BR>
+			<input type="text" name="size" value="${requestScope.model.size}"> <BR>
 			<c:if test="${not empty requestScope.errSize}">
 				<br/><span>${requestScope.errSize}</span>
 			   </c:if>
@@ -194,7 +216,7 @@ function toggleSidebar(){
 			<div class=" form-group">
 			<label class="col-sm-2 col-form-label" >Colour:</label>
 			<div class="col-sm-7">
-			 <input type="text" required="required" name="color" value="${requestScope.model.colour}"> <BR>
+			 <input type="text" name="color" value="${requestScope.model.colour}"> <BR>
 			 <c:if test="${not empty requestScope.errColor}">
 				<br/><span>${requestScope.errColor}</span>
 			   </c:if>
@@ -203,26 +225,40 @@ function toggleSidebar(){
 			<div class=" form-group">
 			<label  class="col-sm-2 col-form-label" >Location:</label>
 			<div class="col-sm-7">
-			<input type="text" required="required" name="Location" value="${requestScope.model.location}"> <BR>
+			<input type="text" name="Location" value="${requestScope.model.location}"> <BR>
 			<c:if test="${not empty requestScope.errLocation}">
 				<br/><span>${requestScope.errLocation}</span>
 			   </c:if>
 			</div>
 			</div>
 			<div class=" form-group">
-			<label  class="col-sm-2 col-form-label" >Items Countable:</label>
+			<script>
+				function  toggleQuant() {
+					let grpQty = document.getElementById("grpQty");
+					let inpQty = document.getElementById("inpQty");
+					
+					if (document.getElementById("yes").checked){
+						grpQty.style.display = "none";
+						inpQty.value = "-1";
+					} else {
+						grpQty.style.display = "";
+						inpQty.value = "1";
+					}
+				}
+			</script>
+			<label  class="col-sm-7 col-form-label" >Auto Count (by # of Barcodes created):</label>
 			<div class="col-sm-7">
-			yes<input type="radio" id="yes" name="multiBarcode" value="yes">
-			 no<input type="radio" id="no" name="multiBarcode" value="no"> <BR>
+			yes<input type="radio" id="yes" onclick="toggleQuant()" name="multiBarcode" value="yes" checked>
+			 no<input type="radio" id="no" onclick="toggleQuant()" name="multiBarcode" value="no"> <BR>
 			 <c:if test="${not empty requestScope.errMultibarCode}">
 				<br/><span>${requestScope.errMultibarCode}</span>
 			   </c:if>
 			</div>
 			</div>
-			<div class=" form-group">
+			<div class="form-group" id="grpQty" style="display:none;">
 			<label  class="col-sm-2 col-form-label" >Quantity:</label>
 			<div class="col-sm-7">
-			<input type="text" required="required" name="quantity" value="${requestScope.model.quantity}"> <BR>
+			<input type="number" min="0" id="inpQty" name="quantity" value="-1"> <BR>
 			<c:if test="${not empty requestScope.errQuantity}">
 				<br/><span>${requestScope.errQuantity}</span>
 			   </c:if>

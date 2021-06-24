@@ -137,23 +137,29 @@ function toggleSidebar(){
 			<div class="form-group">
 	 <label class="col-sm-2 col-form-label">Category:</label>
 	         <div class="col-sm-7">
-	<select name="category" id="category"  >
-	<option ><%= item.getCategory()%></option>
+	<select name="category" id="category">
+	<option value="<%=item.getCategory()%>"><%= item.getCategory()%></option>
 	
-  <option value="<%= item.getCategory()%>">Master</option>
-  <option value="<%= item.getCategory()%>"> Maint $ Supply</option>
-  <option value="<%= item.getCategory()%>"> serveware catering</option>
-  <option value="<%= item.getCategory()%>"> indian statues and props</option>
-  <option value="<%= item.getCategory()%>"> florals</option>
-  <option value="<%= item.getCategory()%>">Centerpiece & Glass Vase	</option>
-    <option value="<%= item.getCategory()%>">Furniture & Misc</option>
-     <option value="<%= item.getCategory()%>">Kissing Balls</option>
-     <option value="<%= item.getCategory()%>">Charger Plate and Misc</option>
-     <option value="<%= item.getCategory()%>">Sashes Runners Chair Cover</option>
-     <option value="<%= item.getCategory()%>">tablecloth</option>
-     <option value="<%= item.getCategory()%>">Skirting</option>
-     <option value="<%= item.getCategory()%>">Backdrop Fabrics</option>
-     <option value="<%= item.getCategory()%>">Pipe and Drape</option>
+	<option value="Accessories">Accessories</option>
+	<option value="Catering">Catering</option>
+	<option value="Centerpieces & Vases">Centerpieces & Vases</option>
+	<option value="Charger Plates & Misc">Charger Plates & Misc</option>
+  	<option  value="Decor Props">Decor Props</option>
+  	<option  value="Equipment">Equipment</option>
+  	<option  value="Fabrics & Panels">Fabrics & Panels</option>
+  	<option  value="Florals">Florals</option>
+  	<option  value="Furnitures & Misc">Furnitures & Misc</option>
+  	<option  value="Indian Props">Indian Props</option>
+  	<option  value="Maint & Supply">Maint & Supply</option>
+  	<option  value="Office Supplies & Equipment">Office Supplies & Equipment</option>
+  	<option  value="Pipe & Drape">Pipe & Drape</option>
+  	<option  value="Private Dishware">Private Dishware</option>
+  	<option  value="Promotional Items">Promotional Items</option>
+  	<option  value="Sashes, Runners, and Chair Covers">Sashes, Runners, and Chair Covers</option>
+  	<option  value="Skirting">Skirting</option>
+  	<option  value="Supply - Florals">Supply - Florals</option>
+  	<option  value="Table Cloth">Table Cloth</option>
+
 </select>
 </div>
 </div>
@@ -161,58 +167,80 @@ function toggleSidebar(){
 <div class="form-group">
 	 <label class="col-sm-2 col-form-label">Description:</label>
 	         <div class="col-sm-7">
-			<textarea  rows="4" cols="30" required="required" textareaObject.value="<%= item.getdescription()%>" name="description" ><%= item.getdescription()%></textarea>
-						<!--  <td><input type="text" name="description"> <BR></td> -->
+			<textarea  rows="4" cols="30" name="description" ><%= item.getdescription()%></textarea>		
 			</div>
 			</div>
 			<div class="form-group">
 	 <label class="col-sm-2 col-form-label">Initial Cost:</label>
 	         <div class="col-sm-7">
 			
-			 <input type="text" required="required" value="<%= item.getinitialCost()%>" name="initialCost" > 
+			 <input type="text" value="<%= item.getinitialCost()%>" name="initialCost" > 
 			</div>
 			</div>
 			<div class="form-group">
 	 <label class="col-sm-2 col-form-label">Size:</label>
 	         <div class="col-sm-7">
-			 <input type="text" required="required"  value="<%= item.getsize()%>" name="size" > 
+			 <input type="text"  value="<%= item.getsize()%>" name="size" > 
 			</div>
 			</div>
 			<div class="form-group">
 	 <label class="col-sm-2 col-form-label">Color:</label>
 	         <div class="col-sm-7">
-			 <input type="text" required="required" value="<%= item.getColour()%>" name="color" > 
+			 <input type="text" value="<%= item.getColour()%>" name="color" > 
 			</div>
 			</div>
 			<div class="form-group">
 	 <label class="col-sm-2 col-form-label">Location:</label>
 	         <div class="col-sm-7">
-			 <input type="text" required="required"  value="<%= item.getLocation()%>" name="Location" >
+			 <input type="text"  value="<%= item.getLocation()%>" name="Location" >
 			</div>
 			</div>
-			<div class="form-group">
-	 <label class="col-sm-2 col-form-label">Multibarcode Group:</label>
+			<div class="form-group" >
+
+	 <label class="col-sm-7 col-form-label">Auto Count (Edit Not Allowed, Delete item and recreate new if needed):</label>
 	         <div class="col-sm-7">
-			 yes<input type="radio" id="yes"  value="<%= item.getmultiBarcode()%>" name="multiBarcode"  >
-			     no<input type="radio" id="no"   value="<%= item.getmultiBarcode()%>" name="multiBarcode">
+	       
+			 yes<input type="radio" id="yes" value="yes" name="multiBarcode" <c:if test="${item.multiBarcode == 'yes'}"> checked</c:if><c:if test="${item.multiBarcode == 'no'}"> disabled</c:if>>
+			     no<input type="radio" id="no"  value="no" name="multiBarcode" <c:if test="${item.multiBarcode == 'no'}"> checked</c:if><c:if test="${item.multiBarcode == 'yes'}"> disabled</c:if>>
 			</div>
+
 			</div>
-			<div class="form-group">
+			<div class="form-group" id="grpQty">
 	 <label class="col-sm-2 col-form-label">Quantity:</label>
 	         <div class="col-sm-7">
-			 <td><input type="text" required="required" value="<%= item.getQuantity()%>" name="quantity" > <BR></td>
+			 <td><input type="number" min="0"  value="<%= item.getQuantity()%>" name="quantity" > <BR></td>
 			</div>
 			</div>
+			<script>
+					let grpQty = document.getElementById("grpQty");
+
+					if (document.getElementById("yes").checked){
+						grpQty.style.display = "none";
+					} else {
+						grpQty.style.display = "";
+					}
+				
+			</script>
 		<c:choose>
         <c:when test="${not empty requestScope.list }">
        <div class=" form-group">
 			<label  class="col-sm-2 col-form-label" >Select Supplier:</label>
 			<div class="col-sm-7">
-        <select name="supplierList" >
-        <c:forEach var="supplier" items="${requestScope.list}">
-       	 <option value="${supplier.name}">${supplier.name}</option>
-        </c:forEach>
+        <select name="supplierList" id="supplierSelect">
+	        <c:forEach var="supplier" items="${requestScope.list}">
+	       	 <option value="${supplier.id}">${supplier.name}</option>
+	        </c:forEach>
         </select>
+        <p></p>
+        <script>
+        	if (${requestScope.supplierAvailable}) {
+        		document.getElementById("supplierSelect").value =  ${item.supplierID};	
+        	} else {
+        		document.getElementById("supplierSelect").value =  2;
+        	}
+        	
+        	
+        </script>
        </div>
 			</div>
         </c:when>

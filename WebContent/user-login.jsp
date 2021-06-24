@@ -10,6 +10,21 @@
 <script>
 	$('.alert').show();
 	setTimeout(function(){ $('.alert').hide(); }, 3500);
+	
+	
+	  window.onload = function () {
+		if (window.location.protocol == 'http:') {
+		      
+		    console.log("you are accessing us via "
+		        +  "an insecure protocol (HTTP). "
+		        + "Redirecting you to HTTPS.");
+		          
+		    window.location.href = 
+		        window.location.href.replace(
+		                   'http:', 'https:');
+		} 
+		     
+	}  
 </script>
 </head>
 <body>
@@ -32,7 +47,7 @@
 					class="col-lg-4 col-md-4 col-sm-4 container justify-content-center">
 					<form action="dologin" method="post">
 						<fieldset>
-						<%-- <img src='<c:url value="/logo.png"></c:url>' />     --%>
+						<img src='<c:url value="/logo.png"></c:url>' alt=""/>     
 				
 							<h2>Please Sign In</h2>
 							<hr class="colorgraph">

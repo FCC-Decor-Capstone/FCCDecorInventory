@@ -55,16 +55,16 @@ public class DB {
 	
 	
 	public static void closeConnection() {
-// Realized better keep the 1 connection open rather than openning and closing, as earlier method was keeping some open
+// Realized better keep the 1 connection open rather than opening and closing, as earlier method was keeping some open
 		
-//		try {
-//			if(connection != null) {
-//				if (!connection.isClosed()) {
-//					connection.close();
-//				}
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			if(connection != null) {
+				if (!connection.isClosed()) {
+					connection.close();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

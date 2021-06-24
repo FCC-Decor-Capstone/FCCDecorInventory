@@ -13,9 +13,9 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
    
-    <style><%@include file="/resources/css/bootstrap.min.css"%></style>
+    <%-- <style><%@include file="/resources/css/bootstrap.min.css"%></style>
 	<script><%@include file="/resources/js/jquery-3.4.1.min.js" %></script>
-	<script><%@include file="/resources/js/bootstrap.min.js" %></script>
+	<script><%@include file="/resources/js/bootstrap.min.js" %></script> --%>
 
 	
 	<style type="text/css">
@@ -76,7 +76,7 @@
 		vertical-align: middle;
     }
 	table.table tr th:first-child {
-		width: 6px;
+		/* width: 6px; */
 	}
 	table.table tr th:last-child {
 		width: 10px;
@@ -221,7 +221,7 @@
 						<th><span>Item Name</span></th>
 						<th><span>Description</span></th>
 						<th><span>Colour</span></th>
-						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+						<c:if test="${sessionScope.urole == 'Administrator'}">
 						<th><span>Initial Cost</span></th>
 						</c:if>
 						<th><span>Quantity</span></th>
@@ -239,12 +239,23 @@
 						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.description}</span></a></td>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.size}</span></a></td> --%>
 						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.colour}</span></a></td>
-						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
+						<c:if test="${sessionScope.urole == 'Administrator'}">
 							<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.initialCost}</span></a></td>
 						</c:if>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.location}</span></a></td> --%>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.multiBarcode}</span></a></td> --%>
-						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.quantity}</span></a></td>
+						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}">
+							<c:if test="${not empty item.quantity}">
+								<c:choose>
+		        					<c:when test="${item.quantity == -1}">	
+										<span>Auto</span>
+									</c:when>
+		        					<c:otherwise>
+		        						<span>${item.quantity}</span>	
+		        					</c:otherwise>
+	        					</c:choose>
+        					</c:if>
+						</a></td>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.category}</span></a></td> --%>
 					<%-- 	<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.supplierName}</span></a></td> --%>
 						

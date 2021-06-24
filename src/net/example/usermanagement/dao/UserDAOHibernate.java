@@ -130,7 +130,7 @@ public class UserDAOHibernate {
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
  
-            logs = sessionObj.createQuery("FROM Logs").list();
+            logs = sessionObj.createQuery("FROM Logs ORDER BY LogID DESC").list();
             System.out.println("\nSuccessfully Get Record(s) In The Database!\n");
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {

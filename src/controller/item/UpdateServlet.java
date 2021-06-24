@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import dbHelpers.ReadRecord;
 import models.Item;
 import models.ItemSupplier;
+import models.Supplier;
 
 /**
  * Servlet implementation class UpdateServlet
@@ -47,6 +48,11 @@ public class UpdateServlet extends HttpServlet {
 		//pass item and control to updateForm.jsp
 		request.setAttribute("item", item);
 		 request.setAttribute("list",ItemSupplier.getAll());
+		try {
+				request.setAttribute("supplierAvailable",true);
+		} catch (NullPointerException npe) {
+				request.setAttribute("supplierAvailable",false);
+		}
 		String url="/updateItem.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response); 

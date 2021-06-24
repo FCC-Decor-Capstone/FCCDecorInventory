@@ -40,6 +40,21 @@
 		}
 	</style>
 <%@ page import="helpers.Constants" %>
+<script>
+	 window.onload = function () {
+		if (window.location.protocol == 'http:') {
+		      
+		    console.log("you are accessing us via "
+		        +  "an insecure protocol (HTTP). "
+		        + "Redirecting you to HTTPS.");
+		          
+		    window.location.href = 
+		        window.location.href.replace(
+		                   'http:', 'https:');
+		} 
+		     
+	}  
+</script>
 </head>
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-light h6" style="" >
@@ -84,8 +99,8 @@
 	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 	          <a class="dropdown-item" href="${pageContext.request.contextPath}">Home</a>
 	          <!-- <a class="dropdown-item" href="#editModal" data-toggle="modal">Edit User</a>-->
-	           <a class="dropdown-item" href="${pageContext.request.contextPath}/#editModalName" data-toggle="modal">Change Name</a>
-	          <a class="dropdown-item" href="${pageContext.request.contextPath}/#editModal" data-toggle="modal">Change Password</a> 
+	           <%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/#editModalName" data-toggle="modal">Change Name</a>
+	          <a class="dropdown-item" href="${pageContext.request.contextPath}/#editModal" data-toggle="modal">Change Password</a> --%> 
 	          <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a>
 	        </div>
 	      </li>

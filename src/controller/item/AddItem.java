@@ -39,7 +39,7 @@ public class AddItem extends HttpServlet {
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 				request.setAttribute("action", "AddItem");
 		        request.setAttribute("list",ItemSupplier.getAll());
-		        request.setAttribute("Categorylist",Category.getAll());
+		        //request.setAttribute("Categorylist",Category.getAll());
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
 				dispatcher.forward(request, response);
 				/* doPost(request,response); */
@@ -69,18 +69,28 @@ public class AddItem extends HttpServlet {
 				request.setAttribute("errName", item.setName(request.getParameter("itemName")));
 				request.setAttribute("errCategory", item.setCategory(request.getParameter("category")));
 				request.setAttribute("errDescription", item.setDescription(request.getParameter("description")));
-					request.setAttribute("errSize", item.setSize(request.getParameter("size"))); 
-					request.setAttribute("errColor", item.setColour(request.getParameter("color")));
-					request.setAttribute("errCost", item.setinitialCost(Double.parseDouble(request.getParameter("initialCost"))));
+				request.setAttribute("errSize", item.setSize(request.getParameter("size"))); 
+				request.setAttribute("errColor", item.setColour(request.getParameter("color")));
+				if (request.getParameter("initialCost") != null) {
+						if (!request.getParameter("initialCost").trim().equalsIgnoreCase("")) {
+							request.setAttribute("errCost", item.setinitialCost(Double.parseDouble(request.getParameter("initialCost"))));
+						}
+					}
+	
 					request.setAttribute("errLocation", item.setLocation(request.getParameter("Location")));
 					request.setAttribute("errMultibarCode", item.setmultiBarcode(request.getParameter("multiBarcode")));
-					request.setAttribute("errQuantity", item.setQuantity(Integer.parseInt(request.getParameter("quantity"))));
-					request.setAttribute("errSupplier", item.setsupplierName(request.getParameter("supplierList")));
+					if (request.getParameter("quantity") != null) {
+							request.setAttribute("errQuantity", item.setQuantity(Integer.parseInt(request.getParameter("quantity"))));
+					}
+					if (request.getParameter("supplierList") != null) {
+							request.setAttribute("errSupplier", item.setsupplierID(Integer.parseInt(request.getParameter("supplierList"))));
+					}
 				    request.setAttribute("model",item);
 				    request.setAttribute("models",supplier);
 					
 				if (item.hasError()) {
 					request.setAttribute("ErrCtlMsg", "Item Adding Error");
+					
 				} else {
 					Item.addNew(item);
 //					Supplier.addNew(supplier);
@@ -93,7 +103,7 @@ public class AddItem extends HttpServlet {
 					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Item", session.getAttribute("uname") + "Added New Item :" + item.getName(),""));
 					request.setAttribute("ItemList", Item.getAll());
 					request.setAttribute("list",ItemSupplier.getAll());
-					request.setAttribute("Categorylist",Category.getAll());
+					//request.setAttribute("Categorylist",Category.getAll());
 					dispatcher = request.getRequestDispatcher("/read.jsp");
 					// TODO redirect to Details
 					//

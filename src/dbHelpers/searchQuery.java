@@ -17,42 +17,42 @@ public class searchQuery {
 
 	
 	 public searchQuery(){
-			System.out.println();
-			InputStream input=getClass().getClassLoader().getResourceAsStream("dbConnection.properties");
-			Properties props = new Properties();
-			
-			try {
-				props.load(input);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			try {
-				input.close();
-			}
-			catch(IOException e1) {
-				
-			}
-			String driver=props.getProperty("driver");
-			String url=props.getProperty("server");
-			String username=props.getProperty("username");
-			String passwd=props.getProperty("password");
-
-			
-			try {
-				Class.forName(driver);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				con = DriverManager.getConnection(url,username,passwd);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println(url + " " +  passwd + "  " +  username + "  " + driver);
+//			System.out.println();
+//			InputStream input=getClass().getClassLoader().getResourceAsStream("dbConnection.properties");
+//			Properties props = new Properties();
+//			
+//			try {
+//				props.load(input);
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//			try {
+//				input.close();
+//			}
+//			catch(IOException e1) {
+//				
+//			}
+//			String driver=props.getProperty("driver");
+//			String url=props.getProperty("server");
+//			String username=props.getProperty("username");
+//			String passwd=props.getProperty("password");
+//
+//			
+//			try {
+//				Class.forName(driver);
+//			}
+//			catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			
+//			try {
+//				con = DriverManager.getConnection(url,username,passwd);
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			System.out.println(url + " " +  passwd + "  " +  username + "  " + driver);
 		}
 	 
 	 public void doSearch(String itemName) {
@@ -60,7 +60,7 @@ public class searchQuery {
 			try {
 				 String query="select * from ItemGroup where UPPER(itemName) LIKE ? ORDER BY itemGroupID ASC";
 					PreparedStatement ps;
-				ps = con.prepareStatement(query);
+				ps = DB.getConnection().prepareStatement(query);
 				ps.setString(1, "%"+ itemName.toUpperCase() + "%");
 				this.results = ps.executeQuery();
 			} catch (SQLException e) {
@@ -168,10 +168,11 @@ public class searchQuery {
 	        			table+= " <a id=\"update\" href=UpdateServlet?ItemGroupID=" + item.getitemGroupId() + ">  update</a>";
 	        	table +="</td>";
 				    table += "</tr>";
-
+				    DB.closeConnection();
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
+				DB.closeConnection();
 				e.printStackTrace();
 			}
 

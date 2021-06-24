@@ -193,21 +193,24 @@
 			</c:if> --%>
 			<div class="col-sm-5">
 			<c:if test="${not empty requestScope.model.multiBarcode}">
-				<h5 id="text">Items Countable: ${requestScope.model.multiBarcode}</h5>
+				<h5 id="text">Auto Count by Barcodes #: ${requestScope.model.multiBarcode}</h5>
 			</c:if>
 			</div>
 		<section>
 		
 		<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
  <c:choose>
-        	 <c:when test="${requestScope.model.quantity > 0}">  
+        <c:when test="${requestScope.model.multiBarcode == 'yes'}">  
 			<a class="btn btn-primary"  href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
-			<a class="btn btn-primary"  href="./ReadBarcode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
-			</c:when>
+		</c:when>
       <c:otherwise>
-          <p id="addItem">Cannot add barcode with quantity 0, Please update quantity </p>  
+      		<!-- this ensures non multibarcode items can have only maximum of 1 barcode for the entire category  -->
+      		<c:if test="${requestScope.count < 1}">
+				<a class="btn btn-primary"  href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add barcode number for ${requestScope.model.name} </a>
+			</c:if>
          </c:otherwise>
       </c:choose>
+      <a class="btn btn-primary"  href="./ReadBarcode?ItemGroupID=${requestScope.model.itemGroupId}">List Barcode linked with ${requestScope.model.name} </a>
 </c:if>
 
 

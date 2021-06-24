@@ -293,7 +293,7 @@ form#searchBox input {
 
 .rmdT th, .rmdT td {
     /* border: black solid 2px; */
-    white-space: nowrap;
+    /* white-space: nowrap; */
     text-align: center;
 }
 

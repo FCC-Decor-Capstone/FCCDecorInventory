@@ -46,7 +46,9 @@
 			<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 				<div class="searchItem">
 					<button type="submit" formaction="Edit" formmethod="get"><i class="fas fa-pen" style="color:green;"> Edit</i></button>
-					<button type="button"  onClick="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${requestScope.model.id}')"><i class="fa fa-close" style="color:red;"> Delete</i></button>
+					<c:if test="${requestScope.model.id != 2}">
+						<button type="button"  onClick="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${requestScope.model.id}')"><i class="fa fa-close" style="color:red;"> Delete</i></button>
+					</c:if>
 				</div>
 			</c:if>
 				<button type="submit" formaction="./." formmethod="get"><i class="fas fa-arrow-left"> Back to List</i></button>

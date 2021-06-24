@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Item;
+import models.ItemSupplier;
 import models.ItemsBarcode;
+import models.Supplier;
 
 /**
  * Servlet implementation class ItemDetails
@@ -49,10 +51,15 @@ public class ItemDetails extends HttpServlet {
 				if (model != null) {
 					request.setAttribute("model", model);
 					request.setAttribute("list", Item.getItems(id));
+					try {
+					request.setAttribute("supplierName",Supplier.getByID(model.getsupplierID()).getName());
+					} catch (NullPointerException npe) {
+						request.setAttribute("supplierName","Deleted Supplier");
+					}
 				    request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
 				    request.setAttribute("count", ItemsBarcode.count(id));
-					
-					dispatcher = request.getRequestDispatcher("/BarcodeImage.jsp");
+				    
+					dispatcher = request.getRequestDispatcher("/itemdetails.jsp");
 				} else {
 					request.setAttribute("ErrCtlMsg", " Not Found");
 				}

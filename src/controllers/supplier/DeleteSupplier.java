@@ -42,7 +42,8 @@ public class DeleteSupplier extends HttpServlet {
 				
 				int id = Integer.parseInt(request.getParameter("id"));
 				String oldName = Supplier.getByID(id).getName();
-
+				if (id == 2) throw new IOException();
+					
 				if (Supplier.deleteByID(id)) {
 					request.setAttribute("SucCtlMsg", "Deleted Supplier Successfully");
 					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier",session.getAttribute("uname") + " Deleted Supplier Name:" + oldName,""));
@@ -52,7 +53,9 @@ public class DeleteSupplier extends HttpServlet {
 				}
 			} catch (NumberFormatException nfe) {
 				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
-			} 
+			} catch (IOException e) {
+				request.setAttribute("ErrCtlMsg", "Can't Delete this one");
+			}
 		}
 		
 		dispatcher.forward(request, response);

@@ -68,7 +68,9 @@
 						<td><a href="./Details?id=${supplier.id}"><span>${supplier.telephone}</span></a></td>
 						<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 						<td class="actionCell"><div>
-							<a href="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${supplier.id}')"><i class="fa fa-close" style="color:red;"></i> </a> 
+							<c:if test="${supplier.id != 2}">
+								<a href="javascript:confirmGo('Are you sure you want to delete?','./Delete?id=${supplier.id}')"><i class="fa fa-close" style="color:red;"></i> </a> 
+	                		</c:if>
 	                		<a href="./Edit?id=${supplier.id}"><i class="fas fa-pen" style="color:green;"></i> </a>
 	                	</div></td>
 	                	</c:if>

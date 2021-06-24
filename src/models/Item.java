@@ -31,7 +31,6 @@ public class Item {
 	private String multiBarcode;
 	private int quantity;
 	private String category;
-	private String supplierName;
 	boolean hasError = false;
 	
 	public Item() {
@@ -45,12 +44,11 @@ public class Item {
 		this.location = "";
 		this.multiBarcode = "";
 		this.quantity = 0;
-		this.category = "";
-		this.supplierName="";
+		this.category ="";
 	}
  
 	public Item(int itemGroupId, String itemName, String description,String size,String colour,double initialCost,String location,
-			String multiBarcode,int quantity,String category,String supplierName){
+			String multiBarcode,int quantity,String category,int supplierID){
 		this.itemGroupId =itemGroupId;
 		this.itemName = itemName;
 		this.description = description;
@@ -62,7 +60,7 @@ public class Item {
 		this.quantity = quantity;
 		this.category = category;
 	
-		this.supplierName = supplierName;
+		this.supplierID = supplierID;
 		this.itemGroupId = itemGroupId;
 	}
  
@@ -96,27 +94,7 @@ public class Item {
 			return "Name Field cannot be empty";
 		}
 	}
-	public String getsupplierName() {
-		// TODO Auto-generated method stub
-		return supplierName;
-	}
-	public String setsupplierName(String supplierName) {
-		// TODO Auto-generated method stub
-		try {
-			if (supplierName.trim().isEmpty()) {
-				hasError = true;
-				return " Supplier Name Field cannot be empty";
-			}
-			if (supplierName.length() > 45) {
-				hasError = true;
-				return "Name Field cannot exceed 45 characters";
-			}
-			this.supplierName = supplierName;
-			return "";
-		} catch (NullPointerException npx) {
-			return "Name Field cannot be empty";
-		}
-	}
+	
 
 
 
@@ -129,9 +107,9 @@ public class Item {
 		// TODO Auto-generated method stub
 		
 		try {
-			if (description.length() > 45) {
+			if (description.length() > 1000) {
 				hasError = true;
-				return "Comments Field cannot exceed 255 characters";
+				return "description Field cannot exceed 255 characters";
 			}
 			this.description = description;
 			return "";
@@ -150,9 +128,9 @@ public class Item {
 	public String setSize(String size) {
 		// TODO Auto-generated method stub
 		try {
-			if (size.length() > 45) {
+			if (size.length() > 25) {
 				hasError = true;
-				return "Telephone Field cannot exceed 45 characters";
+				return "Size Field cannot exceed 45 characters";
 			}
 			this.size = size;
 			return "";
@@ -175,10 +153,6 @@ public class Item {
 	public String setColour(String colour) {
 		// TODO Auto-generated method stub
 		try {
-			if (colour.trim().isEmpty()) {
-				hasError = true;
-				return "Name Field cannot be empty";
-			}
 			if (colour.length() > 45) {
 				hasError = true;
 				return "Name Field cannot exceed 45 characters";
@@ -202,15 +176,11 @@ public class Item {
 		// TODO Auto-generated method stub
 		
 		try {
-			if (initialCost > 45) {
-				hasError = true;
-				return "Telephone Field cannot exceed 45 characters";
-			}
 			this.initialCost = initialCost;
 			return "";
 		} catch (NullPointerException npx) {
 			hasError = true;
-			return "";
+			return "cost not numeric";
 		}
 		
 	}
@@ -224,24 +194,37 @@ public class Item {
 	public String setmultiBarcode(String multiBarcode) {
 		// TODO Auto-generated method stub
 		try {
-			if (location.trim().isEmpty()) {
+			if (multiBarcode.trim().isEmpty()) {
 				hasError = true;
-				return "Name Field cannot be empty";
+				return "multiBarcode Field cannot be empty";
 			}
-			if (location.length() > 45) {
+			if (multiBarcode.length() > 8) {
 				hasError = true;
-				return "Name Field cannot exceed 45 characters";
+				return "multiBarcode Field cannot exceed 8 characters";
 			}
 			this.multiBarcode = multiBarcode;
-
 			return "";
 		} catch (NullPointerException npx) {
-			return "Name Field cannot be empty";
+			return "multiBarcode Field cannot be empty";
 		}
 		
 	}
 
-
+	
+	public int getsupplierID() {
+		return supplierID;
+	}
+	public int setsupplierID(int supplierID) {
+		// TODO Auto-generated method stub
+		
+		try {
+			this.supplierID = supplierID;
+			return supplierID;
+		} catch (NullPointerException npx) {
+			hasError = true;
+			return 1;
+		}
+	}
 
 
 	public int getQuantity() {
@@ -271,19 +254,15 @@ public class Item {
 		// TODO Auto-generated method stub
 		
 		try {
-			if (location.trim().isEmpty()) {
-				hasError = true;
-				return "Name Field cannot be empty";
-			}
 			if (location.length() > 45) {
 				hasError = true;
-				return "Name Field cannot exceed 45 characters";
+				return "location Field cannot exceed 45 characters";
 			}
 			this.location = location;
 
 			return "";
 		} catch (NullPointerException npx) {
-			return "Name Field cannot be empty";
+			return "location Field cannot be empty";
 		}
 	}
 
@@ -297,7 +276,7 @@ public class Item {
 	public String setCategory(String category) {
 		// TODO Auto-generated method stub
 		try {
-			if (category =="") {
+			if (category.trim().equalsIgnoreCase("")) {
 				hasError = true;
 				return "Select the category";
 			}
@@ -345,7 +324,7 @@ public class Item {
 	
 	
 	public static Item addNew(Item item) {
-		String insert="insert into ItemGroup (itemName,category,description,size,colour,initialCost,location,multiBarcode,quantity,supplierName) values(?,?,?,?,?,?,?,?,?,?)";
+		String insert="insert into ItemGroup (itemName,category,description,size,colour,initialCost,location,multiBarcode,quantity,supplierID) values(?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
@@ -359,7 +338,7 @@ public class Item {
 			ps.setString(8, item.getmultiBarcode());
 			ps.setInt(9, item.getQuantity());
 			
-			ps.setString(10, item.getsupplierName());
+			ps.setInt(10, item.getsupplierID());
 			int result = ps.executeUpdate();
 			System.out.println("Inserted ID is " + result);
 			ResultSet rs = ps.getGeneratedKeys();
@@ -375,9 +354,7 @@ public class Item {
 		}
 		return null;
 	}
-	public int getSupplierID() {
-		return supplierID;
-	}
+	
 
 	public int setSupplierID(int supplierID) {
 		// TODO Auto-generated method stub
@@ -400,7 +377,7 @@ public class Item {
 			
 			while(rs.next()) {
 				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
-						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
+						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getInt("supplierID")));
 			}
 			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
@@ -420,7 +397,7 @@ public class Item {
 			Item item = null; 
 			while(rs.next()) { 
 				item = new Item(ID, rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
-						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName"));
+						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getInt("supplierID"));
 			}
 			 DB.closeConnection();
 			return item;
@@ -442,7 +419,7 @@ public class Item {
 			
 			while(rs.next()) {
 				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
-						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
+						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getInt("supplierID")));
 			}
 			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;
@@ -464,7 +441,7 @@ public class Item {
 			
 			while(rs.next()) {
 				list.add(new Item(rs.getInt("itemGroupID"), rs.getString("itemName"),  rs.getString("description"), rs.getString("size"),
-						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getString("supplierName")));
+						rs.getString("colour"),rs.getDouble("initialCost"),rs.getString("location"),rs.getString("multiBarcode"),rs.getInt("quantity"),rs.getString("category"),rs.getInt("supplierID")));
 			}
 			  DB.closeConnection();
 			if (list.size() > 0) return list; else return null;

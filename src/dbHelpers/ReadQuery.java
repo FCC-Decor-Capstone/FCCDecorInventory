@@ -17,54 +17,55 @@ import models.Item;
 
 
 public class ReadQuery {
-	private Connection con;
+	//private Connection con;
 	private ResultSet results = null;
 	public ReadQuery(){
-		System.out.println();
-		InputStream input=getClass().getClassLoader().getResourceAsStream("dbConnection.properties");
-		Properties props = new Properties();
-		try {
-			props.load(input);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			input.close();
-		}
-		catch(IOException e1) {
-			
-		}
-		String driver=props.getProperty("driver");
-		String url=props.getProperty("server");
-		String username=props.getProperty("username");
-		String passwd=props.getProperty("password");
-
-		
-		try {
-			Class.forName(driver);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			con = DriverManager.getConnection(url,username,passwd);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(url + " " +  passwd + "  " +  username + "  " + driver);
+//		System.out.println();
+//		InputStream input=getClass().getClassLoader().getResourceAsStream("dbConnection.properties");
+//		Properties props = new Properties();
+//		try {
+//			props.load(input);
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		try {
+//			input.close();
+//		}
+//		catch(IOException e1) {
+//			
+//		}
+//		String driver=props.getProperty("driver");
+//		String url=props.getProperty("server");
+//		String username=props.getProperty("username");
+//		String passwd=props.getProperty("password");
+//
+//		
+//		try {
+//			Class.forName(driver);
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		try {
+//			con = DriverManager.getConnection(url,username,passwd);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println(url + " " +  passwd + "  " +  username + "  " + driver);
 	}
 	
 	
 	public void doRead(){
 		try{
 			String query="select * from ItemGroup ORDER BY itemGroupID ASC";
-			PreparedStatement ps= con.prepareStatement(query);
+			PreparedStatement ps= DB.getConnection().prepareStatement(query);
 			this.results = ps.executeQuery();
 			
 		} catch(SQLException ex){
+			
 			Logger.getLogger(ReadQuery.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
@@ -174,8 +175,10 @@ public class ReadQuery {
 			    table += "</tr>";
 
 			}
+			DB.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			DB.closeConnection();
 			e.printStackTrace();
 		}
 
