@@ -27,6 +27,15 @@ public class UserDAOHibernate {
 	static Session sessionObj;
     static SessionFactory sessionFactoryObj;
     
+    public static synchronized SessionFactory getSessionFactory() {
+
+        if (sessionFactoryObj == null) {
+        	buildSessionFactory();
+        }
+        return sessionFactoryObj;
+    }
+
+    
     // This Method Is Used To Create The Hibernate's SessionFactory Object
     private static SessionFactory buildSessionFactory() {
     	// Creating configuration Instance and Passing Hibernate Configuration File
@@ -40,6 +49,7 @@ public class UserDAOHibernate {
     	
     	// Creating Hibernate SessionFactory Instance
     	sessionFactoryObj = configObj.buildSessionFactory(serviceRegistryObj);
+    	System.out.print("Rebuilding");
     	return sessionFactoryObj;
     }
     
@@ -55,7 +65,7 @@ public class UserDAOHibernate {
 				
 				user.setPassword(hash);
 				// Getting Session Object From SessionFactory
-				sessionObj = buildSessionFactory().openSession();
+				sessionObj = getSessionFactory().openSession();
 				// Getting Transaction Object From Session Object
 				sessionObj.beginTransaction();
 				// save 'user' object to session as a transaction
@@ -101,7 +111,7 @@ public class UserDAOHibernate {
 
 		try {
 			// Getting Session Object From SessionFactory
-            sessionObj = buildSessionFactory().openSession();
+            sessionObj = getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
  
@@ -126,7 +136,7 @@ public class UserDAOHibernate {
 
 		try {
 			// Getting Session Object From SessionFactory
-            sessionObj = buildSessionFactory().openSession();
+            sessionObj = getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
  
@@ -158,7 +168,7 @@ public class UserDAOHibernate {
 				//String hash = MD5(user.getPassword());
 				
 				//user.setPassword(hash);
-			sessionObj = buildSessionFactory().openSession();
+			sessionObj = getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
             
@@ -192,7 +202,7 @@ public class UserDAOHibernate {
 			//if(user.getPassword() == null) {
 			// user.getPassword();
 			// Getting Session Object From SessionFactory
-            sessionObj = buildSessionFactory().openSession();
+            sessionObj = getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
             
@@ -224,7 +234,7 @@ public class UserDAOHibernate {
 		boolean rowDeleted;
 		try {
 			// Getting Session Object From SessionFactory
-            sessionObj = buildSessionFactory().openSession();
+            sessionObj = getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
  
@@ -256,7 +266,7 @@ public class UserDAOHibernate {
 		
 		try {
 			// Getting Session Object From SessionFactory
-            sessionObj = buildSessionFactory().openSession();
+            sessionObj = getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
             login_password = MD5(login_password);
@@ -290,7 +300,7 @@ public class UserDAOHibernate {
 		User user = null;
 		try {
 			// Getting Session Object From SessionFactory
-            sessionObj = buildSessionFactory().openSession();
+            sessionObj = getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
             
@@ -318,7 +328,7 @@ public class UserDAOHibernate {
 		User user = null;
 		try {
 			// Getting Session Object From SessionFactory
-            sessionObj = buildSessionFactory().openSession();
+            sessionObj = getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
             

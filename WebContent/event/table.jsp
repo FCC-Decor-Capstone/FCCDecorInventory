@@ -41,7 +41,7 @@
 							</div>
 							
 							<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
-								<button type="submit" formaction="/user-management-master/Event/Add" formmethod="get"><i class="fas fa-plus"> Add New</i></button>
+								<button type="submit" formaction="./Add" formmethod="get"><i class="fas fa-plus"> Add New</i></button>
 							</c:if>
 					</form>
 					</div>
