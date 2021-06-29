@@ -53,6 +53,7 @@ public class UpdateServlet extends HttpServlet {
 		} catch (NullPointerException npe) {
 				request.setAttribute("supplierAvailable",false);
 		}
+		request.setAttribute("CatList", Item.getCategories());
 		String url="/updateItem.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response); 

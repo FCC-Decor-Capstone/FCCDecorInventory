@@ -39,7 +39,8 @@ public class AddItem extends HttpServlet {
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 				request.setAttribute("action", "AddItem");
 		        request.setAttribute("list",ItemSupplier.getAll());
-		        //request.setAttribute("Categorylist",Category.getAll());
+		        request.setAttribute("CatList", Item.getCategories());
+		       
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
 				dispatcher.forward(request, response);
 				/* doPost(request,response); */
@@ -94,17 +95,22 @@ public class AddItem extends HttpServlet {
 				} else {
 					Item.addNew(item);
 //					Supplier.addNew(supplier);
-					request.setAttribute("SucCtlMsg", "Item Added Successfully");
-					request.setAttribute("ItemList", Item.getAll());
-					request.setAttribute("ItemList", Item.updateQuantity());
-						
-//					request.setAttribute("list",Supplier.getAll());
-//				    dispatcher = request.getRequestDispatcher("/ItemForm.jsp");
-					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Item", session.getAttribute("uname") + "Added New Item :" + item.getName(),""));
-					request.setAttribute("ItemList", Item.getAll());
-					request.setAttribute("list",ItemSupplier.getAll());
-					//request.setAttribute("Categorylist",Category.getAll());
-					dispatcher = request.getRequestDispatcher("/read.jsp");
+					response.sendRedirect(request.getContextPath()+"/ListItem");
+					return;
+					/*
+					 * request.setAttribute("SucCtlMsg", "Item Added Successfully");
+					 * request.setAttribute("ItemList", Item.getAll());
+					 * //request.setAttribute("ItemList", Item.updateQuantity());
+					 * 
+					 * // request.setAttribute("list",Supplier.getAll()); // dispatcher =
+					 * request.getRequestDispatcher("/ItemForm.jsp");
+					 * 
+					 * request.setAttribute("ItemList", Item.getAll());
+					 * request.setAttribute("list",ItemSupplier.getAll());
+					 * request.setAttribute("CatList", Item.getCategories());
+					 * //request.setAttribute("Categorylist",Category.getAll()); dispatcher =
+					 * request.getRequestDispatcher("/read.jsp");
+					 */
 					// TODO redirect to Details
 					//
 				}

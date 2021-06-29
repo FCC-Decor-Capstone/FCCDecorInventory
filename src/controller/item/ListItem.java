@@ -34,21 +34,32 @@ public class ListItem extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")  || session.getAttribute("urole").equals("General User")) {
-		if (request.getParameter("searchVal") != null) {
-			if (!request.getParameter("searchVal").trim().isEmpty()) {
-				request.setAttribute("search", request.getParameter("searchVal").trim());
-				request.setAttribute("list", Item.search(request.getParameter("searchVal")));	
-			} else {
-				request.setAttribute("list", Item.getAll());
+			String catVal = "", searchVal = "";
+			if (request.getParameter("searchVal") != null) {
+				if (!request.getParameter("searchVal").trim().isEmpty()) {
+					searchVal = request.getParameter("searchVal").trim();
+				}	
 			}
-		} else {
-			request.setAttribute("ItemList", Item.getAll());
 			
-		}
-		request.setAttribute("list",ItemSupplier.getAll());
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/read.jsp");
-		dispatcher.forward(request, response);
-	} else
+			if (request.getParameter("catVal") != null) {
+				if (!request.getParameter("catVal").trim().isEmpty()) {
+					catVal = request.getParameter("catVal").trim();
+					if (catVal.equalsIgnoreCase("All")) catVal = "";
+				}	
+			}
+			
+			if (catVal.concat(searchVal).length() > 0) {
+				request.setAttribute("searchVal", searchVal);
+				request.setAttribute("catVal", catVal);
+				request.setAttribute("ItemList", Item.search(searchVal, catVal));	
+			} else {
+				request.setAttribute("ItemList", Item.getAll());
+			}
+	
+			request.setAttribute("CatList", Item.getCategories());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/read.jsp");
+			dispatcher.forward(request, response);
+		} else
 	{
 		throw new RuntimeException("Invalid access");
 	}

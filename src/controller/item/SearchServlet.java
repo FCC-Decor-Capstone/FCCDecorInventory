@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import models.Item;
 
@@ -31,20 +32,37 @@ public class SearchServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
-		if (request.getParameter("searchVal") != null) {
-			if (!request.getParameter("searchVal").trim().isEmpty()) {
-				request.setAttribute("searchVal", request.getParameter("searchVal").trim());
-				request.setAttribute("ItemList", Item.search(request.getParameter("searchVal")));	
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")  || session.getAttribute("urole").equals("General User")) {
+			String catVal = "", searchVal = "";
+			if (request.getParameter("searchVal") != null) {
+				if (!request.getParameter("searchVal").trim().isEmpty()) {
+					searchVal = request.getParameter("searchVal").trim();
+				}	
+			}
+			
+			if (request.getParameter("catVal") != null) {
+				if (!request.getParameter("catVal").trim().isEmpty()) {
+					catVal = request.getParameter("catVal").trim();
+					if (catVal.equalsIgnoreCase("All")) catVal = "";
+				}	
+			}
+			
+			if (catVal.concat(searchVal).length() > 0) {
+				request.setAttribute("searchVal", searchVal);
+				request.setAttribute("catVal", catVal);
+				request.setAttribute("ItemList", Item.search(searchVal, catVal));	
 			} else {
 				request.setAttribute("ItemList", Item.getAll());
 			}
-		} else {
-			request.setAttribute("ItemList", Item.getAll());
+	
+			request.setAttribute("CatList", Item.getCategories());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/read.jsp");
+			dispatcher.forward(request, response);
+		} else
+		{
+			throw new RuntimeException("Invalid access");
 		}
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/read.jsp");
-		dispatcher.forward(request, response);
 	}
 
 	/**

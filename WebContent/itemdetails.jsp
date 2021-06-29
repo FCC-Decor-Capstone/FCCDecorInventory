@@ -164,7 +164,7 @@
 			
 			
 				<c:if test="${not empty requestScope.totalCost}">
-					<p><strong>Total Cost Involved:</strong> ${requestScope.totalCost} CAD</p>
+					<p><strong>Total Item Cost:</strong> ${requestScope.totalCost} CAD</p>
 				</c:if>
 			</c:if>
 			

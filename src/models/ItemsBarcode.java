@@ -209,6 +209,28 @@ public class ItemsBarcode {
 		}
 		return null;
 	}
+	
+	public static Boolean deleteAllByGroupID(int ID) {
+		String delete="DELETE FROM Item WHERE itemGroupID = ?;";
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(delete);
+			ps.setInt(1,ID);
+			int result = ps.executeUpdate();
+			  DB.closeConnection();
+			if (result==1) {
+				return true;
+			}
+			else 
+				return false;
+		
+		} catch (SQLException e) {
+			  DB.closeConnection();
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public static Boolean deleteByID(int ID) {
 		String delete="DELETE FROM Item WHERE itemID = ?;";
 		PreparedStatement ps;

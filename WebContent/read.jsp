@@ -54,7 +54,7 @@
 		border-radius: 2px;
 		border: none;
 		outline: none !important;
-		margin-left: 10px;
+		
 	}
 	.table-title .btn:hover, .table-title .btn:focus {
         color: #566787;
@@ -143,6 +143,25 @@
     .text-danger {
         color: #ff5b5b;
     }
+    .searchRow {
+    	white-space: nowrap;
+    	display:flex;
+    	margin: .5em auto;	
+		justify-content:flex-end;
+    }
+    
+    button#clearButton, button#searchButton {
+	background-color:  var(--white);
+	border-radius: 3em;
+	min-width: 2em;
+	border:0;
+	}
+	
+	button#clearButton {
+	background-color:  var(--warning-font);
+	color: var(--white);
+	margin-right: 10px;
+    }
     </style>
     
 
@@ -193,16 +212,57 @@
 					</div>
 					<div class="col-sm-7">
 		<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
-					<form action="AddItem" >
+					<form action="AddItem"  class="searchRow" >
                         <button  class="btn btn-primary" type="submit" value="AddItem">Add New Item</button>
                   </form>
         </c:if>
-						
-            <form  class="search" action="SearchServlet" method="POST" >
-             
-                <input type="text" name="searchVal"  placeholder="Search.." value="${requestScope.searchVal}">
-                <button class="btn btn-primary" type="submit" ><i class="fa fa-search"></i></button>
-              
+				
+            <form  id="search" action="SearchServlet" method="POST" >
+            	<div class="searchRow">
+            	<label for="selCat">Category </label>
+            	<select name="catVal" id="selCat" style="width:100%; margin: 0 0 0 1em" onChange="submit()">
+					<option value="All">-- All --</option>	
+            		<c:forEach var="cat" items="${requestScope.CatList}">
+	            			<c:choose>
+		            			<c:when test="${cat != ''}">
+		            				<option value="${cat}">${cat}</option>
+		            			</c:when>
+		            			<c:otherwise>
+		            				<option value="Empty">-- Not Specified --</option>
+		            			</c:otherwise>
+	            			</c:choose>
+            		</c:forEach>
+            	</select>
+            	
+            	<script>
+            		if ("${requestScope.catVal}" !== "") {
+            			selCat.value = "${requestScope.catVal}";
+            		}
+            	</script>
+            	</div>
+               <div class="searchRow" >
+               	<script>
+				function resetForm(e) {
+				  document.getElementById('searchVal').value = ""
+				  document.forms.search.submit();
+				}
+				</script>
+				
+				<script>
+				function submit(e) {
+					e.preventDefault();
+				  document.forms.search.submit();
+				}
+				
+			
+				</script>
+               
+               <c:if test="${not empty requestScope.searchVal}">
+					<button style="background-color:red;" id="clearButton" onclick="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
+				</c:if>
+                <input style="width:100%" type="text" id="searchVal" name="searchVal" placeholder="Search.." value="${requestScope.searchVal}">
+                <button id="searchButton" class="btn btn-primary" type="submit" ><i class="fa fa-search"></i></button>
+                </div>
             </form>
 											
 					</div>
@@ -245,16 +305,18 @@
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.location}</span></a></td> --%>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.multiBarcode}</span></a></td> --%>
 						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}">
-							<c:if test="${not empty item.quantity}">
+							
 								<c:choose>
-		        					<c:when test="${item.quantity == -1}">	
+		        					<c:when test="${item.multiBarcode == 'yes'}">	
 										<span>Auto</span>
 									</c:when>
 		        					<c:otherwise>
-		        						<span>${item.quantity}</span>	
+		        						<c:if test="${not empty item.quantity}">
+		        							<span>${item.quantity}</span>	
+		        						</c:if>
 		        					</c:otherwise>
 	        					</c:choose>
-        					</c:if>
+        					
 						</a></td>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.category}</span></a></td> --%>
 					<%-- 	<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.supplierName}</span></a></td> --%>

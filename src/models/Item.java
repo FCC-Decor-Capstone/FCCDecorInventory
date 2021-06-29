@@ -387,6 +387,27 @@ public class Item {
 		}
 		return null;
 	}
+	
+	public static List<String> getCategories() {
+		String select="SELECT DISTINCT Category FROM pldinven_fccdecor.ItemGroup Order by category";
+		List<String> list = new ArrayList<String>(); 
+		PreparedStatement ps;
+		try {
+			ps = DB.getConnection().prepareStatement(select);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				list.add(rs.getString("Category"));
+			}
+			  DB.closeConnection();
+			if (list.size() > 0) return list; else return null;
+		} catch (SQLException e) {
+			  DB.closeConnection();
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static Item getByID(int ID) {
 		String select="SELECT * FROM ItemGroup WHERE itemGroupID = ?;";
 		PreparedStatement ps;
@@ -429,14 +450,38 @@ public class Item {
 		}
 		return null;
 	}
-	public static List<Item> search(String word) {
-		String select=	"select * from ItemGroup where UPPER(itemName) LIKE ? ORDER BY itemGroupID ASC";
-//		String select="SELECT * FROM ItemGroup WHERE LOWER(CONCAT(itemName, ' ', category, ' ', description, ' ',size,' ',colour,' ', initialCost,' ' , location,' ' multiBarcode, ' ', quantity,' ', supplierName)) LIKE LOWER(?)";
+	public static List<Item> search(String word, String valCat) {
+		int conditionCount = 0;
+		String conditions = " where ";
+		ArrayList<String> psAttr = new ArrayList<String>();
+		
+		if (word.length() > 0) {
+			conditionCount++;
+			conditions += "lower(CONCAT(itemName, ' ', category, ' ', IFNULL(description,''), ' ',IFNULL(size,''),' ',IFNULL(colour,''),' ', initialCost,' ' , IFNULL(location,''), ' ', quantity,' ', IFNULL(supplierID,2))) LIKE lower(?)";
+			psAttr.add("%" + word + "%");
+		}
+		if (valCat.length() > 0) {
+			if (conditionCount > 0) conditions += " AND ";
+			conditionCount++;
+			conditions += " Category = ? ";
+			if (valCat.equals("Empty")) {
+				psAttr.add("");
+			} else {
+				psAttr.add(valCat);
+			}
+		
+		}
+		
+		String select=	"select * from ItemGroup " + conditions + " ORDER BY itemName ASC";
+		System.out.println(select);
 		List<Item> list = new ArrayList<Item>(); 
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);
-			ps.setString(1, "%" + word + "%");
+			for (int i = 0; i < psAttr.size(); i++) {
+				ps.setString(i+1, psAttr.get(i));
+			}
+			
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {

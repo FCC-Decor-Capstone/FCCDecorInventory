@@ -91,6 +91,38 @@
 	.layout-form form a:hover {
 		text-decoration: underline;
 	}
+	
+	.autocomplete {
+	  /*the container must be positioned relative:*/
+	  position: relative;
+	  display: inline-block;
+	}
+	.autocomplete-items {
+	  position: absolute;
+	  border: 1px solid #d4d4d4;
+	  border-bottom: none;
+	  border-top: none;
+	  z-index: 99;
+	  /*position the autocomplete items to be the same width as the container:*/
+	  top: 100%;
+	  left: 0;
+	  right: 0;
+	}
+	.autocomplete-items div {
+	  padding: 5px;
+	  cursor: pointer;
+	  background-color: #fff;
+	  border-bottom: 1px solid #d4d4d4;
+	}
+	.autocomplete-items div:hover {
+	  /*when hovering an item:*/
+	  background-color: #e9e9e9;
+	}
+	.autocomplete-active {
+	  /*when navigating through the items using the arrow keys:*/
+	  background-color: DodgerBlue !important;
+	  color: #ffffff;
+	}
 		</style>
 <%-- <meta charset="ISO-8859-1">
 <title>Update a Book</title>
@@ -134,49 +166,166 @@ function toggleSidebar(){
 		<input type="text" name="itemName" required="required" placeholder="Item Name" value="<%= item.getName()%>"> 
 		</div>
 		</div>
+		
+		<script>
+		//copypasta from w3
+		 function autocomplete(inp, arr) {
+			  /*the autocomplete function takes two arguments,
+			  the text field element and an array of possible autocompleted values:*/
+			  var currentFocus;
+			  /*execute a function when someone writes in the text field:*/
+			  inp.addEventListener("input", function(e) {
+			      var a, b, i, val = this.value;
+			      /*close any already open lists of autocompleted values*/
+			      closeAllLists();
+			      //if (!val) { return false;} //
+			      currentFocus = -1;
+			      /*create a DIV element that will contain the items (values):*/
+			      a = document.createElement("DIV");
+			      a.setAttribute("id", this.id + "autocomplete-list");
+			      a.setAttribute("class", "autocomplete-items");
+			      /*append the DIV element as a child of the autocomplete container:*/
+			      this.parentNode.appendChild(a);
+			      /*for each item in the array...*/
+			      for (i = 0; i < arr.length; i++) {
+			        /*check if the item starts with the same letters as the text field value:*/
+			        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+			          /*create a DIV element for each matching element:*/
+			          b = document.createElement("DIV");
+			          /*make the matching letters bold:*/
+			          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+			          b.innerHTML += arr[i].substr(val.length);
+			          /*insert a input field that will hold the current array item's value:*/
+			          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+			          /*execute a function when someone clicks on the item value (DIV element):*/
+			              b.addEventListener("click", function(e) {
+			              /*insert the value for the autocomplete text field:*/
+			              inp.value = this.getElementsByTagName("input")[0].value;
+			              /*close the list of autocompleted values,
+			              (or any other open lists of autocompleted values:*/
+			              closeAllLists();
+			          });
+			          a.appendChild(b);
+			        }
+			      }
+			  });
+			 
+			          
+			  /*execute a function presses a key on the keyboard:*/
+			  inp.addEventListener("keydown", function(e) {
+			      var x = document.getElementById(this.id + "autocomplete-list");
+			      if (x) x = x.getElementsByTagName("div");
+			      if (e.keyCode == 40) {
+			        /*If the arrow DOWN key is pressed,
+			        increase the currentFocus variable:*/
+			        currentFocus++;
+			        /*and and make the current item more visible:*/
+			        addActive(x);
+			      } else if (e.keyCode == 38) { //up
+			        /*If the arrow UP key is pressed,
+			        decrease the currentFocus variable:*/
+			        currentFocus--;
+			        /*and and make the current item more visible:*/
+			        addActive(x);
+			      } else if (e.keyCode == 13) {
+			        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+			        e.preventDefault();
+			        if (currentFocus > -1) {
+			          /*and simulate a click on the "active" item:*/
+			          if (x) x[currentFocus].click();
+			        }
+			      }
+			  });
+			  function addActive(x) {
+			    /*a function to classify an item as "active":*/
+			    if (!x) return false;
+			    /*start by removing the "active" class on all items:*/
+			    removeActive(x);
+			    if (currentFocus >= x.length) currentFocus = 0;
+			    if (currentFocus < 0) currentFocus = (x.length - 1);
+			    /*add class "autocomplete-active":*/
+			    x[currentFocus].classList.add("autocomplete-active");
+			  }
+			  function removeActive(x) {
+			    /*a function to remove the "active" class from all autocomplete items:*/
+			    for (var i = 0; i < x.length; i++) {
+			      x[i].classList.remove("autocomplete-active");
+			    }
+			  }
+			  function closeAllLists(elmnt) {
+			    /*close all autocomplete lists in the document,
+			    except the one passed as an argument:*/
+			    var x = document.getElementsByClassName("autocomplete-items");
+			    for (var i = 0; i < x.length; i++) {
+			      if (elmnt != x[i] && elmnt != inp) {
+			      x[i].parentNode.removeChild(x[i]);
+			    }
+			  }
+			}
+			/*execute a function when someone clicks in the document:*/
+			document.addEventListener("click", function (e) {
+			    closeAllLists(e.target);
+			});
+			} 
+			 var categories = [
+				 <c:forEach var="cat" items="${requestScope.CatList}">
+				 "${cat}",
+ 				 </c:forEach>
+				 ]
+		</script>
+		
+		
 			<div class="form-group">
-	 <label class="col-sm-2 col-form-label">Category:</label>
+	 <label class="col-sm-12 col-form-label">Category:     Hint: Space and Back to see the list</label>
 	         <div class="col-sm-7">
-	<select name="category" id="category">
-	<option value="<%=item.getCategory()%>"><%= item.getCategory()%></option>
+	         
+	             <input id="CatAutoCompl" type="text" name="category" placeholder="Type Category" value="${item.category}">
+	             
 	
-	<option value="Accessories">Accessories</option>
-	<option value="Catering">Catering</option>
-	<option value="Centerpieces & Vases">Centerpieces & Vases</option>
-	<option value="Charger Plates & Misc">Charger Plates & Misc</option>
-  	<option  value="Decor Props">Decor Props</option>
-  	<option  value="Equipment">Equipment</option>
-  	<option  value="Fabrics & Panels">Fabrics & Panels</option>
-  	<option  value="Florals">Florals</option>
-  	<option  value="Furnitures & Misc">Furnitures & Misc</option>
-  	<option  value="Indian Props">Indian Props</option>
-  	<option  value="Maint & Supply">Maint & Supply</option>
-  	<option  value="Office Supplies & Equipment">Office Supplies & Equipment</option>
-  	<option  value="Pipe & Drape">Pipe & Drape</option>
-  	<option  value="Private Dishware">Private Dishware</option>
-  	<option  value="Promotional Items">Promotional Items</option>
-  	<option  value="Sashes, Runners, and Chair Covers">Sashes, Runners, and Chair Covers</option>
-  	<option  value="Skirting">Skirting</option>
-  	<option  value="Supply - Florals">Supply - Florals</option>
-  	<option  value="Table Cloth">Table Cloth</option>
-
-</select>
-</div>
-</div>
-
+		</div>
+		</div>
+	<script>
+	autocomplete(document.getElementById("CatAutoCompl"), categories);
+	</script>
 <div class="form-group">
 	 <label class="col-sm-2 col-form-label">Description:</label>
 	         <div class="col-sm-7">
 			<textarea  rows="4" cols="30" name="description" ><%= item.getdescription()%></textarea>		
 			</div>
 			</div>
-			<div class="form-group">
-	 <label class="col-sm-2 col-form-label">Initial Cost:</label>
-	         <div class="col-sm-7">
 			
-			 <input type="text" value="<%= item.getinitialCost()%>" name="initialCost" > 
+			<div class=" form-group">
+		  <label class="col-sm-2 col-form-label" > Initial Cost:</label>
+		  <div class="col-sm-7">
+			<input type="text" name="initialCost" value="<%= item.getinitialCost()%>"> <BR>
+			<span style="color:red" id="errinitialCost"></span>
+			<c:if test="${not empty requestScope.errCost}">
+				<br/><span>${requestScope.errCost}</span>
+			   </c:if>
 			</div>
 			</div>
+			
+			
+			<script>
+				function verifyCost() {
+					let n = document.getElementsByName('initialCost')[0].value;
+					let input = document.getElementsByName('initialCost')[0];
+					let errLbl = document.getElementById('errinitialCost');
+					if (document.getElementsByName('initialCost')[0].value === '') return true;
+					if (!isNaN(parseFloat(n)) && isFinite(n)) {
+						errLbl.innerText = '';
+						input.style.backgroundColor = '#fff';
+						return true;
+					} else {
+						errLbl.innerText = 'Invalid Input, Decimal Number Expected'
+						input.style.backgroundColor = 'mistyrose';
+						return false;
+					};
+				};
+				document.getElementsByName('initialCost')[0].onblur = verifyCost;
+
+			</script>
+			
 			<div class="form-group">
 	 <label class="col-sm-2 col-form-label">Size:</label>
 	         <div class="col-sm-7">
@@ -195,30 +344,67 @@ function toggleSidebar(){
 			 <input type="text"  value="<%= item.getLocation()%>" name="Location" >
 			</div>
 			</div>
+
+			
 			<div class="form-group" >
-
-	 <label class="col-sm-7 col-form-label">Auto Count (Edit Not Allowed, Delete item and recreate new if needed):</label>
+	 <label class="col-sm-7 col-form-label">Auto Count (Edit will Delete Exisitng Barcodes):</label>
 	         <div class="col-sm-7">
-	       
-			 yes<input type="radio" id="yes" value="yes" name="multiBarcode" <c:if test="${item.multiBarcode == 'yes'}"> checked</c:if><c:if test="${item.multiBarcode == 'no'}"> disabled</c:if>>
-			     no<input type="radio" id="no"  value="no" name="multiBarcode" <c:if test="${item.multiBarcode == 'no'}"> checked</c:if><c:if test="${item.multiBarcode == 'yes'}"> disabled</c:if>>
+	       <input type="hidden" name="oldMultibarcode" value="${item.multiBarcode}" />
+			 yes<input type="radio" id="yes" value="yes" name="multiBarcode" onclick="toggleQuant('yes')" <c:if test="${item.multiBarcode == 'yes'}"> checked</c:if>>
+			     no<input type="radio" id="no"  value="no" name="multiBarcode" onclick="toggleQuant('no')" <c:if test="${item.multiBarcode == 'no'}"> checked</c:if>>
 			</div>
 
 			</div>
-			<div class="form-group" id="grpQty">
-	 <label class="col-sm-2 col-form-label">Quantity:</label>
-	         <div class="col-sm-7">
-			 <td><input type="number" min="0"  value="<%= item.getQuantity()%>" name="quantity" > <BR></td>
+			<div class="form-group" id="grpQty" style="display:none;">
+			<label  class="col-sm-2 col-form-label" >Quantity:</label>
+			<div class="col-sm-7">
+			<input type="hidden" min="0" id="inpQty" value="<%= item.getQuantity()%>" name="quantity" value="-1"> <BR>
+			<span style="color:red" id="errinpQty"></span>
+		
+			<c:if test="${not empty requestScope.errQuantity}">
+				<br/><span>${requestScope.errQuantity}</span>
+			   </c:if>
 			</div>
 			</div>
 			<script>
+				function  toggleQuant(clicked) {
 					let grpQty = document.getElementById("grpQty");
-
+					let inpQty = document.getElementById("inpQty");
+					
+					if (clicked !== "${item.multiBarcode}"){
+						let answer = confirm("Changing Multibarcode type will erase currently linked barcodes",'Changing Item Barcode Purpose')
+						if (!answer) {
+							${item.multiBarcode}.checked = 'checked';
+						}
+					}
+					
 					if (document.getElementById("yes").checked){
 						grpQty.style.display = "none";
+						inpQty.value = "-1";
+						inpQty.type = "hidden";
 					} else {
 						grpQty.style.display = "";
+						inpQty.value = "1";
+						inpQty.type = "number";
 					}
+				}
+				
+				function verifyQty() {
+					let n = document.getElementById('inpQty').value;
+					let input = document.getElementById('inpQty');
+					let errLbl = document.getElementById('errinpQty');
+					
+					if (!isNaN(parseInt(n)) && isFinite(n)) {
+						errLbl.innerText = '';
+						input.style.backgroundColor = '#fff';
+						return true;
+					} else {
+						errLbl.innerText = 'Invalid Input, Number Expected'
+						input.style.backgroundColor = 'mistyrose';
+						return false;
+					};
+				};
+				document.getElementById('inpQty').onblur = verifyQty;
 				
 			</script>
 		<c:choose>

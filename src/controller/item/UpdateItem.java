@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dbHelpers.UpdateQuery;
 import models.Item;
+import models.ItemsBarcode;
 
 /**
  * Servlet implementation class UpdateItem
@@ -50,6 +51,7 @@ public class UpdateItem extends HttpServlet {
 		double initialCost = Double.parseDouble(request.getParameter("initialCost"));
 		String location = request.getParameter("Location");
 		String multiBarcode = request.getParameter("multiBarcode");
+		String oldMultiBarcode = request.getParameter("oldMultibarcode");
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		
 		
@@ -68,6 +70,10 @@ public class UpdateItem extends HttpServlet {
 			item.setsupplierID(Integer.parseInt(request.getParameter("supplierList")));
 		} catch (Exception e) {
 			item.setsupplierID(2);
+		}
+		
+		if (!oldMultiBarcode.equalsIgnoreCase(multiBarcode)) {
+			ItemsBarcode.deleteAllByGroupID(itemGroupId);
 		}
 		
 		//create an UpdateQuery object and use it to update  a item
