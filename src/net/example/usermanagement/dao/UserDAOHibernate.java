@@ -28,7 +28,7 @@ public class UserDAOHibernate {
     static SessionFactory sessionFactoryObj;
     
     public static synchronized SessionFactory getSessionFactory() {
-
+    	
         if (sessionFactoryObj == null) {
         	buildSessionFactory();
         }
@@ -74,7 +74,10 @@ public class UserDAOHibernate {
 	            sessionObj.getTransaction().commit();
 	            System.out.println("\nSuccessfully Created Record(s) In The Database!\n");
 			}
-			
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return ;
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -117,6 +120,10 @@ public class UserDAOHibernate {
  
             users = sessionObj.createQuery("FROM User").list();
             System.out.println("\nSuccessfully Get Record(s) In The Database!\n");
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return selectAllUsers();
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -142,6 +149,10 @@ public class UserDAOHibernate {
  
             logs = sessionObj.createQuery("FROM Logs ORDER BY LogID DESC").list();
             System.out.println("\nSuccessfully Get Record(s) In The Database!\n");
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return selectAllLogs();
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -180,6 +191,10 @@ public class UserDAOHibernate {
             //rowUpdated = true;
             System.out.println("\nSuccessfully Updated Record In The Database!\n");
 			//}
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return updateUser(user);
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -214,7 +229,10 @@ public class UserDAOHibernate {
             //rowUpdated = true;
             System.out.println("\nSuccessfully Updated Record In The Database!\n");
 			//}
-			
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return updateUserSettings(user);
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -245,6 +263,10 @@ public class UserDAOHibernate {
             sessionObj.getTransaction().commit();
             rowDeleted = true;
             System.out.println("\nSuccessfully Deleted Record In The Database!\n");
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return deleteUser(id);
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -282,11 +304,18 @@ public class UserDAOHibernate {
     			user = result.get(0);
  
             System.out.println("\nSuccessfully Login !\n");
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return loginUser(login_email, login_password);
+			
 		} catch (Exception e) {
-			if(null != sessionObj.getTransaction()) {
-				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
-                sessionObj.getTransaction().rollback();
-            }
+			if(sessionObj != null) {
+				if(sessionObj.getTransaction() != null ) {
+					System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
+	                sessionObj.getTransaction().rollback();
+	            }
+			}
             e.printStackTrace();
 		} finally {
 	        if(sessionObj != null) {
@@ -310,6 +339,11 @@ public class UserDAOHibernate {
             // Committing The Transactions To The Database
             sessionObj.getTransaction().commit();
             System.out.println("\nSuccessfully Selected 1 Record By ID In The Database!\n");
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return selectUser(id);
+			
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
@@ -342,6 +376,12 @@ public class UserDAOHibernate {
     			user = result.get(0);
  
             System.out.println("\nSuccessfully Selected 1 Record By Email and Role In The Database!\n");
+            
+		} catch (org.hibernate.exception.JDBCConnectionException e) {
+			sessionFactoryObj.close();
+			buildSessionFactory();
+			return selectUser(email,role);
+            
 		} catch (Exception e) {
 			if(null != sessionObj.getTransaction()) {
 				System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
