@@ -74,10 +74,6 @@ public class ItemsBarcode {
 		// TODO Auto-generated method stub
 		
 		try {
-			if (condition.trim().isEmpty()) {
-				hasError = true;
-				return " Add condition for item";
-			}
 			if (condition.length() > 45) {
 				hasError = true;
 				return "Comments Field cannot exceed 255 characters";
@@ -328,9 +324,9 @@ public class ItemsBarcode {
 				hasError = true;
 				return "Name Field cannot be empty";
 			}
-			if (itemName.length() > 45) {
+			if (itemName.length() > 100) {
 				hasError = true;
-				return "Name Field cannot exceed 45 characters";
+				return "Name Field cannot exceed 100 characters";
 			}
 			this.itemName = itemName;
 			return "";
@@ -362,13 +358,10 @@ public class ItemsBarcode {
 		// TODO Auto-generated method stub
 		
 		try {
-			if (description.trim().isEmpty()) {
+			
+			if (description.length() > 1000) {
 				hasError = true;
-				return " Add Comments";
-			}
-			if (description.length() > 45) {
-				hasError = true;
-				return "Comments Field cannot exceed 255 characters";
+				return "Comments Field cannot exceed 1000 characters";
 			}
 			this.description = description;
 			return "";

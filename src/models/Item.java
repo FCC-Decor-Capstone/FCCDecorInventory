@@ -473,7 +473,6 @@ public class Item {
 		}
 		
 		String select=	"select * from ItemGroup " + conditions + " ORDER BY itemName ASC";
-		System.out.println(select);
 		List<Item> list = new ArrayList<Item>(); 
 		PreparedStatement ps;
 		try {

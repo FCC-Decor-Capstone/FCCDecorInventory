@@ -142,7 +142,7 @@ public class Event {
 	}
 	
 	public static List<Event> getAll() {
-		String select="SELECT * FROM Event";
+		String select="SELECT * FROM Event ORDER BY eventDate DESC";
 		List<Event> list = new ArrayList<Event>(); 
 		PreparedStatement ps;
 		try {
@@ -168,7 +168,7 @@ public class Event {
 	}
 	
 	public static List<Event> search(String word) {
-		String select="SELECT * FROM Event WHERE LOWER(CONCAT(name, ' ', client, ' ',location, ' ', telephone, ' ',comments,' ',eventDate)) LIKE LOWER(?)";
+		String select="SELECT * FROM Event WHERE LOWER(CONCAT(name, ' ', client, ' ',location, ' ', telephone, ' ',comments,' ',eventDate)) LIKE LOWER(?) ORDER BY eventDate DESC";
 		List<Event> list = new ArrayList<Event>(); 
 		PreparedStatement ps;
 		try {

@@ -304,7 +304,11 @@ public class UserDAOHibernate {
     			user = result.get(0);
  
             System.out.println("\nSuccessfully Login !\n");
-		} catch (org.hibernate.exception.JDBCConnectionException e) {
+		} catch (java.lang.IllegalStateException  e) {
+			buildSessionFactory();
+			return loginUser(login_email, login_password);
+            
+		} catch (org.hibernate.exception.JDBCConnectionException  e) {
 			sessionFactoryObj.close();
 			buildSessionFactory();
 			return loginUser(login_email, login_password);
@@ -339,6 +343,10 @@ public class UserDAOHibernate {
             // Committing The Transactions To The Database
             sessionObj.getTransaction().commit();
             System.out.println("\nSuccessfully Selected 1 Record By ID In The Database!\n");
+		} catch (java.lang.IllegalStateException  e) {
+			buildSessionFactory();
+			return selectUser(id);
+		
 		} catch (org.hibernate.exception.JDBCConnectionException e) {
 			sessionFactoryObj.close();
 			buildSessionFactory();
