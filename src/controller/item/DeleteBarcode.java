@@ -35,23 +35,26 @@ public class DeleteBarcode extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 			if (request.getParameter("barcodeId") != null) {
+				RequestDispatcher dispatcher = request.getRequestDispatcher("");
 				try {
+					
 					int id = Integer.parseInt(request.getParameter("barcodeId"));
 					if (ItemsBarcode.deleteByID(id)) {
-						request.setAttribute("SucCtlMsg", "Item barcode deleted successfully");
-						RequestDispatcher dispatcher = request.getRequestDispatcher("/ReadBarcode");
-						dispatcher.forward(request, response);
 						
-//						response.sendRedirect("./.");return;
+						response.sendRedirect(request.getContextPath() + "/ItemDetails?itemGroupId=" + request.getParameter("itemGroupId"));
+//						
 					} else {
 						request.setAttribute("ErrCtlMsg", "Error Deleting barcode ");
+						dispatcher.forward(request, response);
 					}
 				} catch (NumberFormatException nfe) {
 					request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
+					dispatcher.forward(request, response);
 				} 
 			}
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/Delete.jsp");
-			dispatcher.forward(request, response);
+			
+			
+			
 	}
 
 	/**

@@ -42,8 +42,10 @@ public class UpdateBarcode extends HttpServlet {
 				ItemsBarcode model = ItemsBarcode.getByID(id);
 				if (model != null) {
 					request.setAttribute("model", model);
+					request.setAttribute("itemGroupId", request.getParameter("itemGroupId"));
 					request.setAttribute("action", "UpdateBarcode");
 					dispatcher = request.getRequestDispatcher("/BarcodeForm.jsp");
+					
 				} else {
 					request.setAttribute("ErrCtlMsg", " Not Found");
 				}
@@ -83,18 +85,20 @@ public class UpdateBarcode extends HttpServlet {
 		if (itemsBarcode.hasError()) {
 			request.setAttribute("action", "Edit");
 			request.setAttribute("ErrCtlMsg", " Editing Error");
+			dispatcher.forward(request, response);
 		} else {
 			
 			ItemsBarcode.editByID(itemsBarcode);
-			request.setAttribute("SucCtlMsg", "Updated Successfully");
-			System.out.println("Edited" + " " + itemsBarcode.getitemName() + " With ID of " + itemsBarcode.getId());
-			request.setAttribute("list", ItemsBarcode.getAll());
-			request.setAttribute("SucCtlMsg", "Updated Successfully");
-			dispatcher = request.getRequestDispatcher("/BarcodeForm.jsp");
+			response.sendRedirect(request.getContextPath() + "/ItemDetails?itemGroupId=" + request.getParameter("itemGroupId"));
+			//request.setAttribute("SucCtlMsg", "Updated Successfully");
+			//System.out.println("Edited" + " " + itemsBarcode.getitemName() + " With ID of " + itemsBarcode.getId());
+			//request.setAttribute("list", ItemsBarcode.getAll());
+			//request.setAttribute("SucCtlMsg", "Updated Successfully");
+			//
 			
 		}
 		
-		dispatcher.forward(request, response);
+		
 	}
 
 }
