@@ -5,7 +5,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>User Management Application</title>
+<title>User Management</title>
+
+<meta charset="UTF-8">
+
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 <link rel="stylesheet"
@@ -207,24 +213,29 @@ table.table .avatar {
 				<!-- <li class="nav-item dropdown"><a class="nav-link " href="item"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
 						Item </a></li> -->
-				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/ListItem"
+				<li class="nav-item dropdown"><a class="nav-link " href="#"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						Item </a></li>	
+						Users </a></li>	
 				<li class="nav-item dropdown"><a class="nav-link " href="viewLogs"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						View Logs </a></li>
+						Logs </a></li>
 				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						Supplier </a></li>
+						Suppliers </a></li>
 				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Event/"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						Events </a></li>		
+						Events </a></li>	
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/ListItem"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Items</a></li>		
 				<li class="nav-item dropdown ml-auto"><a
 					class="nav-link dropdown-toggle" href="#"
 					id="navbarDropdownMenuLink" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Account </a>
 					<div class="dropdown-menu dropdown-menu-right"
 						aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" style="font-weight:bold; text-decoration: underline; padding-bottom: 1em">
+						<c:out value="${sessionScope.uname}" /></a>
 						<a class="dropdown-item" href="./">Home</a> 
 						<!--<a class="dropdown-item" href="changePass">Change Password</a>-->
 						<a class="dropdown-item" href="logout">Logout</a>
@@ -237,14 +248,14 @@ table.table .avatar {
 
 	<!-- Main Container HTML -->
 	<div class="container">
-		<div class="table-wrapper">
+		<div class="table-wrapper" style="overflow-x: auto">
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-5">
-						<h2>Administrator - User Management</h2>
+						<h2>User Management</h2>
 					</div>
 					<div class="col-sm-7">
-						<a href="new" class="btn btn-primary"><i
+						<a href="new" class="btn btn-primary" ><i
 							class="material-icons">add</i> <span>Add New User</span></a> <a
 							href="list" class="btn btn-primary"><i class="material-icons">refresh</i>
 							<span>Refresh</span></a>
@@ -303,5 +314,7 @@ table.table .avatar {
 			</div>
 		</div>
 	</div>
+	
+	
 </body>
 </html>

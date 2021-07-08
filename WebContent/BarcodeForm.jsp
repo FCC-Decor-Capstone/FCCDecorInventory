@@ -12,23 +12,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title>Edit Barcode</title>
+	<meta charset="UTF-8">
+	
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
+	
 
-	<style><%@include file="/resources/css/bootstrap.min.css"%></style>
-	<script><%@include file="/resources/js/jquery-3.4.1.min.js" %></script>
-	<script><%@include file="/resources/js/bootstrap.min.js" %></script>
+	
 	
 	<style type="text/css">
 	body {
-		color: #fff;
+		color: #566787;
+		background-color: #344a71;
 		background: #344a71;
 		font-family: 'Roboto', sans-serif;
 	}
 	.form-control {		
 		min-height: 41px;
-		box-shadow: none;
+/* 		box-shadow: none; */
 		border-color: #e1e4e5;
 	}
 	.form-control:focus {
@@ -38,7 +41,7 @@
         border-radius: 3px;
     }
 	.layout-form {
-		width: 600px;
+		max-width: 800px;
 		margin: 0 auto;
 		padding: 30px 0;
 	}
@@ -102,63 +105,61 @@
 <link href="${contextPath}/resource/bootstrap.min.css" rel="stylesheet">
 
 </head>
-<body>
+<body style="background: #344a71">
+	<%@ include file="/_shared/LeftBar.jsp"%>
+	<form action="ItemDetails" method="get" >
+		<input type="hidden" name="itemGroupId" value="${requestScope.itemGroupId}" />
+		<button type="submit" class="btn btn-primary">Back to the Item</button>
+	</form>
+	<div class="layout-form">
 
-<div class="layout-form">
 
-<h1 >Update </h1>
 
-	<form  action="${requestScope.action}" method="POST">
-	<table align ="center">
-	
-	 <div>
-	<input type="hidden" name="barcodeId" value="${requestScope.model.id}" />
-	</div> 
-	
-	<div class="form-group">
-	 <label class="col-sm-2 col-form-label">Item Name:</label>
-	         <div class="col-sm-7">
-			<input type="text" name="itemName" placeholder="Item Name" value="${requestScope.model.itemName}"> <BR>
-			   <c:if test="${not empty requestScope.errName}">
-				<br/><span>${requestScope.errName}</span>
-			   </c:if>
-			</div>
-			 </div>
+	<form action="${requestScope.action}" method="POST">
+		<h2>Update Barcode Piece</h2>
+		<input type="hidden" name="barcodeId" value="${requestScope.model.id}" />
+		<input type="hidden" name="itemGroupId" value="${requestScope.itemGroupId}" />
+		<div class="form-group">
+		 	<label>Name:</label>
+			<input type="text" class="form-control" name="itemName" placeholder="Item Name" value="${requestScope.model.itemName}"> <BR>
+		   <c:if test="${not empty requestScope.errName}">
+			<br/><span>${requestScope.errName}</span>
+		   </c:if>
+		</div>
+				
 			
 		
-    <div class=" form-group">
+    	<div class=" form-group">
 
-			<label  class="col-sm-2 col-form-label" >Description:</label>
-			<div class="col-sm-7">	
-			<textarea  rows="4" cols="30" placeholder="Enter text here..." name="description" >${requestScope.model.comments}</textarea>
+			<label>Description:</label>
+			<textarea  rows="4" class="form-control" placeholder="Enter text here..." name="description" >${requestScope.model.comments}</textarea>
 			<!--  <td><input type="text" name="description"> <BR></td> -->
 			<c:if test="${not empty requestScope.errComments}">
 				<br/><span >${requestScope.errComments}</span>
 			</c:if>
-			</div>
-			</div>
-			<div class=" form-group">
-		  <label class="col-sm-2 col-form-label" > Condition:</label>
-		  <div class="col-sm-7">
-			<input type="text" name="condition" placeholder="Condition"  value="${requestScope.model.condition}" > <BR>
+		</div>
+
+		<div class=" form-group">
+		  	<label >Condition:</label>
+		 	<input type="text" class="form-control" name="condition" placeholder="Condition"  value="${requestScope.model.condition}" > <BR>
 			<c:if test="${not empty requestScope.errCondition}">
 				<br/><span >${requestScope.errCondition}</span>
 			</c:if>
-			</div>
-			</div>
+		</div>
+		
 			
 			
         
-		<td><input type="submit" value="Update Item" class="btn btn-primary"></td><span class="SucCtlMsg">${requestScope.SucCtlMsg}</span>
-		  
-		
-	</table> 	
+		<input type="submit" value="Update Item" class="btn btn-primary btn-block btn-lg">
 	</form>
 		
 		
 	
 	</div>
-	</div>
-	</div>
+	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
+		<div class="footer-copyright text-center py-4" style="align-items: center;">
+			<a> © 2021 Internet Explorers </a>
+		</div>
+	</footer>
 </body>
 </html>	

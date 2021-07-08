@@ -13,23 +13,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<title>Item Update</title>
+	<meta charset="UTF-8">
+	
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
+	<link rel="stylesheet" href="https://fo	nts.googleapis.com/css?family=Roboto|Varela+Round">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<style><%@include file="/resources/css/bootstrap.min.css"%></style>
+<%@ include file="/_shared/LeftBar.jsp"%>
+
+<%-- 	<style><%@include file="/resources/css/bootstrap.min.css"%></style>
 	<script><%@include file="/resources/js/jquery-3.4.1.min.js" %></script>
 	<script><%@include file="/resources/js/bootstrap.min.js" %></script>
-	
+ --%>	
 	<style type="text/css">
 	body {
-		color: #fff;
-		background: #344a71;
+		color: #566787;
+
+		
 		font-family: 'Roboto', sans-serif;
+	}
+	.layout-form h1 {
+		color: #fff;
 	}
 	.form-control {		
 		min-height: 41px;
-		box-shadow: none;
+/* 		box-shadow: none; */
 		border-color: #e1e4e5;
 	}
 	.form-control:focus {
@@ -39,7 +51,7 @@
         border-radius: 3px;
     }
 	.layout-form {
-		width: 600px;
+		max-width: 800px;
 		margin: 0 auto;
 		padding: 30px 0;
 	}
@@ -136,7 +148,7 @@ function toggleSidebar(){
 </script>
 <link href="${contextPath}/resource/bootstrap.min.css" rel="stylesheet"> --%>
 </head>
-<body>
+<body style="background: #344a71">
 
 
 <form action="ListItem" method="get">
@@ -145,29 +157,19 @@ function toggleSidebar(){
 
 <div class="layout-form">
 
-<h1 >Update Items</h1>
+
 	<form  action="UpdateItem" method="get">
+	<h2 >Update Item</h2>
 	
 	
-	
-	
-
-
-	
-	<div class="form-group" style="display:none;">
-	 <label>Item Id:</label>
-	         <div class="col-sm-7">
-			<input type="hidden" name="itemGroupID" value="<%= item.getitemGroupId()%>"  > 
-			</div>
-			 </div>
 	<div class="form-group">
-	 <label >Item Name:</label>
-	         <div class="col-sm-7">
-		<input type="text" name="itemName" required="required" placeholder="Item Name" value="<%= item.getName()%>"> 
-		</div>
-		</div>
+	 	<label >Item Name:</label>         
+	    <input type="hidden" name="itemGroupID" value="<%= item.getitemGroupId()%>"  >
+		<input type="text"  class="form-control" name="itemName" required="required" placeholder="Item Name" value="<%= item.getName()%>"> 
+	</div>
+	
 		
-		<script>
+	<script>
 		//copypasta from w3
 		 function autocomplete(inp, arr) {
 			  /*the autocomplete function takes two arguments,
@@ -275,34 +277,45 @@ function toggleSidebar(){
 		</script>
 		
 		
-			<div class="form-group">
-	 <label class="col-sm-12 col-form-label">Category:     Hint: Space and Back to see the list</label>
-	         <div class="col-sm-7">
-	         
-	             <input id="CatAutoCompl" type="text" name="category" placeholder="Type Category" value="${item.category}">
-	             
-	
+		<div class="form-group">
+			 <label>Category:     Hint: Space and Back to see the list</label>	         
+         	 <input class="form-control" id="CatAutoCompl" type="text" name="category" placeholder="Type Category" value="${item.category}">
 		</div>
+		
+		<script>
+		autocomplete(document.getElementById("CatAutoCompl"), categories);
+		</script>
+		
+		<div class="form-group">
+	 		<label >Description:</label>
+			<textarea  rows="4" class="form-control"  name="description" ><%= item.getdescription()%></textarea>		
 		</div>
-	<script>
-	autocomplete(document.getElementById("CatAutoCompl"), categories);
-	</script>
-<div class="form-group">
-	 <label class="col-sm-2 col-form-label">Description:</label>
-	         <div class="col-sm-7">
-			<textarea  rows="4" cols="30" name="description" ><%= item.getdescription()%></textarea>		
-			</div>
-			</div>
 			
-			<div class=" form-group">
-		  <label class="col-sm-2 col-form-label" > Initial Cost:</label>
-		  <div class="col-sm-7">
-			<input type="text" name="initialCost" value="<%= item.getinitialCost()%>"> <BR>
+		<div class="form-group"
+		<c:choose>
+				<c:when test="${sessionScope.urole == 'Administrator'}">
+					
+				</c:when>
+				<c:otherwise>
+					style="display:none" 
+				</c:otherwise>
+				</c:choose>
+		>
+		  <label> Initial Cost:</label>
+			<input class="form-control"  
+				<c:choose>
+				<c:when test="${sessionScope.urole == 'Administrator'}">
+					type="text" 
+				</c:when>
+				<c:otherwise>
+					type="hidden" 
+				</c:otherwise>
+				</c:choose>
+			name="initialCost" value="<%= item.getinitialCost()%>"> <BR>
 			<span style="color:red" id="errinitialCost"></span>
 			<c:if test="${not empty requestScope.errCost}">
 				<br/><span>${requestScope.errCost}</span>
 			   </c:if>
-			</div>
 			</div>
 			
 			
@@ -327,45 +340,39 @@ function toggleSidebar(){
 			</script>
 			
 			<div class="form-group">
-	 <label class="col-sm-2 col-form-label">Size:</label>
-	         <div class="col-sm-7">
-			 <input type="text"  value="<%= item.getsize()%>" name="size" > 
+				 <label >Size:</label>    
+				 <input class="form-control"  type="text"  value="<%= item.getsize()%>" name="size" > 
 			</div>
-			</div>
+			
 			<div class="form-group">
-	 <label class="col-sm-2 col-form-label">Color:</label>
-	         <div class="col-sm-7">
-			 <input type="text" value="<%= item.getColour()%>" name="color" > 
+		 		<label >Color:</label>
+				<input class="form-control"  type="text" value="<%= item.getColour()%>" name="color" > 
 			</div>
-			</div>
+			
 			<div class="form-group">
-	 <label class="col-sm-2 col-form-label">Location:</label>
-	         <div class="col-sm-7">
-			 <input type="text"  value="<%= item.getLocation()%>" name="Location" >
-			</div>
+	 			<label>Location:</label>
+			 	<input class="form-control" type="text"  value="<%= item.getLocation()%>" name="Location" >
 			</div>
 
 			
 			<div class="form-group" >
-	 <label class="col-sm-7 col-form-label">Auto Count (Edit will Delete Exisitng Barcodes):</label>
-	         <div class="col-sm-7">
-	       <input type="hidden" name="oldMultibarcode" value="${item.multiBarcode}" />
-			 yes<input type="radio" id="yes" value="yes" name="multiBarcode" onclick="toggleQuant('yes')" <c:if test="${item.multiBarcode == 'yes'}"> checked</c:if>>
-			     no<input type="radio" id="no"  value="no" name="multiBarcode" onclick="toggleQuant('no')" <c:if test="${item.multiBarcode == 'no'}"> checked</c:if>>
+	 			<label >Auto Count (Edit will Delete Exisitng Barcodes):</label>
+	       		<div class="form-control" >
+		       		<input type="hidden" name="oldMultibarcode" value="${item.multiBarcode}" />
+				 	yes<input type="radio" id="yes" value="yes" name="multiBarcode" onclick="toggleQuant('yes')" <c:if test="${item.multiBarcode == 'yes'}"> checked</c:if>>
+				    no<input type="radio" id="no"  value="no" name="multiBarcode" onclick="toggleQuant('no')" <c:if test="${item.multiBarcode == 'no'}"> checked</c:if>>
+				</div>
 			</div>
 
-			</div>
 			<div class="form-group" id="grpQty" style="display:none;">
-			<label  class="col-sm-2 col-form-label" >Quantity:</label>
-			<div class="col-sm-7">
-			<input type="hidden" min="0" id="inpQty" value="<%= item.getQuantity()%>" name="quantity" value="-1"> <BR>
-			<span style="color:red" id="errinpQty"></span>
-		
-			<c:if test="${not empty requestScope.errQuantity}">
-				<br/><span>${requestScope.errQuantity}</span>
-			   </c:if>
+				<label>Quantity:</label>
+				<input class="form-control" type="hidden" min="0" id="inpQty" value="<%= item.getQuantity()%>" name="quantity" value="-1"> <BR>
+				<span style="color:red" id="errinpQty"></span>
+				<c:if test="${not empty requestScope.errQuantity}">
+					<br/><span>${requestScope.errQuantity}</span>
+			   	</c:if>
 			</div>
-			</div>
+			
 			<script>
 				function  toggleQuant(clicked) {
 					let grpQty = document.getElementById("grpQty");
@@ -409,26 +416,26 @@ function toggleSidebar(){
 			</script>
 		<c:choose>
         <c:when test="${not empty requestScope.list }">
+       
        <div class=" form-group">
-			<label  class="col-sm-2 col-form-label" >Select Supplier:</label>
-			<div class="col-sm-7">
-        <select name="supplierList" id="supplierSelect">
-	        <c:forEach var="supplier" items="${requestScope.list}">
-	       	 <option value="${supplier.id}">${supplier.name}</option>
-	        </c:forEach>
-        </select>
-        <p></p>
-        <script>
-        	if (${requestScope.supplierAvailable}) {
-        		document.getElementById("supplierSelect").value =  ${item.supplierID};	
-        	} else {
-        		document.getElementById("supplierSelect").value =  2;
-        	}
-        	
-        	
-        </script>
-       </div>
-			</div>
+			<label >Select Supplier:</label>
+			
+	        <select class="form-control" name="supplierList" id="supplierSelect">
+		        <c:forEach var="supplier" items="${requestScope.list}">
+		       	 <option value="${supplier.id}">${supplier.name}</option>
+		        </c:forEach>
+	        </select>
+       
+	        <script>
+	        	if (${requestScope.supplierAvailable}) {
+	        		document.getElementById("supplierSelect").value =  ${item.supplierID};	
+	        	} else {
+	        		document.getElementById("supplierSelect").value =  2;
+	        	}
+	
+	        </script>
+		</div>
+		
         </c:when>
         <c:otherwise>
         	<p>You dont have any suppliers yet</p>
@@ -438,15 +445,18 @@ function toggleSidebar(){
         </c:choose>
 			
 				
-		<input class="btn btn-primary" type="submit" value="Update Item" id="addItem">
+		<input class="btn btn-primary btn-block btn-lg" type="submit" value="Update Item" id="addItem">
 		
 		
 	</form>
 	</div>
-	</div>
-	</div>
-	</div>
 
+
+	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
+		<div class="footer-copyright text-center py-4" style="align-items: center;">
+			<a> © 2021 Internet Explorers </a>
+		</div>
+	</footer>
 
 </body>
 </html>

@@ -15,8 +15,13 @@
 <html>
 <head>
 
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<title>Add Item</title>
+	<meta charset="UTF-8">
+	
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -26,13 +31,14 @@
 	
 	<style type="text/css">
 	body {
-		color: #fff;
+		color: #566787;
+		background-color: #344a71;
 		background: #344a71;
 		font-family: 'Roboto', sans-serif;
 	}
 	.form-control {		
 		min-height: 41px;
-		box-shadow: none;
+/* 		box-shadow: none; */
 		border-color: #e1e4e5;
 	}
 	.form-control:focus {
@@ -42,7 +48,7 @@
         border-radius: 3px;
     }
 	.layout-form {
-		width: 600px;
+		max-width: 800px;
 		margin: 0 auto;
 		padding: 30px 0;
 	}
@@ -68,6 +74,10 @@
 	.layout-form label {
 		font-weight: normal;
 		font-size: 13px;
+	}
+	
+	.layout-form h1 {
+		color: #fff;
 	}
 	.layout-form .btn {        
         font-size: 16px;
@@ -138,33 +148,26 @@ function toggleSidebar(){
 <link href="${contextPath}/resource/bootstrap.min.css" rel="stylesheet">
  --%>
 </head>
-<body>
-<%--<%@ include file="/_shared/message.jsp"%>  --%>
-<form  action="ListItem" method="get" >
-	<button type="submit" class="btn btn-primary"><i class="fas fa-arrow-left"> Back to List</i></button>
+<body  style="background: #344a71">
+
+	<%@ include file="/_shared/LeftBar.jsp"%>
+	<form  action="ListItem" method="get" >
+		<button type="submit" class="btn btn-primary">Back to List</button>
 	</form>
- 
-
-<div class="layout-form">
-
-<h1 >Add Items</h1>
-
-
-
-	
-	
+	<div class="layout-form">
+		
 
 	<form  action="${requestScope.action}" method="POST">
-	<table align ="center">
-	
-	
-	 <label>Item Name:</label>
-	      <div class="form-group"> 
-			<input type="text" name="itemName" required="required" value="${requestScope.model.itemName}"> <BR>
+
+	 	<h2 >Add Items</h2>
+	    <div class="form-group"> 
+	      	<label>Item Name:</label>
+			<input class="form-control" type="text" name="itemName" required="required" value="${requestScope.model.itemName}"> <BR>
 			   <c:if test="${not empty requestScope.errName}">
 				<br/><span>${requestScope.errName}</span>
 			   </c:if>
-			</div>
+		</div>
+			
 			
 			
 		
@@ -276,39 +279,32 @@ function toggleSidebar(){
 		</script>
 		
 		
-			<div class="form-group">
-	 <label class="col-sm-12 col-form-label">Category:     Hint: Space and Back to see the list</label>
-	         <div class="col-sm-7">
-	         
-	             <input id="CatAutoCompl" type="text" name="category" placeholder="Type Category" >
-	             
-	
+		<div class="form-group">
+ 			<label >Category:     Hint: Space and Back to see the list</label>
+            <input class="form-control" id="CatAutoCompl" type="text" name="category" placeholder="Type Category" >
 		</div>
-		</div>
-	<script>
-	autocomplete(document.getElementById("CatAutoCompl"), categories);
-	</script>
+		
+		<script>
+		autocomplete(document.getElementById("CatAutoCompl"), categories);
+		</script>
 	
-    <div class=" form-group">
-
+   	 	<div class=" form-group">
 			<label  >Description:</label>
-			<div class="col-sm-7">	
-			<textarea  rows="4" cols="30" placeholder="Enter text here..." name="description" >${fn:trim(requestScope.model.description)}</textarea>
-			<!--  <td><input type="text" name="description"> <BR></td> -->
+			<textarea  rows="4" class="form-control" placeholder="Enter text here..." name="description" >${fn:trim(requestScope.model.description)}</textarea>
 			<c:if test="${not empty requestScope.errDescription}">
 				<br/><span>${requestScope.errDescription}</span>
-			   </c:if>
-			</div>
-			</div>
-			<div class=" form-group">
-		  <label class="col-sm-2 col-form-label" > Initial Cost:</label>
-		  <div class="col-sm-7">
-			<input type="text" name="initialCost" value="${requestScope.model.initialCost}" > <BR>
+		   </c:if>
+		</div>
+			
+		<div class=" form-group">
+		  	<label> Initial Cost:</label>
+			<input class="form-control" type="text" name="initialCost" value="${requestScope.model.initialCost}" > <BR>
 			<span style="color:red" id="errinitialCost"></span>
 			<c:if test="${not empty requestScope.errCost}">
 				<br/><span>${requestScope.errCost}</span>
 			   </c:if>
-			</div>
+		</div>
+		
 				<script>
 				function verifyCost() {
 					let n = document.getElementsByName('initialCost')[0].value;
@@ -328,104 +324,99 @@ function toggleSidebar(){
 				document.getElementsByName('initialCost')[0].onblur = verifyCost;
 
 			</script>
-			</div>
-			<div class=" form-group">
-			<label  class="col-sm-2 col-form-label" >Size:</label>
-			<div class="col-sm-7">
-			<input type="text" name="size" value="${requestScope.model.size}"> <BR>
-			<c:if test="${not empty requestScope.errSize}">
-				<br/><span>${requestScope.errSize}</span>
-			   </c:if>
-			</div>
-			</div>
-			<div class=" form-group">
-			<label class="col-sm-2 col-form-label" >Colour:</label>
-			<div class="col-sm-7">
-			 <input type="text" name="color" value="${requestScope.model.colour}"> <BR>
-			 <c:if test="${not empty requestScope.errColor}">
-				<br/><span>${requestScope.errColor}</span>
-			   </c:if>
-			</div>
-			</div>
-			<div class=" form-group">
-			<label  class="col-sm-2 col-form-label" >Location:</label>
-			<div class="col-sm-7">
-			<input type="text" name="Location" value="${requestScope.model.location}"> <BR>
-			<c:if test="${not empty requestScope.errLocation}">
-				<br/><span>${requestScope.errLocation}</span>
-			   </c:if>
-			</div>
-			</div>
-			<div class=" form-group">
 			
-			<label  class="col-sm-7 col-form-label" >Auto Count (by # of Barcodes created):</label>
-			<div class="col-sm-7">
+			<div class=" form-group">
+				<label  >Size:</label>
+				<input type="text" class="form-control" name="size" value="${requestScope.model.size}"> <BR>
+				<c:if test="${not empty requestScope.errSize}">
+					<br/><span>${requestScope.errSize}</span>
+			   	</c:if>
+			</div>
+	
+
+			<div class=" form-group">
+				<label>Colour:</label>
+				<input type="text"class="form-control" name="color" value="${requestScope.model.colour}"> <BR>
+			 	<c:if test="${not empty requestScope.errColor}">
+					<br/><span>${requestScope.errColor}</span>
+			   	</c:if>
+			</div>
 			
-			yes<input type="radio" id="yes" onclick="toggleQuant()" name="multiBarcode" value="yes" checked>
-			 no<input type="radio" id="no" onclick="toggleQuant()" name="multiBarcode" value="no"> <BR>
-			 <c:if test="${not empty requestScope.errMultibarCode}">
-				<br/><span>${requestScope.errMultibarCode}</span>
-			   </c:if>
+			<div class=" form-group">
+				<label >Location:</label>
+				<input type="text" class="form-control" name="Location" value="${requestScope.model.location}"> <BR>
+				<c:if test="${not empty requestScope.errLocation}">
+					<br/><span>${requestScope.errLocation}</span>
+			   	</c:if>
 			</div>
+			
+			<div class="form-group">
+				<label>Auto Count (by # of Barcodes created):</label>
+				<div class="form-control">
+				 	yes<input type="radio" id="yes" onclick="toggleQuant()" name="multiBarcode" value="yes" checked>
+				 	no<input type="radio" id="no" onclick="toggleQuant()" name="multiBarcode" value="no"> <BR>
+				 	<c:if test="${not empty requestScope.errMultibarCode}">
+						<br/><span>${requestScope.errMultibarCode}</span>
+				   </c:if>
+				</div>
 			</div>
+			
 			<div class="form-group" id="grpQty" style="display:none;">
-			<label  class="col-sm-2 col-form-label" >Quantity:</label>
-			<div class="col-sm-7">
-			<input type="hidden" min="0" id="inpQty" name="quantity" value="-1"> <BR>
-			<span style="color:red" id="errinpQty"></span>
+				<label>Quantity:</label>
+				<input class="form-control" type="hidden" min="0" id="inpQty" name="quantity" value="-1"> <BR>
+				<span style="color:red" id="errinpQty"></span>
 		
-			<c:if test="${not empty requestScope.errQuantity}">
-				<br/><span>${requestScope.errQuantity}</span>
-			   </c:if>
+				<c:if test="${not empty requestScope.errQuantity}">
+					<br/><span>${requestScope.errQuantity}</span>
+			   	</c:if>
 			</div>
-			</div>
-		<script>
-				function  toggleQuant() {
-					let grpQty = document.getElementById("grpQty");
-					let inpQty = document.getElementById("inpQty");
-					
-					if (document.getElementById("yes").checked){
-						grpQty.style.display = "none";
-						inpQty.value = "-1";
-						inpQty.type = "hidden";
-					} else {
-						grpQty.style.display = "";
-						inpQty.value = "1";
-						inpQty.type = "number";
+			<script>
+					function  toggleQuant() {
+						let grpQty = document.getElementById("grpQty");
+						let inpQty = document.getElementById("inpQty");
+						
+						if (document.getElementById("yes").checked){
+							grpQty.style.display = "none";
+							inpQty.value = "-1";
+							inpQty.type = "hidden";
+						} else {
+							grpQty.style.display = "";
+							inpQty.value = "1";
+							inpQty.type = "number";
+						}
 					}
-				}
-				
-				function verifyQty() {
-					let n = document.getElementById('inpQty').value;
-					let input = document.getElementById('inpQty');
-					let errLbl = document.getElementById('errinpQty');
 					
-					if (!isNaN(parseInt(n)) && isFinite(n)) {
-						errLbl.innerText = '';
-						input.style.backgroundColor = '#fff';
-						return true;
-					} else {
-						errLbl.innerText = 'Invalid Input, Number Expected'
-						input.style.backgroundColor = 'mistyrose';
-						return false;
+					function verifyQty() {
+						let n = document.getElementById('inpQty').value;
+						let input = document.getElementById('inpQty');
+						let errLbl = document.getElementById('errinpQty');
+						
+						if (!isNaN(parseInt(n)) && isFinite(n)) {
+							errLbl.innerText = '';
+							input.style.backgroundColor = '#fff';
+							return true;
+						} else {
+							errLbl.innerText = 'Invalid Input, Number Expected'
+							input.style.backgroundColor = 'mistyrose';
+							return false;
+						};
 					};
-				};
-				document.getElementById('inpQty').onblur = verifyQty;
-				
-			</script>
+					document.getElementById('inpQty').onblur = verifyQty;
+					
+				</script>
        <!-- Supplier -->
-			<c:choose>
+	<c:choose>
         <c:when test="${not empty requestScope.list }">
-       <div class=" form-group">
-			<label  class="col-sm-2 col-form-label" >Select Supplier:</label>
-			<div class="col-sm-7">
-        <select name="supplierList" >
-        <c:forEach var="supplier" items="${requestScope.list}">
-       	 <option value="${supplier.id}">${supplier.name}</option>
-        </c:forEach>
-        </select>
-       </div>
-	</div>
+	       <div class=" form-group">
+				<label>Select Supplier:</label>
+			
+		        <select class="form-control" name="supplierList" >
+		        <c:forEach var="supplier" items="${requestScope.list}">
+		       	 <option value="${supplier.id}">${supplier.name}</option>
+		        </c:forEach>
+		        </select>
+	       </div>
+
 
         </c:when>
         <c:otherwise>
@@ -433,35 +424,17 @@ function toggleSidebar(){
         	<a href="/Supplier/Add">Add new Supplier</a>
         	<!-- <button type="button">Add new Supplier</button> -->
         </c:otherwise>
-        </c:choose> 
+      </c:choose> 
         
         
-       	<!-- category -->
+ 
        	
        	
-<%-- 			<c:choose>
-			<c:when test="${not empty requestScope.Categorylist }">
-       <div class=" form-group">
-			<label  class="col-sm-2 col-form-label" >Select Category:</label>
-			<div class="col-sm-7">
-        <select name="categoryList" >
-        <c:forEach var="category" items="${requestScope.Categorylist}">
-       	 <option value="${category.id}">${category.categoryType}</option>
-        </c:forEach>
-        </select>
-       </div>
-			</div>
-        </c:when>
-        <c:otherwise>
-        	<p>You dont have any category yet</p>
-        	<a href="/category/Add">Add new Category</a>
-        	<!-- <button type="button">Add new Supplier</button> -->
-        </c:otherwise>
-        </c:choose> --%> 
+
 			
         
 		
-		<td><input class="btn btn-primary" type="submit" value="Add Item" id="addItem" ></td>
+		<input class="btn btn-primary btn-block btn-lg" type="submit" value="Add Item" id="addItem" >
 		<script>
 		
 		 document.getElementById("addItem").addEventListener("click", function(event){
@@ -476,10 +449,14 @@ function toggleSidebar(){
 		
 		  
 
-	</table> 	
+	
 	</form>
 	</div>
-	</div>
-	</div>
+		
+	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
+		<div class="footer-copyright text-center py-4" style="align-items: center;">
+			<a> © 2021 Internet Explorers </a>
+		</div>
+	</footer>
 </body>
 </html>	

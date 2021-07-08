@@ -3,8 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 <style><%@include file="/resources/css/style.css"%></style>
 <script><%@include file="/resources/js/scripts.js" %></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
@@ -23,6 +25,7 @@
 /* 	font-size: 13px; */
 	margin-left: auto;
 	margin-right : auto;
+	margin-bottom : 20%;
 	}
 	.navbar{
 	width : 100%;
@@ -42,7 +45,7 @@
 <%@ page import="helpers.Constants" %>
 <script>
 	 window.onload = function () {
-		if (window.location.protocol == 'http:') {
+		/* if (window.location.protocol == 'http:') {
 		      
 		    console.log("you are accessing us via "
 		        +  "an insecure protocol (HTTP). "
@@ -51,21 +54,19 @@
 		    window.location.href = 
 		        window.location.href.replace(
 		                   'http:', 'https:');
-		} 
+		} */ 
 		     
 	}  
 </script>
 </head>
-<body>
+<body >
 <nav class="navbar fixed-top navbar-expand-lg navbar-light h6" style="" >
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
 	    <ul class="navbar-nav w-100">
-	    <li class="nav-item dropdown"><a class="nav-link "
-					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
-						<c:out value="Hello ${sessionScope.uname}" /><span class="blinker">.</span> </a></li>
+	    
 		<c:if test="${sessionScope.urole == 'Administrator'}">				
 		  <li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/list"
 					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
@@ -97,6 +98,8 @@
 	          Account
 	        </a>
 	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+	         <a class="dropdown-item" style="font-weight:bold; text-decoration: underline; padding-bottom: 1em">
+						<c:out value="${sessionScope.uname}" /></a>
 	          <a class="dropdown-item" href="${pageContext.request.contextPath}">Home</a>
 	          <!-- <a class="dropdown-item" href="#editModal" data-toggle="modal">Edit User</a>-->
 	           <%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/#editModalName" data-toggle="modal">Change Name</a>

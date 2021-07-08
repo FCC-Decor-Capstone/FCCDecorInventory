@@ -9,6 +9,9 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 	<title>Supplier List</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -36,7 +39,7 @@
 						<form action="" Method="POST" id="searchBox" class="table-title">
 							<div class="searchItem">
 								<c:if test="${not empty requestScope.search}">
-									<button id="clearButton" onclick="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
+									<button id="clearButton" onmousedown="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
 								</c:if>
 								<input type="text" placeholder="Type a keyword" name="search" id="search" value="${requestScope.search}"/>
 								<button type="submit"><i class="fa fa-search"></i></button>

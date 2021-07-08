@@ -8,6 +8,10 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 	<title>Supplier ${requestScope.action} Details</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -42,7 +46,7 @@
 					<div class="col-sm-7">
 					
 	<form class="toolBox" action="details" id="searchBox"> 			
-		<input type="hidden" name="id" value="${requestScope.model.id}" />
+			<input type="hidden" name="id" value="${requestScope.model.id}" />
 			<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 				<div class="searchItem">
 					<button type="submit" formaction="Edit" formmethod="get"><i class="fas fa-pen" style="color:green;"> Edit</i></button>
@@ -51,7 +55,7 @@
 					</c:if>
 				</div>
 			</c:if>
-				<button type="submit" formaction="./." formmethod="get"><i class="fas fa-arrow-left"> Back to List</i></button>
+			<button type="submit" formaction="./." formmethod="get"><i class="fas fa-arrow-left"> Back to List</i></button>
 		</form>
 					</div>
 				</div>

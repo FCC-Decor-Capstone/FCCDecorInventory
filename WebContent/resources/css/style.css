@@ -100,6 +100,7 @@ div.scanTable .btnSave {
 
 #actionSwitch {
     display:inline-block;
+    margin: 1em auto;
 }
 
 #actionSwitch .switch {
@@ -182,7 +183,7 @@ div.scanTable .btnSave {
   text-align: right;
 /*   	width:80%; */
   	margin: 0 auto;
-	justify-content: flex-end;
+	justify-content: space-between;
 	align-items: center;
   /* background-color: var(--dark-color); */
 	padding: 0.2em ;
@@ -201,18 +202,23 @@ div.scanTable .btnSave {
 }
 
 
-/* #searchBox button { */
-/* 	border-radius: .5em;
-} */
+ #searchBox button { 
+ 	border-radius: .5em;
+ 	 margin:auto;
+} 
 
 form.toolBox {
   flex-direction: row-reverse;
 }
 
 div.toolBox {
-  margin-left: -2em;
+ /*  margin-left: -2em; */
+
 }
 
+#barcodeInput  input {
+	width:70%;
+}
 
 main.rmdT {
 	margin-left:2em;	
@@ -225,7 +231,7 @@ table.rmdT  {
     /* margin: 1em auto; */
     border-collapse: collapse;
     /* border: black solid 2px; */
-    overflow-x:auto;
+    /* overflow-x:auto; */
     background-color:   var(--white);
     width: 100%;
 }
@@ -261,6 +267,7 @@ table.rmdT  {
 
 
 form#searchBox input {
+	width:80%;
 	padding: 0.5em;
 }
 
@@ -269,7 +276,8 @@ form#searchBox input {
 	border: 1px solid var(--dark-color);
 	padding: 0.75em;
 	overflow: hidden;
-	cursor: pointer;
+/* 	cursor: pointer; */
+	
 }
 
 
@@ -311,7 +319,7 @@ form#searchBox input {
 			background: linear-gradient(90deg, rgba(122,127,133,1) 0%, rgba(228,232,237,1) 49%, rgba(122,127,133,1) 100%, rgba(88,95,102,0.975249474789916) 100%);
 			font-family: 'Varela Round', sans-serif;
 			font-size: 13px;
-			
+			margin-bottom: 20%;
 		}
 		
 		
@@ -359,6 +367,7 @@ form#searchBox input {
 			margin: 2em auto 0;
 			width:80%;
 			border-radius: 3px;
+			 overflow-x:auto; 
 /* 			box-shadow: 0 1px 1px rgba(0, 0, 0, .05); */
 		}
 		
@@ -487,7 +496,7 @@ main section.elements {
 /* 	justify-content: center; */
 }
 main section.elements p {
-	padding: 0 5em;
+	padding: 0 10%;
 	display:block;
 	align-items: flex-start;
 	

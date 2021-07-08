@@ -3,6 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 <title>User Login</title>
 <style><%@include file="/resources/css/bootstrap.min.css"%></style>
 <script><%@include file="/resources/js/bootstrap.min.js" %></script>
@@ -13,7 +17,7 @@
 	
 	
 	  window.onload = function () {
-		if (window.location.protocol == 'http:') {
+		/* if (window.location.protocol == 'http:') {
 		      
 		    console.log("you are accessing us via "
 		        +  "an insecure protocol (HTTP). "
@@ -22,10 +26,22 @@
 		    window.location.href = 
 		        window.location.href.replace(
 		                   'http:', 'https:');
-		} 
+		}  */
 		     
 	}  
 </script>
+<style>
+.logo {
+	width:100%;
+	height:auto;
+	margin: 2em auto;
+}
+
+#imgFlex {
+	display:flex;
+	justify-content:space-between;
+}
+</style>
 </head>
 <body>
 	<c:if test="${isLoginFailed}">
@@ -42,13 +58,19 @@
 
 	<div class="jumbotron jumbotron-fluid" style="margin-bottom: 0px;">
 		<div class="container ">
-			<div class="row" style="margin: 100px auto;">
+			<div class="row" style="margin: 0 auto;">
 				<div
-					class="col-lg-4 col-md-4 col-sm-4 container justify-content-center">
+					class="col-lg-6 col-md-8 col-sm-12 container justify-content-center">
 					<form action="dologin" method="post">
 						<fieldset>
-						<img src='<c:url value="/logo.png"></c:url>' alt=""/>     
-				
+						
+							
+							
+							
+							<img class="logo" src='<c:url value="/Img?name=logo"></c:url>' alt=""/>
+							
+							         
+					
 							<h2>Please Sign In</h2>
 							<hr class="colorgraph">
 							<div class="form-group">

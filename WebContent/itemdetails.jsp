@@ -16,9 +16,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Item Details</title>
 	
+	<title>Item Details</title>
+	<meta charset="UTF-8">
+	
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 		<script>
@@ -31,6 +35,7 @@
 		} 
 	</script>
 	<style>
+	
 	.table-title .btn, .table-title h1 {
 		color: white;
 		}
@@ -189,12 +194,12 @@
 					<c:if test="${sessionScope.urole == 'Administrator' or sessionScope.urole == 'Manager'}">
 				 <c:choose>
 				        <c:when test="${requestScope.model.multiBarcode == 'yes'}">  
-							<a class="btn btn-primary " style="padding: 1em 3em; background-color:#0069d9; color:white; font-size: 15px "  href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add New Barcode </a>
+							<a class="btn btn-primary " style="padding: 1em 3em; background-color:#0069d9; color:white; font-size: 15px; margin: 0 auto; "  href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add New Barcode </a>
 						</c:when>
 				      <c:otherwise>
 				      		<!-- this ensures non multibarcode items can have only maximum of 1 barcode for the entire category  -->
 				      		<c:if test="${requestScope.count < 1}">
-								<a class="btn btn-primary"  style="padding: 1em 3em; background-color:#0069d9; color:white; font-size: 15px " href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add Barcode for entire bulk</a>
+								<a class="btn btn-primary"  style="padding: 1em 3em; background-color:#0069d9; color:white; font-size: 15px; margin:0 auto;" href="./GenerateBarcode?ItemGroupID=${requestScope.model.itemGroupId}">Add Barcode for entire bulk</a>
 							</c:if>
 				         </c:otherwise>
 				</c:choose>

@@ -10,6 +10,9 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 	<title>Event ${requestScope.action} Form</title>
 	<style type="text/css">
 	body {
@@ -19,7 +22,7 @@
 	}
 	.form-control {		
 		min-height: 41px;
-		box-shadow: none;
+/* 		box-shadow: none; */
 		border-color: #e1e4e5;
 	}
 	.form-control:focus {
@@ -29,7 +32,7 @@
         border-radius: 3px;
     }
 	.layout-form {
-		width: 600px;
+		max-width: 800px;
 		margin: 0 auto;
 		padding: 30px 0;
 	}
@@ -83,7 +86,7 @@
 	}
 	</style>
 </head>
-<body>
+<body >
 	<%@ include file="/_shared/LeftBar.jsp"%>
 	<%@ include file="/_shared/message.jsp"%>
 	

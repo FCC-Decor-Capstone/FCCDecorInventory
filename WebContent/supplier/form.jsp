@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <style type="text/css">
 	body {
 		color: #fff;
@@ -27,7 +28,7 @@
         border-radius: 3px;
     }
 	.layout-form {
-		width: 600px;
+		max-width: 800px;
 		margin: 0 auto;
 		padding: 30px 0;
 	}
@@ -79,8 +80,12 @@
 	.layout-form form a:hover {
 		text-decoration: underline;
 	}
+	
 	</style>
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 	<title>Supplier ${requestScope.action} Form</title>
 </head>
 <body>

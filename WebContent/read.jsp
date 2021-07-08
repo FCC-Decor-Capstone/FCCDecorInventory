@@ -9,6 +9,12 @@
    <!DOCTYPE html>
 <html>
     <head>
+    <meta charset="UTF-8">
+	
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Item List</title>
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -165,17 +171,7 @@
     </style>
     
 
-          <%--  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>JSP Page</title>
-            <link href="style.css" rel="stylesheet" type="text/css">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-            <link rel="stylesheet" href="/${Constants.URL_PREFIX}style.css" />
-            <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-             <style><%@include file="/resources/css/main.css"%></style> 
-	<script src="/${Constants.URL_PREFIX}scripts.js"></script>
-	
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-	 --%>
+         
     </head>
 
     <% String table = (String) request.getAttribute("table"); %>
@@ -203,7 +199,7 @@
 
 <h1 id="ListOfItems"></h1>
    
- <div class="container">
+ <div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -248,20 +244,12 @@
 				}
 				</script>
 				
-				<script>
-				function submit(e) {
-					e.preventDefault();
-				  document.forms.search.submit();
-				}
-				
-			
-				</script>
                
                <c:if test="${not empty requestScope.searchVal}">
-					<button style="background-color:red;" id="clearButton" onclick="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
+					<button style="background-color:red;" id="clearButton" onmousedown="resetForm(this)"><i class="fa fa-close tablebtn"></i></button>
 				</c:if>
                 <input style="width:100%" type="text" id="searchVal" name="searchVal" placeholder="Search.." value="${requestScope.searchVal}">
-                <button id="searchButton" class="btn btn-primary" type="submit" ><i class="fa fa-search"></i></button>
+                <button id="searchButton" class="btn btn-primary" type="submit"  ><i class="fa fa-search"></i></button>
                 </div>
             </form>
 											
@@ -295,16 +283,26 @@
 					<c:forEach var="item" items="${requestScope.ItemList}">		
 					<tr>		
 														
-						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.name}</span></a></td>
-						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.description}</span></a></td>
+						<td><a id="text" 
+							<c:if test="${sessionScope.urole == 'Administrator' || sessionScope.urole == 'Manager'}">
+									href="./ItemDetails?itemGroupId=${item.itemGroupId}" 
+							</c:if>>
+									<span>${item.name}</span></a></td>
+						<td><a id="text" <c:if test="${sessionScope.urole == 'Administrator' || sessionScope.urole == 'Manager'}">
+									href="./ItemDetails?itemGroupId=${item.itemGroupId}" 
+							</c:if>><span>${item.description}</span></a></td>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.size}</span></a></td> --%>
-						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.colour}</span></a></td>
+						<td><a id="text" <c:if test="${sessionScope.urole == 'Administrator' || sessionScope.urole == 'Manager'}">
+									href="./ItemDetails?itemGroupId=${item.itemGroupId}" 
+							</c:if>><span>${item.colour}</span></a></td>
 						<c:if test="${sessionScope.urole == 'Administrator'}">
 							<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.initialCost}</span></a></td>
 						</c:if>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.location}</span></a></td> --%>
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.multiBarcode}</span></a></td> --%>
-						<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}">
+						<td><a id="text" <c:if test="${sessionScope.urole == 'Administrator' || sessionScope.urole == 'Manager'}">
+									href="./ItemDetails?itemGroupId=${item.itemGroupId}" 
+							</c:if>>
 							
 								<c:choose>
 		        					<c:when test="${item.multiBarcode == 'yes'}">	
@@ -346,7 +344,16 @@
 		
 	</c:choose>
 	
-
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<footer class="page-footer font-small" style="background-color: #f5f5f5;">
+		<div class="footer-copyright text-center py-4" style="align-items: center;">
+			<a> © 2021 Internet Explorers </a>
+		</div>
+	</footer>
       
      </body>
 

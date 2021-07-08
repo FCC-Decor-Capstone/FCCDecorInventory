@@ -10,6 +10,9 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
 	<title>Event ${requestScope.action} Details</title>
 	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -140,13 +143,13 @@
 	<div class="table-title">
 				<div class="row">
 					<div class="col-sm-5">
-						<h1>Supplier Details</h1>
+						<h1>Event Details</h1>
 					</div>
 					<div class="col-sm-7">
 						<div class="toolBox" id="searchBox"> 		
 						<div id="barcodeInput" class="searchItem">
-							<label for="barcode">Enter barcode</label>
-							<input id="barcode" type="text" value="" placeholder="barcode" onkeypress="listen(event)"/>
+							
+							<input id="barcode" type="text" value="" placeholder="Enter barcode" onkeypress="listen(event)"/>
 							<button onclick="findbarcode()" type="button">Insert</button>
 							<span style="color:red" id="error"></span>
 						</div>
