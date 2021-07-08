@@ -14,6 +14,13 @@ import dbHelpers.DB;
 
 public class Category {
 
+	//Massive Note:
+	/* Disregard this entire model, it has no use. Maybe only 1 static function to get the list is used getAll function. 
+	 * This was supposed to be a substantial part of the website like suppliers but it was not complete. 
+	 * the categories were done dynamically using javascript instead.
+	 * Check listitem.java controller and View read.jsp and check item add and update forms views to see the current solution..
+	 * */
+	
 	int id = -1;
 	String categoryType="";
 	boolean hasError= false;

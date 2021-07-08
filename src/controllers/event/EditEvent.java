@@ -66,11 +66,13 @@ public class EditEvent extends HttpServlet {
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/event/form.jsp");
 			Event newEvent = new Event();
+			Event oldEvent;
 			
 			
 			//Request Verification (within Model for clean code)
 				try {
 					request.setAttribute("errName", newEvent.setId(Integer.parseInt(request.getParameter("id"))));
+					oldEvent = Event.getByID(Integer.parseInt(request.getParameter("id")));
 				} catch (NumberFormatException nfe) {
 					response.getWriter().append("Invalid ID, please restart Edit form.");
 					return;
@@ -92,8 +94,13 @@ public class EditEvent extends HttpServlet {
 				
 				Event.editByID(newEvent);
 				request.setAttribute("SucCtlMsg", "Event Edited Successfully");
-				Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event","Edited Event Name:" + newEvent.getName() + ", on Date: " + newEvent.getEventDate() ,""));
-				System.out.println("Edited" + newEvent.getName() + " With ID of " + newEvent.getId());
+				
+				Logs.addNew(new Logs((int) session.getAttribute("uid"),"Event", 
+						"Editted Event Name:" + newEvent.getName() + 
+						"\n\nBefore Changes: \n"+  oldEvent.toString() + 
+						"\n\nAfter Changes: \n"+  newEvent.toString(),""));
+				
+				
 				request.setAttribute("list", Event.getAll());
 				dispatcher = request.getRequestDispatcher("/event/table.jsp");
 				

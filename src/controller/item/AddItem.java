@@ -56,6 +56,8 @@ public class AddItem extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
+
 				request.setAttribute("action", "AddItem");
 				
 				request.setAttribute("list",ItemSupplier.getAll());
@@ -95,6 +97,7 @@ public class AddItem extends HttpServlet {
 				} else {
 					Item.addNew(item);
 //					Supplier.addNew(supplier);
+					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Items", "Added New Item:\n" + item.toString(),""));
 					response.sendRedirect(request.getContextPath()+"/ListItem");
 					return;
 					/*
@@ -116,7 +119,11 @@ public class AddItem extends HttpServlet {
 				}
 				
 				dispatcher.forward(request, response);
+			} else
+			{
+				throw new RuntimeException("Invalid access");
 			}
+		}
 
 //						
 //					

@@ -27,6 +27,15 @@ public class Supplier {
 		this.comments = comments;
 	}
 	
+	@Override 
+	public String toString() {
+		return 	((id==-1)?"":"Supplier ID: " + id) +  
+				"\nSupplier Name: " + name + 
+				"\nSupplier Contact: " + contact + 
+				"\nContact Telephone: " + telephone + 
+				"\nComments: " + comments;
+	}
+	
 	public static Supplier addNew(Supplier newSupplier) {
 		String insert="INSERT INTO Supplier(name, contact, telephone, comments) VALUES(?,?,?,?);";
 		PreparedStatement ps;
@@ -85,7 +94,7 @@ public class Supplier {
 			ResultSet rs = ps.executeQuery();
 			Supplier supplier = null;
 			while(rs.next()) { 
-				supplier = new Supplier(ID, 	rs.getString("name"), 
+				supplier = new Supplier(ID, rs.getString("name"), 
 											rs.getString("contact"), 
 											rs.getString("telephone"), 
 											rs.getString("comments"));

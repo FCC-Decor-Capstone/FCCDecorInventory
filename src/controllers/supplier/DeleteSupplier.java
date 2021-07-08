@@ -41,23 +41,23 @@ public class DeleteSupplier extends HttpServlet {
 				
 				
 				int id = Integer.parseInt(request.getParameter("id"));
-				String oldName = Supplier.getByID(id).getName();
-				if (id == 2) throw new IOException();
+				Supplier oldSupplier = Supplier.getByID(id);
+				if (id == 2) throw new Exception("Cant Delete Default Supplier");
 					
 				if (Supplier.deleteByID(id)) {
 					request.setAttribute("SucCtlMsg", "Deleted Supplier Successfully");
-					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier",session.getAttribute("uname") + " Deleted Supplier Name:" + oldName,""));
+					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier","Deleted Supplier:\n\n" + oldSupplier.toString(),""));
+					
 					response.sendRedirect("./.");return;
 				} else {
 					request.setAttribute("ErrCtlMsg", "Error Deleting Supplier");
 				}
 			} catch (NumberFormatException nfe) {
 				request.setAttribute("ErrCtlMsg", "Can't fulfil request without ID");
-			} catch (IOException e) {
-				request.setAttribute("ErrCtlMsg", "Can't Delete this one");
+			} catch (Exception e) {
+				request.setAttribute("ErrCtlMsg", e.getMessage());
 			}
 		}
-		
 		dispatcher.forward(request, response);
 	} else
 		{

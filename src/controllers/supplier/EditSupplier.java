@@ -88,10 +88,15 @@ public class EditSupplier extends HttpServlet {
 				request.setAttribute("action", "Edit");
 				request.setAttribute("ErrCtlMsg", "Supplier Editing Error");
 			} else {	
+				Supplier oldSupplier = Supplier.getByID(Integer.parseInt(request.getParameter("id")));
 				Supplier.editByID(newSupplier);
 				request.setAttribute("SucCtlMsg", "Supplier Edited Successfully");
-				Logs.addNew(new Logs((int) session.getAttribute("uid"),"Supplier", session.getAttribute("uname") + " Editted Supplier Name:" + newSupplier.getName() ,""));
-				System.out.println("Edited" + newSupplier.getName() + " With ID of " + newSupplier.getId());
+
+				Logs.addNew(new Logs((int) session.getAttribute("uid"),"Supplier", 
+									"Editted Supplier Name:" + newSupplier.getName() + 
+									"\n\nBefore Changes: \n"+  oldSupplier.toString() + 
+									"\n\nAfter Changes: \n"+  newSupplier.toString(),""));
+	
 				request.setAttribute("list", Supplier.getAll());
 				dispatcher = request.getRequestDispatcher("/supplier/table.jsp");	
 			}

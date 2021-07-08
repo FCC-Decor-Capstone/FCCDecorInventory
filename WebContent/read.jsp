@@ -268,7 +268,7 @@
 					
 						<th><span>Item Name</span></th>
 						<th><span>Description</span></th>
-						<th><span>Colour</span></th>
+						<th><span>Location</span></th>
 						<c:if test="${sessionScope.urole == 'Administrator'}">
 						<th><span>Initial Cost</span></th>
 						</c:if>
@@ -294,7 +294,7 @@
 						<%-- <td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.size}</span></a></td> --%>
 						<td><a id="text" <c:if test="${sessionScope.urole == 'Administrator' || sessionScope.urole == 'Manager'}">
 									href="./ItemDetails?itemGroupId=${item.itemGroupId}" 
-							</c:if>><span>${item.colour}</span></a></td>
+							</c:if>><span>${item.location}</span></a></td>
 						<c:if test="${sessionScope.urole == 'Administrator'}">
 							<td><a id="text" href="./ItemDetails?itemGroupId=${item.itemGroupId}"><span>${item.initialCost}</span></a></td>
 						</c:if>

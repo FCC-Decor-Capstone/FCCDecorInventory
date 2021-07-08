@@ -46,6 +46,19 @@ public class Item {
 		this.quantity = 0;
 		this.category ="";
 	}
+	
+	public String toString() {
+		return 	((itemGroupId==0)?"":"Item ID: " + itemGroupId) +  
+				"\nItem Name: " + itemName +
+				((Supplier.getByID(supplierID) != null)?"\nItem Supplier: " + Supplier.getByID(supplierID).getName():"") + 
+				"\nItem Location: " + location+ 
+				"\nItem Size: " + size +
+				"\nItem Colour: " + colour + 
+				"\nItem Initial Cost: " + initialCost + 
+				"\nItem MultiBarcode: " + multiBarcode + 
+				"\nItem Quantity: " + quantity + 
+				"\nComments: " + description;
+	}
  
 	public Item(int itemGroupId, String itemName, String description,String size,String colour,double initialCost,String location,
 			String multiBarcode,int quantity,String category,int supplierID){

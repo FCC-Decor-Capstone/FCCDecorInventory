@@ -85,7 +85,7 @@ public class DetailEvent extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// Take a deep breath
 		
 		HttpSession session = request.getSession();
 		String urole = (String) session.getAttribute("urole");
@@ -128,17 +128,17 @@ public class DetailEvent extends HttpServlet {
 										newItem = linkedMap.get(String.valueOf(newItem.getItemID()));
 										if (!newItem.isMultibarcode()) {
 											
-											logList.add(new Logs(uid, "Items Loaded", session.getAttribute("uname") + " Loaded "  + newItem.getAddedQty() + " "+ newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
+											logList.add(new Logs(uid, "Items Loaded", "Loaded "  + newItem.getAddedQty() + " "+ newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 											newItem.setAddedQty(Integer.parseInt(request.getParameter("qty_Load"+barcode)));
 											barcodesQtyReLoad.add(newItem);
 										} else {
-											logList.add(new Logs(uid, "Item Loaded", session.getAttribute("uname") + " reLoaded "  + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
+											logList.add(new Logs(uid, "Item Loaded", "reLoaded "  + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 											barcodesReLoad.add(newItem);
 										}
 										continue; //as newItem is added to another list now to Update instead of Insert new Items
 									}	
 									qty = String.valueOf(newItem.getQuantity()); 
-									logList.add(new Logs(uid, "Item Loaded", session.getAttribute("uname") + " Loaded " + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
+									logList.add(new Logs(uid, "Item Loaded", "Loaded " + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 									barcodesLoad.add(newItem);//first time loaded items
 								}
 								
@@ -159,12 +159,12 @@ public class DetailEvent extends HttpServlet {
 										int removedQuantity = Integer.parseInt(request.getParameter("qty_Return"+barcode));
 										//Removes quantity from current if already exists 
 										if (removedQuantity < returnItem.getQuantity()) {
-											logList.add(new Logs(uid, "Items Returned", session.getAttribute("uname") + " returned " + removedQuantity + " " + returnItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
+											logList.add(new Logs(uid, "Items Returned", "returned " + removedQuantity + " " + returnItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 											if(EventItem.decreaseQuantity(returnItem,eventId, uid,removedQuantity)) affectedRows++;
 											continue;
 										} 	
 									}
-									logList.add(new Logs(uid, "Item Returned", session.getAttribute("uname") + " returned " + returnItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
+									logList.add(new Logs(uid, "Item Returned", "returned " + returnItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 									barcodesReturn.add(returnItem);
 								}
 							}

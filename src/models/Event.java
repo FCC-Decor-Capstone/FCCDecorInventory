@@ -35,7 +35,16 @@ public class Event {
 		
 	}
 	
-	
+	@Override 
+	public String toString() {
+		return 	((id==-1)?"":"Event ID: " + id) +  
+				"\nEvent Name: " + name +
+				"\nEvent Date: " + eventDate+ 
+				"\nEvent Location: " + location+ 
+				"\nEvent Client: " + client + 
+				"\nClient Telephone: " + telephone + 
+				"\nComments: " + comments;
+	}
 
 	
 	public static Event addNew(Event newEvent) {

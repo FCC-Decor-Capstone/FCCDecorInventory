@@ -8,8 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import models.Item;
 import models.ItemsBarcode;
+import models.Logs;
 
 
 
@@ -33,13 +36,19 @@ public class DeleteBarcode extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
+
+
 			if (request.getParameter("barcodeId") != null) {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("");
 				try {
 					
 					int id = Integer.parseInt(request.getParameter("barcodeId"));
+					ItemsBarcode oldItem = ItemsBarcode.getByID(id);
 					if (ItemsBarcode.deleteByID(id)) {
+						
+						Logs.addNew(new Logs((int)session.getAttribute("uid"),"Item Barcodes", "Deleted Barcode(Item Piece):\n\n" + oldItem.toString() + "\n\nBelonging to Item:\n" + Item.getByID(oldItem.getitemGroupId()) ,""));
 						
 						response.sendRedirect(request.getContextPath() + "/ItemDetails?itemGroupId=" + request.getParameter("itemGroupId"));
 //						
@@ -53,7 +62,10 @@ public class DeleteBarcode extends HttpServlet {
 				} 
 			}
 			
-			
+		} else
+		{
+			throw new RuntimeException("Invalid access");
+		}
 			
 	}
 

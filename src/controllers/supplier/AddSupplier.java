@@ -66,7 +66,7 @@ public class AddSupplier extends HttpServlet {
 				request.setAttribute("ErrCtlMsg", "Supplier Adding Error");
 			} else {
 				Supplier.addNew(newSupplier);
-				Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier", session.getAttribute("uname") + " Added New Supplier Name:" + newSupplier.getName() ,""));
+				Logs.addNew(new Logs((int)session.getAttribute("uid"),"Supplier","Added New Supplier:\n" + newSupplier.toString() ,""));
 				request.setAttribute("SucCtlMsg", "Supplier Added Successfully");
 				request.setAttribute("list", Supplier.getAll());
 				dispatcher = request.getRequestDispatcher("/supplier/table.jsp");

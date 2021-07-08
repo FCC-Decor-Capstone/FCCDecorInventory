@@ -43,7 +43,7 @@ public class DeleteEvent extends HttpServlet {
 				Event oldEvent = Event.getByID(id) ;
 				if (Event.deleteByID(id)) {
 					request.setAttribute("SucCtlMsg", "Deleted Event Successfully");
-					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event", session.getAttribute("uname") + " Deleted Event Name:" + oldEvent.getName() + ", on Date: " + oldEvent.getEventDate() ,""));
+					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event", "Deleted Event:\n\n" + oldEvent.toString() ,""));
 					response.sendRedirect("./.");return;
 				} else {
 					request.setAttribute("ErrCtlMsg", "Error Deleting Event");

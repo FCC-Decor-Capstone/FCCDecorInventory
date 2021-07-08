@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Item;
 import models.ItemsBarcode;
+import models.Logs;
 
 /**
  * Servlet implementation class GenerateBarcode
@@ -36,7 +38,8 @@ public class GenerateBarcode extends HttpServlet {
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		int id = Integer.parseInt(request.getParameter("ItemGroupID"));
 	       
-        ItemsBarcode.addNew(id);
+        int newbarcode = ItemsBarcode.addNew(id);
+        Logs.addNew(new Logs((int)session.getAttribute("uid"),"Item Barcodes", "Added New Barcode("+ newbarcode + ") for Item:\n\n" + Item.getByID(id).toString(),""));
         request.setAttribute("listBarcode", ItemsBarcode.getItems(id));
 	      // RequestDispatcher   dispatcher = request.getRequestDispatcher("/barcodeTable.jsp");
 	       response.sendRedirect(request.getContextPath() + "/ItemDetails?itemGroupId=" + id);

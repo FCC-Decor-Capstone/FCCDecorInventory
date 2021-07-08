@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import models.Event;
+import models.EventItem;
 import models.Supplier;
 import net.example.usermanagement.dao.UserDAOHibernate;
 import net.example.usermanagement.model.Logs;
@@ -220,6 +221,7 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 		if (session.getAttribute("urole").equals("Administrator")) {
 			RequestDispatcher dispatcher = null;
 			List<Logs> myLogs = userDAO.selectAllLogs();
+			request.setAttribute("listhmUsers", EventItem.getUsers());
 			request.setAttribute("logs", myLogs);
 			dispatcher = request.getRequestDispatcher("logs-form.jsp");
 			dispatcher.forward(request, response);

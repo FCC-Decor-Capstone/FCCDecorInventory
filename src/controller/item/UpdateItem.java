@@ -8,10 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dbHelpers.UpdateQuery;
 import models.Item;
 import models.ItemsBarcode;
+import models.Logs;
 
 /**
  * Servlet implementation class UpdateItem
@@ -42,6 +44,8 @@ public class UpdateItem extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//get the form data and set the item object
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		int itemGroupId = Integer.parseInt(request.getParameter("itemGroupID"));
 		String itemName = request.getParameter("itemName");
 		String category = request.getParameter("category");
@@ -54,6 +58,8 @@ public class UpdateItem extends HttpServlet {
 		String oldMultiBarcode = request.getParameter("oldMultibarcode");
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		
+		//only for logs
+		Item oldItem = Item.getByID(itemGroupId);
 		
 		Item item = new Item();
 		item.setItemGroupID(itemGroupId);
@@ -79,10 +85,21 @@ public class UpdateItem extends HttpServlet {
 		//create an UpdateQuery object and use it to update  a item
 		UpdateQuery dq = new UpdateQuery();
 		dq.doUpdate(item);
+		
+		//log 
+		Logs.addNew(new Logs((int) session.getAttribute("uid"),"Items", 
+				"Editted Item Name:" + item.getName() + 
+				"\n\nBefore Changes: \n"+  oldItem.toString() + 
+				"\n\nAfter Changes: \n"+  item.toString(),""));
+		
 		//pass the control to read servlet
 		String url="/ListItem";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response); 
+		} else
+		{
+			throw new RuntimeException("Invalid access");
+		}
 	}
 
 }

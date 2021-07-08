@@ -19,6 +19,8 @@ import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 
 import dbHelpers.BarcodeQuery;
 import models.Item;
+import models.ItemsBarcode;
+import models.Logs;
 
 /**
  * Servlet implementation class CreateBarcode
@@ -46,8 +48,11 @@ public class ShowBarcode extends HttpServlet {
 		//get items id
 		
 		String value=request.getParameter("barcodeId");
-	   
 		
+		//logs by RMD
+		int id = Integer.parseInt(request.getParameter("barcodeId"));
+		ItemsBarcode barcode = ItemsBarcode.getByID(id);
+		Logs.addNew(new Logs((int)session.getAttribute("uid"),"Item Barcodes", "Print Request for Barcode(Item Piece):\n\n" + barcode.toString() + "\n\nBelonging to Item:\n" + Item.getByID(barcode.getitemGroupId()) ,""));
 		    
 	    
 	   //get id to generate barcode for items

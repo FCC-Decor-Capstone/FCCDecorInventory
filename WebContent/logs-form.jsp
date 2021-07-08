@@ -4,7 +4,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-	<title>User Management Application</title>
+	<title>Logs</title>
+	<meta charset="UTF-8">
+	
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/ico" href="<c:url value="/Img?name=favicon"></c:url>"/>
+	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -70,13 +76,19 @@
         border-color: #e9e9e9;
 		padding: 12px 15px;
 		vertical-align: middle;
+		white-space:pre-wrap; 
+		word-wrap:break-word;
+	
+		
     }
-	table.table tr th:first-child {
-		width: 60px;
-	}
-	table.table tr th:last-child {
-		width: 100px;
-	}
+     table.table tr th:nth-of-type(4), table.table tr td:nth-of-type(4) {
+		min-width: 50%;
+		
+    }
+    
+
+
+
     table.table-striped tbody tr:nth-of-type(odd) {
     	background-color: #fcfcfc;
 	}
@@ -150,80 +162,85 @@
 
 </head>
 <body>
-	<!-- Delete Modal HTML -->
-	<div id="deleteModal" class="modal fade">
-		<div class="modal-dialog modal-confirm">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Are you sure?</h4>	
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">
-					<p>Do you really want to delete these user? This process cannot be undone.</p>
-				</div>
-				<div class="modal-footer">
-					<form action="delete" method="post">
-						<input type="hidden" name="userId" id="userId" value=""/>
-						<input type="submit" class="btn btn-danger" value="Delete" />
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!-- NAVBAR --> 
+<!-- NAVBAR -->
 	<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-	    <ul class="navbar-nav w-100">
-	      <li class="nav-item dropdown ml-auto">
-	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	          Account
-	        </a>
-	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-	          <a class="dropdown-item" href="./">Home</a>
-	          <a class="dropdown-item" href="logout">Logout</a>
-	        </div>
-	      </li>
-	    </ul>  
-	  </div>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav w-100">
+				<!-- <li class="nav-item dropdown"><a class="nav-link " href="item"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Item </a></li> -->
+				<li class="nav-item dropdown"><a class="nav-link " href="list"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Users </a></li>	
+				<li class="nav-item dropdown"><a class="nav-link " href="#"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Logs </a></li>
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Supplier/"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Suppliers </a></li>
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/Event/"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Events </a></li>	
+				<li class="nav-item dropdown"><a class="nav-link " href="${pageContext.request.contextPath}/ListItem"
+					id="navbarItemLink" aria-haspopup="true" aria-expanded="false">
+						Items</a></li>		
+				<li class="nav-item dropdown ml-auto"><a
+					class="nav-link dropdown-toggle" href="#"
+					id="navbarDropdownMenuLink" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Account </a>
+					<div class="dropdown-menu dropdown-menu-right"
+						aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" style="font-weight:bold; text-decoration: underline; padding-bottom: 1em">
+						<c:out value="${sessionScope.uname}" /></a>
+						<a class="dropdown-item" href="./">Home</a> 
+						<!--<a class="dropdown-item" href="changePass">Change Password</a>-->
+						<a class="dropdown-item" href="logout">Logout</a>
+					</div></li>
+			</ul>
+		</div>
 	</nav>
-	<br/><br/><br/>
+	<br />
+	<br />
+
+
+
+	
+
 	
 	<!-- Main Container HTML -->
     <div class="container">
-        <div class="table-wrapper">
+        <div class="table-wrapper" style="overflow-x:auto">
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-5">
 						<h2>Logs</h2>
 					</div>
-					<div class="col-sm-7">
-						<a href="list" class="btn btn-primary"><i class="material-icons">refresh</i> <span>Refresh</span></a>						
-					</div>
+					
                 </div>
             </div>
+
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                    	<th>UserID</th>
-                        <th>LogID</th>
+                    	<th>Time</th>
+                    	<th>User</th>
                         <th>Type</th>						
 						<th>Activity</th>
-						<th>Target</th>
                     </tr>
                 </thead>
                 <tbody>
                 	<c:forEach var="log" items="${logs}">
 	                    <tr>
-	                    	<td><c:out value="${log.user.id}" /></td>
-	                    	<td><c:out value="${log.logId}" /></td>
+	                    	<td><c:out value="${log.target}" /></td>
+                   	         <c:set var="user">${log.user.id}</c:set>
+	                    	<td><c:out value="${requestScope.listhmUsers[user]}" /></td>
 	                        <td><c:out value="${log.type}" /></td>
 	                        <td><c:out value="${log.activity}" /></td>
-	                        <td><c:out value="${log.target}" /></td>
-							<td>
-								<!-- <a href="edit?id=<c:out value='${log.logId}' />" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a> -->
-								<!-- <a href="#deleteModal" data-tempid="<c:out value='${log.user.id}' />" class="delete trigger-btn set-userid" title="Delete" data-toggle="modal" ><i class="material-icons">&#xE5C9;</i></a>-->
-							</td>
+	                        
+							
 	                    </tr>
 					</c:forEach>
                 </tbody>

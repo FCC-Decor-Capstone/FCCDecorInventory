@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Item;
 import models.ItemsBarcode;
+import models.Logs;
 
 /**
  * Servlet implementation class UpdateBarcode
@@ -64,40 +66,56 @@ public class UpdateBarcode extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/BarcodeForm.jsp");
-		ItemsBarcode itemsBarcode = new ItemsBarcode();
-		
-		
-		//Request Verification (within Model for clean code)
-//			try {
-				request.setAttribute("errId", itemsBarcode.setId(Integer.parseInt(request.getParameter("barcodeId"))));
-//			} catch (NumberFormatException nfe) {
-//				response.getWriter().append("Invalid ID, please restart Edit form.");
-//				return;
-//			} 
-			request.setAttribute("errName", itemsBarcode.setitemName(request.getParameter("itemName")));
-			request.setAttribute("errCondition", itemsBarcode.setCondition(request.getParameter("condition")));
-		    request.setAttribute("errComments", itemsBarcode.setComments(request.getParameter("description")));
-		
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/BarcodeForm.jsp");
+			ItemsBarcode itemsBarcode = new ItemsBarcode();
+			ItemsBarcode olditemsBarcode;
 			
-		request.setAttribute("model",itemsBarcode);
+			//Request Verification (within Model for clean code)
+	//			try {
+					request.setAttribute("errId", itemsBarcode.setId(Integer.parseInt(request.getParameter("barcodeId"))));
+					olditemsBarcode = ItemsBarcode.getByID(Integer.parseInt(request.getParameter("barcodeId")));
+	//			} catch (NumberFormatException nfe) {
+	//				response.getWriter().append("Invalid ID, please restart Edit form.");
+	//				return;
+	//			} 
+				request.setAttribute("errName", itemsBarcode.setitemName(request.getParameter("itemName")));
+				request.setAttribute("errCondition", itemsBarcode.setCondition(request.getParameter("condition")));
+			    request.setAttribute("errComments", itemsBarcode.setComments(request.getParameter("description")));
 			
-		if (itemsBarcode.hasError()) {
-			request.setAttribute("action", "Edit");
-			request.setAttribute("ErrCtlMsg", " Editing Error");
-			dispatcher.forward(request, response);
-		} else {
-			
-			ItemsBarcode.editByID(itemsBarcode);
-			response.sendRedirect(request.getContextPath() + "/ItemDetails?itemGroupId=" + request.getParameter("itemGroupId"));
-			//request.setAttribute("SucCtlMsg", "Updated Successfully");
-			//System.out.println("Edited" + " " + itemsBarcode.getitemName() + " With ID of " + itemsBarcode.getId());
-			//request.setAttribute("list", ItemsBarcode.getAll());
-			//request.setAttribute("SucCtlMsg", "Updated Successfully");
-			//
-			
+				
+			request.setAttribute("model",itemsBarcode);
+				
+			if (itemsBarcode.hasError()) {
+				request.setAttribute("action", "Edit");
+				request.setAttribute("ErrCtlMsg", " Editing Error");
+				dispatcher.forward(request, response);
+			} else {
+				
+				ItemsBarcode.editByID(itemsBarcode);
+				
+				//logs
+				
+				Logs.addNew(new Logs((int) session.getAttribute("uid"),"Item Barcodes", 
+						"Editted Barcode Name:" + itemsBarcode.getitemName() + 
+						"\n\nBefore Changes: \n"+  olditemsBarcode.toString() + 
+						"\n\nAfter Changes: \n"+  itemsBarcode.toString() + 
+						"\n\nBelonging For Item:\n " + Item.getByID(olditemsBarcode.getitemGroupId()),""));
+				
+				
+				response.sendRedirect(request.getContextPath() + "/ItemDetails?itemGroupId=" + request.getParameter("itemGroupId"));
+				//request.setAttribute("SucCtlMsg", "Updated Successfully");
+				//System.out.println("Edited" + " " + itemsBarcode.getitemName() + " With ID of " + itemsBarcode.getId());
+				//request.setAttribute("list", ItemsBarcode.getAll());
+				//request.setAttribute("SucCtlMsg", "Updated Successfully");
+				//
+				
+			}
+		} else
+		{
+			throw new RuntimeException("Invalid access");
 		}
-		
 		
 	}
 

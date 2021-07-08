@@ -34,6 +34,16 @@ public class ItemsBarcode {
 		this.id=0;
 		
 	}
+	
+	public String toString() {
+		return 	((id==0)?"":"Barcode ID: " + id) +  
+				"\nBarcode Name: " + itemName + 
+				"\nBarcode ItemGroupID: " + itemGroupId + 
+				"\nBarcode Condition: " + condition +
+				"\nBarcode Quantity: " + quantity + 
+				"\nComments: " + description;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -108,7 +118,7 @@ public class ItemsBarcode {
 		
 	}
 	
-	public static ItemsBarcode addNew(int itemId) {
+	public static int addNew(int itemId) {
 		String insert="insert into Item (itemName,comments,itemGroupID,quantity)  Select  itemName, description,itemGroupID,quantity from ItemGroup where itemGroupID=?";
 		PreparedStatement ps;
 		try {
@@ -127,11 +137,13 @@ public class ItemsBarcode {
 			    System.out.println(itemGroupId);
 			}
 			DB.closeConnection();
+			return itemGroupId;
 		} catch (SQLException e) {
 			  DB.closeConnection();
 			e.printStackTrace();
+			return 0;
 		}
-		return null;
+		
 	}
 
 	public static List<ItemsBarcode> getAll() {

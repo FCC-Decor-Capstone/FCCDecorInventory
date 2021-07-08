@@ -8,8 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dbHelpers.DeleteQuery;
+import models.Item;
+import models.Logs;
 
 /**
  * Servlet implementation class DeleteServlet
@@ -31,16 +34,29 @@ public class DeleteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int ItemGroupID = Integer.parseInt(request.getParameter("itemGroupId"));
-		//craete a delelteQuery object 
-				DeleteQuery dq = new DeleteQuery();
-		//use delete Query to delete record
-		dq.doDelete(ItemGroupID);
-		//pass execution on  to the ReadServlet
-		String url="/ListItem";
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-		dispatcher.forward(request, response); 
+		HttpSession session = request.getSession();
+		if (session.getAttribute("urole").equals("Administrator")||session.getAttribute("urole").equals("Manager")) {
+			int ItemGroupID = Integer.parseInt(request.getParameter("itemGroupId"));
+			Item olditem = Item.getByID(ItemGroupID);
+			//craete a delelteQuery object 
+			DeleteQuery dq = new DeleteQuery();
+			
+			//use delete Query to delete record
+			dq.doDelete(ItemGroupID);
+			
+			//logs
+			Logs.addNew(new Logs((int)session.getAttribute("uid"),"Items", "Deleted Item:\n\n" + olditem.toString() ,""));
+			
+			
+			//pass execution on  to the ReadServlet
+			String url="/ListItem";
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			dispatcher.forward(request, response); 
+		} else
+		{
+			throw new RuntimeException("Invalid access");
+		}
 	}
 
 	/**
