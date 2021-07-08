@@ -17,7 +17,7 @@
 	
 	
 	  window.onload = function () {
-		/* if (window.location.protocol == 'http:') {
+		 if (window.location.protocol == 'http:') {
 		      
 		    console.log("you are accessing us via "
 		        +  "an insecure protocol (HTTP). "
@@ -26,7 +26,7 @@
 		    window.location.href = 
 		        window.location.href.replace(
 		                   'http:', 'https:');
-		}  */
+		}  
 		     
 	}  
 </script>
