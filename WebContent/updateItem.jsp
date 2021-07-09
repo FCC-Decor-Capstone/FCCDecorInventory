@@ -366,7 +366,7 @@ function toggleSidebar(){
 
 			<div class="form-group" id="grpQty" style="display:none;">
 				<label>Quantity:</label>
-				<input class="form-control" type="hidden" min="0" id="inpQty" value="<%= item.getQuantity()%>" name="quantity" value="-1"> <BR>
+				<input class="form-control" type="hidden" min="0" id="inpQty" value="${item.getQuantity()}" name="quantity" value="-1"> <BR>
 				<span style="color:red" id="errinpQty"></span>
 				<c:if test="${not empty requestScope.errQuantity}">
 					<br/><span>${requestScope.errQuantity}</span>
@@ -396,6 +396,10 @@ function toggleSidebar(){
 					}
 				}
 				
+				<c:if test="${item.multiBarcode == 'no'}"> 
+					grpQty.style.display = "";
+					inpQty.type = "number";
+				</c:if>
 				function verifyQty() {
 					let n = document.getElementById('inpQty').value;
 					let input = document.getElementById('inpQty');
@@ -412,6 +416,8 @@ function toggleSidebar(){
 					};
 				};
 				document.getElementById('inpQty').onblur = verifyQty;
+				
+				
 				
 			</script>
 		<c:choose>

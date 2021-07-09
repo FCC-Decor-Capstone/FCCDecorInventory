@@ -123,10 +123,10 @@
 	        	<input type="hidden" name="id" value="<c:out value="${param.id}" />" />
 			<hr>
 			
-			 <div class="form-group">
+			<%-- <div class="form-group">
 				<label>Current Password</label>
 	            <input type="password" class="form-control" name="currentPassword" required="required" value="<c:out value='${pass.password}' />">
-	        </div>
+	        </div> --%>
 	      
 		    <div class="form-group">
 				<label>Password</label>

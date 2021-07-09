@@ -185,25 +185,25 @@ private void changePassGenUsersName(HttpServletRequest request, HttpServletRespo
 	private void changePassword(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 	
 		int id = Integer.parseInt(request.getParameter("id"));
-		String currentPassword = request.getParameter("currentPassword");
+		//String currentPassword = request.getParameter("currentPassword");
 		String password = request.getParameter("password");
-		System.out.print("new pass"+password);
+		//System.out.print("new pass"+password);
 		
-		System.out.print("Old Pass"+currentPassword);
+		//System.out.print("Old Pass"+currentPassword);
 
-		String hash = MD5(currentPassword);
+		//String hash = MD5(currentPassword);
 
 		HttpSession session = request.getSession();
-		User currentUser = userDAO.selectUser((String) session.getAttribute("uemail"),
-				(String) session.getAttribute("urole"));
+		//User currentUser = userDAO.selectUser((String) session.getAttribute("uemail"),
+		//		(String) session.getAttribute("urole"));
 		User newUser = userDAO.selectUser(id);
 		//newUser.setPassword(password);
-		if(hash != null && currentPassword.length()>0 && hash.equals(currentUser.getPassword()) && currentUser.getRole().equals("Administrator")) {
+		//if(hash != null && currentPassword.length()>0 && hash.equals(currentUser.getPassword()) && currentUser.getRole().equals("Administrator")) {
 			String newHash = MD5(password);
-			System.out.println("MD5(password)" + newHash);
+			//System.out.println("MD5(password)" + newHash);
 			newUser.setPassword(newHash);
 			userDAO.updateUser(newUser);	
-		}
+		//}
 		response.sendRedirect("list");
 	}
 	
