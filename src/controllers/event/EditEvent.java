@@ -34,6 +34,10 @@ public class EditEvent extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
+		if (session.getAttribute("urole") == null) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		if (request.getParameter("id") != null) {
@@ -63,6 +67,10 @@ public class EditEvent extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		if (session.getAttribute("urole") == null) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/event/form.jsp");
 			Event newEvent = new Event();

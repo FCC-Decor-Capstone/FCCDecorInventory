@@ -325,11 +325,21 @@ public class EventItem {
 	
 	public static List<EventItem> getAllItems() {
 		List<EventItem> list = new ArrayList<EventItem>();
-		String select="Select *, itemID, dateBack, (CASE WHEN dateBack IS NULL AND multiBarcode like 'n%' THEN ItemGroup.quantity-IFNULL(sum(quantityIE),0)  WHEN dateBack IS NOT NULL AND multiBarcode like 'n%' THEN ItemGroup.quantity ELSE null END) AS qtyLeft "
-								+ "		from 		ItemGroup " 
-								+ "		JOIN 		Item using(itemGroupID)"
-								+ " 	LEFT JOIN 	ItemEvent ie using(itemID) "
-								+ "group by itemID ;";
+		//Old query but it was allowing reload of multibarcode 'yes', showing them available although they are out, 
+		// keep in mind this list will be filtered by Javascript in the jsp file, to remove 0 quantity items 
+//		String select="Select *, itemID, dateBack, (CASE WHEN dateBack IS NULL AND multiBarcode like 'n%' THEN ItemGroup.quantity-IFNULL(sum(quantityIE),0)  WHEN dateBack IS NOT NULL AND multiBarcode like 'n%' THEN ItemGroup.quantity ELSE null END) AS qtyLeft "
+//								+ "		from 		ItemGroup " 
+//								+ "		JOIN 		Item using(itemGroupID)"
+//								+ " 	LEFT JOIN 	ItemEvent ie using(itemID) "
+//								+ "group by itemID ;";
+		
+		String select = "Select *, itemID, dateBack, (CASE WHEN dateBack IS NULL AND multiBarcode like 'n%' THEN ItemGroup.quantity-IFNULL(sum(quantityIE),0)  WHEN dateBack IS NOT NULL AND multiBarcode like 'n%' THEN ItemGroup.quantity ELSE null END) AS qtyLeft \n"
+				+ "										from 		ItemGroup \n"
+				+ "										JOIN 		Item using(itemGroupID)\n"
+				+ "								 	LEFT JOIN 	ItemEvent ie using(itemID)\n"
+				+ "								group by itemID \n"
+				+ "                                having (multiBarcode = 'no'and qtyLeft != 0) or \n"
+				+ "                                (multiBarcode = 'yes' AND ((dateTaken is not null AND dateBack is not null) or (dateTaken is null)));";
 		PreparedStatement ps;
 		try {
 			ps = DB.getConnection().prepareStatement(select);

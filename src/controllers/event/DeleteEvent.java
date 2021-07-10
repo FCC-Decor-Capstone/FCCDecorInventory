@@ -34,6 +34,10 @@ public class DeleteEvent extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
+		if (session.getAttribute("urole") == null) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
 		if (session.getAttribute("urole").equals("Administrator")||session.getAttribute("urole").equals("Manager")) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		if (request.getParameter("id") != null) {
@@ -41,11 +45,18 @@ public class DeleteEvent extends HttpServlet {
 				
 				int id = Integer.parseInt(request.getParameter("id"));
 				Event oldEvent = Event.getByID(id) ;
-				if (Event.deleteByID(id)) {
+				
+				switch (Event.deleteByID(id)) {
+				case 1:
 					request.setAttribute("SucCtlMsg", "Deleted Event Successfully");
 					Logs.addNew(new Logs((int)session.getAttribute("uid"),"Event", "Deleted Event:\n\n" + oldEvent.toString() ,""));
-					response.sendRedirect("./.");return;
-				} else {
+					response.sendRedirect("./.");
+					return;
+				case 2:
+					request.setAttribute("ErrCtlMsg", "Can't Delete Events having Items not returned");
+					break;
+					
+				default:
 					request.setAttribute("ErrCtlMsg", "Error Deleting Event");
 				}
 			} catch (NumberFormatException nfe) {

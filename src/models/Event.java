@@ -129,25 +129,47 @@ public class Event {
 		return null;
 	}
 	
-	public static Boolean deleteByID(int ID) {
-		String delete="DELETE FROM Event WHERE eventID = ?;";
+	public static int deleteByID(int ID) {
 		PreparedStatement ps;
+		String check="Select * from ItemGroup join Item using(itemGroupID) join ItemEvent ie using(itemID) WHERE eventID = ? AND dateBack IS NULL ORDER By dateBack, ItemGroup.itemName;";
+		String delete="DELETE FROM Event WHERE eventID = ?;";
 		try {
-			ps = DB.getConnection().prepareStatement(delete);
+			ps = DB.getConnection().prepareStatement(check);
 			ps.setInt(1,ID);
-			int result = ps.executeUpdate();
-			  DB.closeConnection();
-			if (result==1) {
-				return true;
-			}
-			else 
-				return false;
+			ResultSet rs = ps.executeQuery();
+			int size = 0;
+	        while(rs.next()){
+		            size++;
+	        }
+				if (size == 0) {
+					//if all items in the event are returned, no non returned items found
+					ps = DB.getConnection().prepareStatement(delete);
+					ps.setInt(1,ID);
+					int result = ps.executeUpdate();
+					DB.closeConnection();
+					  
+					if (result==1) {
+						//deleted
+						return 1;
+					}
+					else {
+						//not deleted
+						return 0;
+					}
+				}
+				else {
+					//not deleted cuz some non returned items found
+					DB.closeConnection();
+					return 2;
+				}
+				
 		
 		} catch (SQLException e) {
 			  DB.closeConnection();
 			e.printStackTrace();
 		}
-		return false;
+		//not deleted some error
+		return 0;
 	}
 	
 	public static List<Event> getAll() {

@@ -42,6 +42,10 @@ public class DetailEvent extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
+		if (session.getAttribute("urole") == null) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")||session.getAttribute("urole").equals("General User")) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		if (request.getParameter("id") != null) {
@@ -88,6 +92,10 @@ public class DetailEvent extends HttpServlet {
 		// Take a deep breath
 		
 		HttpSession session = request.getSession();
+		if (session.getAttribute("urole") == null) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
 		String urole = (String) session.getAttribute("urole");
 		int uid = (int) session.getAttribute("uid");
 			
@@ -137,8 +145,15 @@ public class DetailEvent extends HttpServlet {
 										}
 										continue; //as newItem is added to another list now to Update instead of Insert new Items
 									}	
-									qty = String.valueOf(newItem.getQuantity()); 
-									logList.add(new Logs(uid, "Item Loaded", "Loaded " + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
+									
+									
+									//if First time
+									if (!newItem.isMultibarcode()) {
+										newItem.setQuantity(Integer.parseInt(request.getParameter("qty_Load"+barcode)));
+										qty = String.valueOf(newItem.getQuantity()) + " ";
+									}
+									 
+									logList.add(new Logs(uid, "Item Loaded", "Loaded " + qty + newItem.getName() + ", into Event:" + model.getName() + " Dated on: " + model.getEventDate().toString(),""));
 									barcodesLoad.add(newItem);//first time loaded items
 								}
 								

@@ -39,6 +39,10 @@ public class DetailSupplier extends HttpServlet {
 		// TODO Auto-generated method stub
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		HttpSession session = request.getSession();
+		if (session.getAttribute("urole") == null) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
 		if (session.getAttribute("urole").equals("Administrator") || session.getAttribute("urole").equals("Manager")) {
 		if (request.getParameter("id") != null) {
 			try {

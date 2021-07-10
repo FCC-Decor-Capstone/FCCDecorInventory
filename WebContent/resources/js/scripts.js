@@ -165,7 +165,8 @@ const findbarcode = () => {
                 tblRow.appendChild(tdName);    
                 if (!element.multibarcode) {
                     let tdQty = document.createElement("td");
-                    
+                    	tdQty.classList.add("qtyTD");
+                    	
                             let btnQtyDec = document.createElement("button");
                             btnQtyDec.setAttribute("type", "button");
                             btnQtyDec.classList.add("qtyBtn")

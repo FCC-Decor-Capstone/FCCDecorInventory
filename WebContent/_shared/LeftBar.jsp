@@ -54,7 +54,7 @@
 		    window.location.href = 
 		        window.location.href.replace(
 		                   'http:', 'https:');
-		}  
+		}   
 		     
 	}  
 </script>
